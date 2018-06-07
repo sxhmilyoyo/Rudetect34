@@ -1,20 +1,19 @@
-from chowmein import label_topic
-import Clustering
 import codecs
-from collections import defaultdict
-import Information
-from gensim.models.word2vec import LineSentence
-from gensim.models.word2vec import Word2Vec
-import got3
-import OpinionMining
 import os
 import random
-import SVO
 import time
+from collections import defaultdict
+import numpy as np
+import Clustering
+import Evaluate
+import got3
+import Information
+import OpinionMining
+import SVO
 import Twitter
 import Utility
-import Evaluate
-import numpy as np
+from chowmein import label_topic
+from gensim.models.word2vec import LineSentence, Word2Vec
 
 
 class WorkFlow(object):
@@ -89,7 +88,7 @@ class WorkFlow(object):
             model.train(data4word2vec, total_examples=model.corpus_count,
                         epochs=model.iter)
         model.save(os.path.join(self.rootpath, "w2vmodel"))
-        print ("Finished training word2vec and saved it as w2vmodel.")
+        print("Finished training word2vec and saved it as w2vmodel.")
 
     def getTopicPmi(self, folderpath, numTopic):
         """Get topic with pmi.
@@ -182,11 +181,11 @@ class WorkFlow(object):
         preprocessor = Utility.PreprocessData(self.rootpath)
         gc = Clustering.GetCluster(vectorizer, self.rootpath)
         # get the kmeans model
-        print ("Getting the k-means model...")
+        print("Getting the k-means model...")
         startTime = time.time()
         km = gc.getKmeans(folderPath, numClusters)
-        print ("---------- K-means: {} seconds ----------".
-               format(time.time() - startTime))
+        print("---------- K-means: {} seconds ----------".
+              format(time.time() - startTime))
         # get the doc2Label
         print("Getting doc to label...")
         gc.getDoc2Label(folderPath, km)
@@ -286,14 +285,15 @@ class WorkFlow(object):
         print("Getting snippets for {}".format(folderpath))
         # s2q = self.helper.loadJson(os.path.join(folderpath, 'final',
         #                                         'subject2svoqueries.json'))
-        queries = self.helper.loadCsv(folderpath+"/final", "candidate_queries.csv")
+        queries = self.helper.loadCsv(
+            folderpath+"/final", "candidate_queries.csv")
         fullPath = os.path.join(self.rootpath, folderpath)
-        
+
         relevant = []
         for idx, query in enumerate(queries):
-            print("Crawling query {} ...".format(query[1]))       
+            print("Crawling query {} ...".format(query[1]))
             googleSnippets = Information.GoogleSnippets(fullPath, query[0],
-                                                            idx, query[1])
+                                                        idx, query[1])
             res = googleSnippets.start_crawl()
             relevant.append(res)
             time.sleep(random.randint(1, 11))
@@ -308,12 +308,11 @@ class WorkFlow(object):
         #         relevant.append(res)
         #         time.sleep(random.randint(1, 11))
         output_root = os.path.join(folderpath, 'final')
-        self.helper.dumpJson(output_root, "snippets.json", relevant)  
+        self.helper.dumpJson(output_root, "snippets.json", relevant)
         # output_root = os.path.join(folderpath, 'final', 'snippets')
         # if not os.path.exists(output_root):
-            # os.makedirs(output_root)
+        # os.makedirs(output_root)
         # self.helper.dumpJson(output_root, "snippets.json", total_snippets)
-
 
     def getOpinion(self, folderpath):
         """Get the opinion for each cluster.
@@ -337,7 +336,7 @@ class WorkFlow(object):
         folderPath = os.path.join(self.rootpath, folderpath, 'final',
                                   'snippets')
         svoQuery = self.helper.loadJson(os.path.join(self.rootpath, folderpath,
-                                        'final', 'subject2svoqueries.json'))
+                                                     'final', 'subject2svoqueries.json'))
         subjectFolderPaths = os.listdir(folderPath)
         for subjectFolderPath in subjectFolderPaths:
             svos = [sq['svo'] for sq in svoQuery[subjectFolderPath]]
@@ -375,7 +374,7 @@ class WorkFlow(object):
             flag {str} -- 'event': get corpus for whole tweets.
                           'cluster': get corpus for each cluster.
         """
-        
+
         folderPath = os.path.join(folderpath, 'final')
         if flag == 'cluster':
             s2vs = self.helper.loadJson(folderPath+"/subject2svoqueries.json")
@@ -386,13 +385,17 @@ class WorkFlow(object):
             self.helper.dumpJson(folderPath, 'target.json', subjects)
             targets = ';'.join(subjects)
             if os.path.exists(os.path.join(self.rootpath, self.folderpath, 'totalTargets.json')):
-                totalTargets = self.helper.loadJson(self.folderpath+'/totalTargets.json')
+                totalTargets = self.helper.loadJson(
+                    self.folderpath+'/totalTargets.json')
                 totalTargets.append(targets)
-                self.helper.dumpJson(self.folderpath, 'totalTargets.json', totalTargets)
+                self.helper.dumpJson(
+                    self.folderpath, 'totalTargets.json', totalTargets)
             else:
-                self.helper.dumpJson(self.folderpath, 'totalTargets.json', [targets])
+                self.helper.dumpJson(
+                    self.folderpath, 'totalTargets.json', [targets])
         elif flag == 'event':
-            totalTargets = self.helper.loadJson(folderpath+'/totalTargets.json')
+            totalTargets = self.helper.loadJson(
+                folderpath+'/totalTargets.json')
             targets = ';'.join(totalTargets)
         self.preprocessData.getCorpus4csv(folderPath, targets)
         self.preprocessData.getCorpus4csvFromStatements(folderPath)
@@ -401,7 +404,8 @@ class WorkFlow(object):
     def getSimilarity4Statements(self, folderpath):
         """Get similarity between candiadate statements and target statement."""
         getSimilarity = Evaluate.GetSimilarity('tfidf', self.rootpath)
-        tokens_statements, id2candiadateStatements = getSimilarity.getCorpusFromCandidateStatements(folderpath)
+        tokens_statements, id2candiadateStatements = getSimilarity.getCorpusFromCandidateStatements(
+            folderpath)
         tokens_target = getSimilarity.getCorpusFromTargetStatements(folderpath)
         # print("tokens_statements", len(tokens_statements))
         # print("tokens_target", tokens_target)
@@ -409,7 +413,8 @@ class WorkFlow(object):
         vector_target = getSimilarity.getVector(tokens_target)
         # print("vectors_candidates", vectors_candidates[0:1].shape)
         # print("vector_target", vector_target.shape)
-        similarities = getSimilarity.getCosineSimilarity(vectors_candidates, vector_target)
+        similarities = getSimilarity.getCosineSimilarity(
+            vectors_candidates, vector_target)
         # print(similarities, vectors_candidates)
         # print(similarities[0], len(similarities[0]))
 
@@ -421,22 +426,25 @@ class WorkFlow(object):
         data = []
         for key in id2candiadateStatements:
             data.append([id2candiadateStatements[key], id2similarities[key]])
-        self.helper.dumpCsv(folderpath+"/final", "similarities.csv", ['statement', 'similarity'], data)
+        self.helper.dumpCsv(
+            folderpath+"/final", "similarities.csv", ['statement', 'similarity'], data)
 
     def getSimilarityStatements2Tweets(self, folderpath):
         """Get similarity between candidate statements and tweets.
-        
+
         Arguments:
             folderpath {str} -- the path to data folder
-        
+
         Returns:
             None -- index_candiadate_statement_2_index_tweet.json and index_tweet_2_index_candiadate_statement.json are generated.
         """
         getSimilarity = Evaluate.GetSimilarity('tfidf', self.rootpath)
-        tokens_statements, id2candiadateStatements = getSimilarity.getCorpusFromCandidateStatements4Cluster(folderpath)
+        tokens_statements, id2candiadateStatements = getSimilarity.getCorpusFromCandidateStatements4Cluster(
+            folderpath)
         print("length of statements ", len(tokens_statements))
-        
-        tokens_tweets, id2tweets = getSimilarity.getCorpusFromTweets4Cluster(folderpath)
+
+        tokens_tweets, id2tweets = getSimilarity.getCorpusFromTweets4Cluster(
+            folderpath)
         print("length of tweets ", len(tokens_tweets))
 
         # return None if any of them is None
@@ -449,17 +457,21 @@ class WorkFlow(object):
         print("shape of vector_tweets ", vector_tweets.shape)
 
         # shape is #vector_tweets x #vectors_candidates
-        similarities = getSimilarity.getCosineSimilarity(vectors_candidates, vector_tweets)
+        similarities = getSimilarity.getCosineSimilarity(
+            vectors_candidates, vector_tweets)
         print("shape of similarities ", similarities.shape)
 
         # get max indeices of candidates statement for each tweet
-        index_tweet_2_max_index_candiadate_statement = enumerate(list(np.argmax(similarities, axis=1)))
-        self.helper.dumpJson(folderpath+"/final", "index_tweet_2_index_candiadate_statement.json", index_tweet_2_max_index_candiadate_statement)
+        index_tweet_2_max_index_candiadate_statement = enumerate(
+            list(np.argmax(similarities, axis=1)))
+        self.helper.dumpJson(folderpath+"/final", "index_tweet_2_index_candiadate_statement.json",
+                             index_tweet_2_max_index_candiadate_statement)
         # reverse the key and value
         max_index_candiadate_statement_2_index_tweet = defaultdict(list)
         for tid, sid in index_tweet_2_max_index_candiadate_statement:
             max_index_candiadate_statement_2_index_tweet[sid].append(tid)
-        self.helper.dumpJson(folderpath+"/final", "index_candiadate_statement_2_index_tweet.json", max_index_candiadate_statement_2_index_tweet)
+        self.helper.dumpJson(folderpath+"/final", "index_candiadate_statement_2_index_tweet.json",
+                             max_index_candiadate_statement_2_index_tweet)
 
     def run4cluster(self):
         """Run getTopicPmi, extractSVOs and getQuery for each cluster.
@@ -470,7 +482,8 @@ class WorkFlow(object):
 
         """
         folderPath = os.path.join(self.folderpath, 'final/clusterData')
-        foldernames = [i for i in os.listdir(os.path.join(self.rootpath, folderPath)) if os.path.isdir(os.path.join(self.rootpath, folderPath, i))]
+        foldernames = [i for i in os.listdir(os.path.join(
+            self.rootpath, folderPath)) if os.path.isdir(os.path.join(self.rootpath, folderPath, i))]
         for foldername in foldernames:
             # if foldername != '1':
             #     continue
@@ -492,9 +505,7 @@ class WorkFlow(object):
             self.getQuery(folderFullPath)
             print("Running getSimilarityStatements2Tweets ...")
             self.getSimilarityStatements2Tweets(folderFullPath)
-            print("Runnig getSnippets ...")            
+            print("Runnig getSnippets ...")
             self.getSnippets(folderFullPath)
             print("Running getCorpus4Classification ...")
             self.getCorpus4Classification(folderFullPath, 'cluster')
-            
-            
