@@ -181,9 +181,9 @@ class GetTweets(object):
                     rm.append(st[0])
                     break
         filterH = [h for h, num in hashtagsPopular_sorted if h not in rm]
-        print("filterH length is {}".format(len(filterH))
+        print("filterH length is {}".format(len(filterH)))
         l = 20-len(list(originHashtagsPopular.keys()))
-        print("add {} hashtags".format(l))
+        print("need to add {} hashtags".format(l))
         finalH = filterH[:l] + list(originHashtagsPopular.keys())
         return finalH
 
