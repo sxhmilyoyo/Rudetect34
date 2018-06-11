@@ -18,7 +18,7 @@ class SvoExtractor(object):
         self.folderpath = folderpath
         self.fileFolderPath = os.path.join(
             self.rootpath, self.folderpath, "final")
-        self.termination = set([".", "!"])
+        # self.termination = set([".", "!"])
 
     def __tag(self, tweets):
         """Tag the tweets.
@@ -166,10 +166,19 @@ class SvoExtractor(object):
         return result
 
     def __findRoot(self, parsedTweet):
+        """Find root index and id in the sentence.
+
+        Root is the term with HEAD is 0.
+        Arguments:
+            parsedTweet {list} -- [(term1_info), (term2_info), ...]
+
+        Returns:
+            list -- [(index1, id1), (index2, id2), ...]
+        """
         verbRootIndex = []
         for index, term in enumerate(parsedTweet):
             if int(term[6]) == 0 and term[3] == "V":
-                verbRootIndex.append(index)
+                verbRootIndex.append((index, term[0]))
         return verbRootIndex
 
     def __findTermination(self, parsedTweet, end):
@@ -187,7 +196,7 @@ class SvoExtractor(object):
         else:
             start = end - 1
         while start > 0:
-            if parsedTweet[start][3] == "," and parsedTweet[start][1] in self.termination:
+            if parsedTweet[start][3] == ",":
                 return start + 1
             else:
                 start -= 1
@@ -209,17 +218,17 @@ class SvoExtractor(object):
             if len(verbRootIndices) == 0:
                 continue
 
-            for verbRootIndex in verbRootIndices:
+            for verbRootIndex, verbRootID in verbRootIndices:
                 start = self.__findTermination(parsedTweet, verbRootIndex)
 
                 # print("length of tweet ", len(taggedTweet))
                 # for i in range(index, len(taggedTweet)):
                 while start < len(parsedTweet) and start < verbRootIndex:
                     merge = list(parsedTweet[start])
-                    if merge[3] in set(["N", "^", "S"]):
+                    if merge[3] in set(["N", "^", "S"]) and int(merge[6]) == int(verbRootID):
                         j = start + 1
                         while j < len(parsedTweet) and j < verbRootIndex:
-                            if parsedTweet[j][3] in set(["N", "^", "S"]):
+                            if parsedTweet[j][3] in set(["N", "^", "S"]) and int(parsedTweet[j][6]) == int(verbRootID):
                                 merge[1] = merge[1] + " " + parsedTweet[j][1]
                                 j += 1
                             else:
