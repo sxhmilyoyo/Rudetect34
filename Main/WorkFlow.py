@@ -196,8 +196,8 @@ class WorkFlow(object):
         print("Storing tweets for clusters...")
         preprocessor.storeTweets4Clusters(folderPath)
 
-    def extractSVOs(self, folderpath):
-        """Extract the SVOs.
+    def getSubject(self):
+        """Get subjects.
 
         Parameters
         ----------
@@ -209,52 +209,34 @@ class WorkFlow(object):
         None
 
         """
-        folderPath = os.path.join(folderpath, 'final')
-        fullPath = os.path.join(self.rootpath, folderPath)
-        svoExtraction = SVO.SvoExtraction()
-        with codecs.open(
-                os.path.join(self.rootpath, folderPath, "tweets_line.txt"),
-                "r", "utf-8") as fp:
-            document = fp.read()
-        # print(document)
-        print("Extracting subjects...")
-        if not os.path.exists(os.path.join(self.rootpath, folderPath,
-                                           'subjects.json')):
-            topic_file = os.path.join(fullPath, "tweets_topic_words_pmi.json")
-            if os.path.exists(topic_file):
-                topic_words = self.helper.loadJson(topic_file)
-                subjects = svoExtraction.extract_subject(document,
-                                                         topic_words['0'],
-                                                         self.rootpath)
-            else:
-                topic_words = None
-                subjects = svoExtraction.extract_subject(document,
-                                                         topic_words,
-                                                         self.rootpath)
-            self.helper.dumpJson(folderPath, 'subjects.json', subjects)
-            print("subjects.json has been saved.")
-        else:
-            subjects = self.helper.loadJson(os.path.join(folderPath,
-                                                         'subjects.json'))
-            print("subjects.json has been loaded.")
-        subject2svos = {}
-        for subject in subjects:
-            print("extracting for subject: {}".format(subject))
-            print(self.rootpath)
-            taggedSents = svoExtraction.tag_sentences(self.rootpath, subject,
-                                                      document)
-            # print(taggedSents)
-            svos = [
-                (svoExtraction.get_svo(sentence, subject), idx)
-                for sentence, idx in taggedSents
-            ]
-            # address svos
-            filteredSvos = self.preprocessData.getTop5SVO(folderPath, svos)
-            # print(filteredSvos)
-            subject2svos[subject] = filteredSvos
+        # folderPath = os.path.join(folderpath, 'final')
+        # fullPath = os.path.join(self.rootpath, folderPath)
+        svoExtractor = SVO.SvoExtractor(self.rootpath, self.folderpath)
+        tweets = self.helper.getTweet(self.folderpath)
+        cleanedTweets = []
+        for tweet in tweets:
+            c1 = self.preprocessData.cleanTweet(tweet.text)
+            cleanedTweets.append(c1)
+        print("Parsing...")
+        result = svoExtractor.countSubject(cleanedTweets)
 
-        self.helper.dumpJson(folderPath, 'subject2svos.json', subject2svos)
-        print("subject2svos.json has been saved.")
+        # for subject in subjects:
+        #     print("extracting for subject: {}".format(subject))
+        #     print(self.rootpath)
+        #     taggedSents = svoExtraction.tag_sentences(self.rootpath, subject,
+        #                                               document)
+        #     # print(taggedSents)
+        #     svos = [
+        #         (svoExtraction.get_svo(sentence, subject), idx)
+        #         for sentence, idx in taggedSents
+        #     ]
+        #     # address svos
+        #     filteredSvos = self.preprocessData.getTop5SVO(folderPath, svos)
+        #     # print(filteredSvos)
+        #     subject2svos[subject] = filteredSvos
+
+        # self.helper.dumpJson(folderPath, 'subject2svos.json', subject2svos)
+        # print("subject2svos.json has been saved.")
 
     def getQuery(self, folderpath):
         """Get query for svo of each cluster.

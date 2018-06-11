@@ -11,6 +11,7 @@ import re
 # import got
 import SVO
 import Utility
+import operator
 
 
 class PreprocessData(object):
@@ -61,10 +62,9 @@ class PreprocessData(object):
         # if 'http' in text:
         #     text = text[:text.find('http') - 1]
         p.set_options(p.OPT.URL, p.OPT.EMOJI, p.OPT.MENTION, p.OPT.SMILEY)
-        cleaned = p.clean(text.encode('utf-8'))
+        cleaned = p.clean(text)
         noHashtags = ' '.join(re.sub("([#])", " ", cleaned).split())
-        noAscii = re.sub(r'[^\x00-\x7F]', '', noHashtags)
-        return noAscii
+        return noHashtags
 
     def getCorpus(self, folderPath):
         """Get list of list of tokens from .pkl file."""
@@ -407,7 +407,17 @@ class PreprocessData(object):
                         k += 1
         self.helper.dumpCsv(folderpath, "corpus_snippets.csv", title, data)
     
+    def sortDict(self, d):
+        """Sort the dictionary.
 
+        Args:
+            d (dict): the dictionary
+        Returns:
+            list: sorted_dict
+        """
+        sorted_dict = sorted(d.items(), key=operator.itemgetter(1),
+                             reverse=True)
+        return sorted_dict
 
     # def getData4Sen140API(self, folderpath):
     #     """Generate the data for Sentiment140API.

@@ -43,7 +43,7 @@ def main(rootpath, folderpath, query, start, end):
     None
 
     """
-    helper = Utility.Helper(rootpath)
+    # helper = Utility.Helper(rootpath)
     workFlow = Main.WorkFlow(rootpath, folderpath)
     # get tweets
 
@@ -58,6 +58,11 @@ def main(rootpath, folderpath, query, start, end):
     print('='*100)
     workFlow.getWord2Vec()"""
 
+    # get Nouns
+    print('='*100)
+    print('Getting subject ...')
+    print('='*100)
+    workFlow.getSubject()
     """# get the topic model
     print('='*100)
     print('Getting topic model ...')

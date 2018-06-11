@@ -110,13 +110,13 @@ class Helper(object):
 
         It is a generator.
         Parameters Example:
-                self.rootPath/folderPath/rawData
+                self.rootPath/folderPath/final/rawData
         """
         filenames = os.listdir(os.path.join(self.rootPath, folderPath,
-                                            'rawData'))
+                                            'final', 'rawData'))
         for filename in filenames:
-            tweets = self.loadPickle(os.path.join(folderPath, 'rawData',
-                                                  filename))
+            tweets = self.loadPickle(os.path.join(folderPath, 'final',
+                                                  'rawData', filename))
             for tweet in tweets:
                 yield tweet
 
