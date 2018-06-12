@@ -173,7 +173,7 @@ class SvoExtractor(object):
             parsedTweet {list} -- [(term1_info), (term2_info), ...]
 
         Returns:
-            list -- [(index1, id1), (index2, id2), ...]
+            list -- [(index1(int), id1(str)), (index2(int), id2(str)), ...]
         """
         verbRootIndex = []
         for index, term in enumerate(parsedTweet):
@@ -186,7 +186,7 @@ class SvoExtractor(object):
 
         Arguments:
             parsedTweet {list} -- [(term1_info), (term2_info), ...]
-            end {int} -- index of the end
+            end {int} -- the index of the end
 
         Returns:
             int -- the index of the sentence start
@@ -256,7 +256,7 @@ class SvoExtractor(object):
             tweets {list} -- the list of tweets
         Returns:
             subject2number -- {subject1: num1, subject2: num2, ...}
-            subject2tweetInfo -- {subject1: (tweet id(str), index(str)), subject2: (tweet id(str), index(str)), ...}
+            subject2tweetInfo -- {subject1: (tweet id(str), subjectId(str)), subject2: (tweet id(str), subjectId(str)), ...}
             parsedTweets -- {tweet_id: [(info_term1), (info_term2), ...], ...}            
         """
         subject2number = defaultdict(int)
@@ -265,28 +265,29 @@ class SvoExtractor(object):
         mergedNoun = self.__mergeNounasSubject(parsedTweets)
         for tweetID, nounsInfo in mergedNoun.items():
             for nounInfo in nounsInfo:
-                subject2number[nounInfo[1]] += 1
-                subject2tweetInfo[nounInfo[1]].append((tweetID, nounInfo[0]))
+                subject2number[nounInfo[1].lower()] += 1
+                subject2tweetInfo[nounInfo[1].lower()].append(
+                    (tweetID, nounInfo[0]))
 
         self.helper.dumpJson(self.fileFolderPath,
                              "subject2number.json", subject2number)
         print("subject2number.json has been saved.")
-        sortedNoun2Number = self.preprocessData.sortDict(subject2number)
+        sortedSubject2Number = self.preprocessData.sortDict(subject2number)
         self.helper.dumpJson(self.fileFolderPath,
                              "sorted_subject2number.json",
-                             sortedNoun2Number)
+                             sortedSubject2Number)
         print("sorted_subject2number.json has been saved.")
         self.helper.dumpJson(self.fileFolderPath,
                              "subject2tweetInfo.json", subject2tweetInfo)
         print("subject2tweetInfo.json has been saved.")
-        return sortedNoun2Number, subject2tweetInfo, parsedTweets
+        return sortedSubject2Number, subject2tweetInfo, parsedTweets
 
-    def extractSvo(self, sortedNoun2Number, subject2tweetInfo, parsedTweets, top=5):
+    def extractSvo(self, sortedNoun2Number, subject2tweetInfo, parsedTweets, top=3):
         """Extract candidate claims from tweets based on subject.
 
         Arguments:
             sortedNoun2Number {list} -- [[subject1, number], ...]
-            subject2tweetInfo {dict} -- {subject1: (tweet id(str), index(str)), subject2: (tweet id(str), index(str)), ...}
+            subject2tweetInfo {dict} -- {subject1: (tweet id(str), subjectId(str)), subject2: (tweet id(str), subjectId(str)), ...}
             parsedTweets {dict} -- {tweet_id: [(info_term1), (info_term2), ...], ...}
             top {int} -- the number of top subjects to be analyzed
         Returns:
@@ -294,12 +295,14 @@ class SvoExtractor(object):
         """
         candidateClaims = defaultdict(list)
         for subject, _ in sortedNoun2Number[:top]:
-            for tweetID, index in subject2tweetInfo[subject]:
-                subjectIndex = int(index)
+            print("subject is {}".format(subject))
+            for tweetID, subjectId in subject2tweetInfo[subject]:
+                subjectId = int(subjectId)
                 tweetInfo = parsedTweets[tweetID]
-                startSent = self.__findBeginning(tweetInfo, subjectIndex)
+                # Id is bigger than index by one
+                startSent = self.__findBeginning(tweetInfo, subjectId-1)
                 startIndex = self.__findDependencyonSubject(
-                    startSent, subjectIndex, tweetInfo)
+                    startSent, subjectId, tweetInfo)
                 totalLen = len(tweetInfo)
                 flag = True
                 tempClaim = []
@@ -307,25 +310,29 @@ class SvoExtractor(object):
                     if tweetInfo[startIndex][3] == "," and tweetInfo[startIndex][1] in self.termination:
                         flag = False
                     tempClaim.append(tweetInfo[startIndex][1])
+                    startIndex += 1
                 candidateClaims[subject].append(" ".join(tempClaim))
         self.helper.dumpJson(self.fileFolderPath,
                              "candidateClaims.json", candidateClaims)
+        print("candidateClaims.json has been saved.")
         return candidateClaims
 
-    def __findDependencyonSubject(self, startSent, subjectIndex, parsedTweet):
+    def __findDependencyonSubject(self, startSent, subjectId, parsedTweet):
         """Find the index of the leftmost term dependent on subject.
 
         Arguments:
-            startSent {int} -- the index of the beginning index of the current sentence
-            subjectIndex {int} -- the index of the subject
+            startSent {int} -- the beginning index of the current sentence
+            subjectId {int} -- the id of the subject
             parsedTweet {list} -- [(info_term1), (info_term2), ...]
 
         Returns:
             int -- the index of the leftmost term dependent on subject
         """
         start = startSent
-        while start < subjectIndex:
+        # Id is bigger than index by one
+        while start < (subjectId-1):
             head = int(parsedTweet[start][6])
-            if head == subjectIndex:
+            if head == subjectId:
                 return start
-        return subjectIndex
+            start += 1
+        return subjectId-1
