@@ -196,18 +196,11 @@ class WorkFlow(object):
         print("Storing tweets for clusters...")
         preprocessor.storeTweets4Clusters(folderPath)
 
-    def getSubject(self):
-        """Get subjects.
+    def getSubject(self, query):
+        """Get subject.
 
-        Parameters
-        ----------
-        folderpath : str
-            the assigned folder path
-
-        Returns
-        -------
-        None
-
+        Arguments:
+            query {str} -- the initial query
         """
         # folderPath = os.path.join(folderpath, 'final')
         # fullPath = os.path.join(self.rootpath, folderPath)
@@ -221,7 +214,7 @@ class WorkFlow(object):
             cleanedTweets.append(c1)
         print("Parsing...")
         sortedSubject2Number, subject2tweetInfo, parsedTweets = svoExtractor.collectSubject(
-            cleanedTweets)
+            tweets_list, cleanedTweets)
         # sortedSubject2Number = self.helper.loadJson(
         #     os.path.join(self.folderpath, "final", "sorted_subject2number.json"))
         # subject2tweetInfo = self.helper.loadJson(
@@ -231,7 +224,7 @@ class WorkFlow(object):
         candidateClaims = svoExtractor.extractSvo(
             sortedSubject2Number, subject2tweetInfo, parsedTweets, 6)
 
-        svoExtractor.rankClaims(tweets_list, candidateClaims)
+        svoExtractor.rankClaims(query[1:], tweets_list, candidateClaims)
 
         # for subject in subjects:
         #     print("extracting for subject: {}".format(subject))
