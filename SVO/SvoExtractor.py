@@ -311,7 +311,9 @@ class SvoExtractor(object):
                         flag = False
                     tempClaim.append(tweetInfo[startIndex][1])
                     startIndex += 1
-                candidateClaims[subject].append(" ".join(tempClaim))
+                # claimInfo: tweet id, claim
+                claimInfo = (tweetID, " ".join(tempClaim))
+                candidateClaims[subject].append(claimInfo)
         self.helper.dumpJson(self.fileFolderPath,
                              "candidateClaims.json", candidateClaims)
         print("candidateClaims.json has been saved.")
@@ -336,3 +338,40 @@ class SvoExtractor(object):
                 return start
             start += 1
         return subjectId-1
+
+    def rankClaims(self, tweets, candidateClaims, top=5):
+        """Rank candidate claims.
+
+        Arguments:
+            tweets {list} -- the list of tweets
+            candidateClaims {dict} -- {subject1: [claim1, claim2, ...], ...}
+            top {int} -- the number of top claims
+
+        Returns:
+            dict -- {subject1: [claim1, claim2, ...], ...}
+        """
+        subject2claimFeature = defaultdict(dict)
+        subject2rankedClaims = defaultdict(list)
+        for subject in candidateClaims.keys():
+            claimIndex2feature = defaultdict(int)
+            candidateClaims4Subject = candidateClaims[subject]
+            for claimIndex, claimInfo in enumerate(candidateClaims4Subject):
+                tweetIndex = int(claimInfo[0])
+
+                tweet = tweets[tweetIndex]
+                feature = tweet.reply + tweet.retweets + tweet.favorites
+                claimIndex2feature[claimIndex] = feature
+            subject2claimFeature[subject] = claimIndex2feature
+            sortedClaimIndex2feature = self.preprocessData.sortDict(
+                claimIndex2feature)
+            for claimIndex, _ in sortedClaimIndex2feature[:top]:
+                subject2rankedClaims[subject].append(
+                    candidateClaims4Subject[claimIndex])
+
+        self.helper.dumpJson(self.fileFolderPath,
+                             "claimIndex2feature.json", claimIndex2feature)
+        print("claimIndex2feature.json has been saved.")
+        self.helper.dumpJson(self.fileFolderPath,
+                             "subject2rankedClaims.json", subject2rankedClaims)
+        print("subject2rankedClaims.json has been saved.")
+        return subject2rankedClaims
