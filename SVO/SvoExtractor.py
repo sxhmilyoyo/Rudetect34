@@ -353,12 +353,15 @@ class SvoExtractor(object):
         subject2claimFeature = defaultdict(dict)
         subject2rankedClaims = defaultdict(list)
         for subject in candidateClaims.keys():
+            print("subject is {}".format(subject))
             claimIndex2feature = defaultdict(int)
             candidateClaims4Subject = candidateClaims[subject]
             for claimIndex, claimInfo in enumerate(candidateClaims4Subject):
                 tweetIndex = int(claimInfo[0])
-
                 tweet = tweets[tweetIndex]
+                # print("claim is {}".format(claimInfo[1]))
+                # print("tweet is {}".format(tweet.text))
+                # print("tweet's permalink is {}".format(tweet.permalink))
                 feature = tweet.reply + tweet.retweets + tweet.favorites
                 claimIndex2feature[claimIndex] = feature
             subject2claimFeature[subject] = claimIndex2feature
@@ -369,8 +372,8 @@ class SvoExtractor(object):
                     candidateClaims4Subject[claimIndex])
 
         self.helper.dumpJson(self.fileFolderPath,
-                             "claimIndex2feature.json", claimIndex2feature)
-        print("claimIndex2feature.json has been saved.")
+                             "claimIndex2feature.json", subject2claimFeature)
+        print("subject2claimFeature.json has been saved.")
         self.helper.dumpJson(self.fileFolderPath,
                              "subject2rankedClaims.json", subject2rankedClaims)
         print("subject2rankedClaims.json has been saved.")

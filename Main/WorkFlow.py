@@ -213,8 +213,10 @@ class WorkFlow(object):
         # fullPath = os.path.join(self.rootpath, folderPath)
         svoExtractor = SVO.SvoExtractor(self.rootpath, self.folderpath)
         tweets = self.helper.getTweet(self.folderpath)
+        tweets_list = []
         cleanedTweets = []
         for tweet in tweets:
+            tweets_list.append(tweet)
             c1 = self.preprocessData.cleanTweet(tweet.text)
             cleanedTweets.append(c1)
         print("Parsing...")
@@ -226,8 +228,10 @@ class WorkFlow(object):
         #     os.path.join(self.folderpath, "final", "subject2tweetInfo.json"))
         # parsedTweets = self.helper.loadJson(
         #     os.path.join(self.folderpath, "final", "tweets_id2Info.json"))
-        svoExtractor.extractSvo(
+        candidateClaims = svoExtractor.extractSvo(
             sortedSubject2Number, subject2tweetInfo, parsedTweets, 6)
+
+        svoExtractor.rankClaims(tweets_list, candidateClaims)
 
         # for subject in subjects:
         #     print("extracting for subject: {}".format(subject))
