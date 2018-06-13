@@ -303,7 +303,7 @@ class PreprocessData(object):
             list -- [claim1, claim2, ...]
         """
         claims = []
-        filePath = os.path.join(folderPath, "final", subject2rankedClaims.json")
+        filePath = os.path.join(folderPath, "final", "subject2rankedClaims.json")
         subject2rankedClaims = self.helper.loadJson(filePath)
         for subject in subject2rankedClaims.keys():
             for _, claim in subject2rankedClaims[subject]:

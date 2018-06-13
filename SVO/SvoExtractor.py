@@ -168,8 +168,8 @@ class SvoExtractor(object):
         print("tweets_id2Info.json has been saved.")
         return result
 
-    def __findRoot(self, parsedTweet):
-        """Find root index and id in the sentence.
+    def __findVerbRoot(self, parsedTweet):
+        """Find verb root index and id in the sentence.
 
         Root is the term with HEAD is 0.
         Arguments:
@@ -218,7 +218,7 @@ class SvoExtractor(object):
         """
         mergedNoun = defaultdict(list)
         for tweetID, parsedTweet in parsedTweets.items():
-            verbRootIndices = self.__findRoot(parsedTweet)
+            verbRootIndices = self.__findVerbRoot(parsedTweet)
             if len(verbRootIndices) == 0:
                 continue
 
@@ -240,8 +240,12 @@ class SvoExtractor(object):
                                 # print("index is ", index)
                                 break
                         # find dependencyNoun as final subject
-                        subject = self.__findDependencyNoun(
-                            parsedTweet, sentStart, start-1, merge, tweets, tweetID)[-1]
+                        subjects = self.__findDependencyNoun(
+                            parsedTweet, sentStart, start-1, merge, tweets, tweetID)
+                        if type(subjects[0]) is list:
+                            subject = subjects[-1]
+                        else:
+                            subject = subjects
                         subject[3] = "N"
                         subject[7] = "NSUBJ"
                         start = j + 1
@@ -262,25 +266,33 @@ class SvoExtractor(object):
             parsedTweet {list} -- [(term1_info), (term2_info), ()]
             sentStart {int} -- the beginning index of the sentence
             start {int} -- the index of the start
-            currentParsedTerm {list} -- the term info
+            currentParsedTerm {tuple} -- the term info
             tweets {list} -- the list of tweets
             tweetID {int} -- the id of the tweet
 
         Returns:
             list -- [description]
         """
+        if tweetID == 77:
+            print("tweet 77: ")
         currentNounID = int(currentParsedTerm[0])
         candidateDependencyNoun = []
         while start >= sentStart:
             if parsedTweet[start][3] in set(["N", "^", "S"]) and int(parsedTweet[start][6]) == currentNounID:
-                candidateDependencyNoun.append(list(parsedTweet[start]))
-            elif parsedTweet[start][3] == "D" and parsedTweet[start][1].lower() in set(["this", "that", "those", "these"]):
+                parsedTweetList = list(parsedTweet[start])
+                parsedTweetList[6] = currentParsedTerm[6]
+                candidateDependencyNoun.append(parsedTweetList)
+            elif int(parsedTweet[start][6]) == currentNounID and parsedTweet[start][3] == "D" and parsedTweet[start][1].lower() in set(["this", "that", "those", "these"]):
                 # find the hashtag in this tweet for pronoun like "this, those", except "the"
                 hashtags = tweets[tweetID].hashtags.split()
                 if hashtags:
+
                     noSymbolHashtag = re.sub("([#])", "", hashtags[0])
                     parsedTweetList = list(parsedTweet[start])
                     parsedTweetList[1] = noSymbolHashtag
+                    parsedTweetList[6] = currentParsedTerm[6]
+                    if tweetID == 77:
+                        print("parsedTweetList is {}".format(parsedTweetList))
                     candidateDependencyNoun.append(parsedTweetList)
                     break
             start -= 1
@@ -297,6 +309,7 @@ class SvoExtractor(object):
             tweets {list} -- the list of tweets
             cleanedTweets {list} -- the list of cleaned tweets
         Returns:
+            mergedNoun -- {tweet_id: [noun1, noun2, ...], ...}
             subject2number -- {subject1: num1, subject2: num2, ...}
             subject2tweetInfo -- {subject1: (tweet id(str), subjectId(str)), subject2: (tweet id(str), subjectId(str)), ...}
             parsedTweets -- {tweet_id: [(info_term1), (info_term2), ...], ...}            
@@ -322,13 +335,14 @@ class SvoExtractor(object):
         self.helper.dumpJson(self.fileFolderPath,
                              "subject2tweetInfo.json", subject2tweetInfo)
         print("subject2tweetInfo.json has been saved.")
-        return sortedSubject2Number, subject2tweetInfo, parsedTweets
+        return mergedNoun, sortedSubject2Number, subject2tweetInfo, parsedTweets
 
-    def extractSvo(self, tweets, sortedNoun2Number, subject2tweetInfo, parsedTweets, top=3):
+    def extractSvo(self, tweets, mergedNoun, sortedSubject2Number, subject2tweetInfo, parsedTweets, top=3):
         """Extract candidate claims from tweets based on subject.
 
         Arguments:
             tweets {list} -- the list of tweets
+            mergedNoun {dict} -- {tweet_id: [noun1, noun2, ...], ...}
             sortedNoun2Number {list} -- [[subject1, number], ...]
             subject2tweetInfo {dict} -- {subject1: (tweet id(str), subjectId(str)), subject2: (tweet id(str), subjectId(str)), ...}
             parsedTweets {dict} -- {tweet_id: [(info_term1), (info_term2), ...], ...}
@@ -337,59 +351,78 @@ class SvoExtractor(object):
             dict -- {subject1: [claim1, claim2, ...], ...}
         """
         candidateClaims = defaultdict(list)
-        for subject, _ in sortedNoun2Number[:top]:
+        for subject, _ in sortedSubject2Number[:top]:
             print("subject is {}".format(subject))
             for tweetID, subjectId in subject2tweetInfo[subject]:
+                # get edited parsed term
+                nouns = mergedNoun[tweetID]
+                for noun in nouns:
+                    if int(noun[0]) == int(subjectId):
+                        break
+
                 subjectId = int(subjectId)
+                # original parsed tweet
                 parsedTweet = parsedTweets[tweetID]
                 # Id is bigger than index by one
                 startSent = self.__findBeginning(parsedTweet, subjectId-1)
                 # startIndex = self.__findDependencyonSubject(
                 #     startSent, subjectId, parsedTweet)
                 totalLen = len(parsedTweet)
-                # flag = True
+                flag = True
                 # add subject
-                tempClaim = [parsedTweet[subjectId-1][1]]
-                rootIndex, rootID = self.__findRoot(parsedTweet)[0]
+                tempClaim = [noun[1]]
+                rootID = int(noun[6])
+                rootIndex = rootID - 1
                 # add root verb
                 tempClaim.append(parsedTweet[rootIndex][1])
                 startIndex = rootIndex + 1
+                # get subjects
+                objects = []
                 while startIndex < totalLen and flag:
                     if parsedTweet[startIndex][3] == "," and parsedTweet[startIndex][1] in self.termination:
                         flag = False
-                    if parsedTweet[startIndex][3] == "V":
-                        # add second verb
-                        tempClaim.append(parsedTweet[startIndex][1])
-                        nounInfo = self.__findNoun(startIndex+1, currentParsedTerm, parsedTweet)
-                        if not nounInfo:
+                    if int(parsedTweet[startIndex][6]) == rootID:
+                        if parsedTweet[startIndex][3] == "V":
+                            # add second verb
+                            objects.append(parsedTweet[startIndex][1])
+                            nounInfo = self.__findNoun(
+                                startIndex+1, parsedTweet[startIndex], parsedTweet)
+                            if not nounInfo:
+                                print("breaking tweet id is {}".format(tweetID))
+                                break
+                            dependencyNounInfos = self.__findDependencyNoun(
+                                parsedTweet, startSent, int(nounInfo[0])-1-1, nounInfo, tweets, tweetID)
+                            if type(dependencyNounInfos) is list:
+                                while dependencyNounInfos:
+                                    # add dependency noun
+                                    objects.append(
+                                        dependencyNounInfos.pop()[1])
+                            # add noun
+                            objects.append(nounInfo[1])
                             break
-                        dependencyNounInfos = self.__findDependencyNoun(parsedTweet, startSent, int(nounInfo[0])-1-1, nounInfo, tweets, tweetID)
-                        if dependencyNounInfos is list:
-                            while dependencyNounInfos:
-                                # add dependency noun
-                                tempClaim.append(dependencyNounInfos.pop()[1])
-                        # add noun
-                        tempClaim.append(nounInfo[1])
-                        break
-                    elif parsedTweet[startIndex][3] in set(["N", "^", "S"]):
-                        dependencyNounInfos = self.__findDependencyNoun(parsedTweet, startSent, startIndex-1, parsedTweet[startIndex], tweets, tweetID)
-                        if dependencyNounInfos is list:
-                            while dependencyNounInfos:
-                                # add dependency noun
-                                tempClaim.append(dependencyNounInfos.pop()[1])
-                        # add noun
-                        tempClaim.append(parsedTweet[startIndex][1])
-                        break
-                    elif parsedTweet[startIndex][3] == "A":
-                        # add adj
-                        tempClaim.append(parsedTweet[startIndex][1])
-                        break
-                    
-                    tempClaim.append(parsedTweet[startIndex][1])
+                        elif parsedTweet[startIndex][3] in set(["N", "^", "S"]):
+                            dependencyNounInfos = self.__findDependencyNoun(
+                                parsedTweet, startSent, startIndex-1, parsedTweet[startIndex], tweets, tweetID)
+                            if dependencyNounInfos is list:
+                                while dependencyNounInfos:
+                                    # add dependency noun
+                                    objects.append(
+                                        dependencyNounInfos.pop()[1])
+                            # add noun
+                            objects.append(parsedTweet[startIndex][1])
+                            break
+                        elif parsedTweet[startIndex][3] == "A":
+                            # add adj
+                            objects.append(parsedTweet[startIndex][1])
+                            break
                     startIndex += 1
                 # claimInfo: tweet id, claim
-                claimInfo = (tweetID, " ".join(tempClaim))
-                candidateClaims[subject].append(claimInfo)
+
+                if objects or (objects == [] and parsedTweet[rootIndex][1] not in set(["is", "was", "are", "were", "be"])):
+                    if tweetID == 411:
+                        print("411 verb {}".format(parsedTweet[rootIndex][1]))
+                    claimInfo = (tweetID, " ".join(tempClaim+objects))
+                    candidateClaims[subject].append(claimInfo)
         self.helper.dumpJson(self.fileFolderPath,
                              "candidateClaims.json", candidateClaims)
         print("candidateClaims.json has been saved.")
@@ -415,14 +448,14 @@ class SvoExtractor(object):
 
         return mergedCandidateClaims
 
-    def __findNoun(startIndex, currentParsedTerm, parsedTweet):
-        """Find noun from startIndex.
-        
+    def __findNoun(self, startIndex, currentParsedTerm, parsedTweet):
+        """Find noun dependent on currentParsedTerm from startIndex.
+
         Arguments:
             startIndex {int} -- the beginning index
-            currentParsedTerm {tuple} -- term info
+            currentParsedTerm {tuple} -- the current term info
             parsedTweet {list} -- [(term_info1), (term_info2), ...]
-        
+
         Returns:
             tuple -- parsed term
         """

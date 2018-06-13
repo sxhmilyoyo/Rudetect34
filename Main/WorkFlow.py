@@ -213,7 +213,7 @@ class WorkFlow(object):
             c1 = self.preprocessData.cleanTweet(tweet.text)
             cleanedTweets.append(c1)
         print("Parsing...")
-        sortedSubject2Number, subject2tweetInfo, parsedTweets = svoExtractor.collectSubject(
+        mergedNoun, sortedSubject2Number, subject2tweetInfo, parsedTweets = svoExtractor.collectSubject(
             tweets_list, cleanedTweets)
         # sortedSubject2Number = self.helper.loadJson(
         #     os.path.join(self.folderpath, "final", "sorted_subject2number.json"))
@@ -222,7 +222,7 @@ class WorkFlow(object):
         # parsedTweets = self.helper.loadJson(
         #     os.path.join(self.folderpath, "final", "tweets_id2Info.json"))
         candidateClaims = svoExtractor.extractSvo(
-            sortedSubject2Number, subject2tweetInfo, parsedTweets, 6)
+            tweets_list, mergedNoun, sortedSubject2Number, subject2tweetInfo, parsedTweets, 6)
 
         svoExtractor.rankClaims(query[1:], tweets_list, candidateClaims)
 
