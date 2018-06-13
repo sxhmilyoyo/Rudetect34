@@ -196,8 +196,8 @@ class WorkFlow(object):
         print("Storing tweets for clusters...")
         preprocessor.storeTweets4Clusters(folderPath)
 
-    def getSubject(self, query):
-        """Get subject.
+    def getClaims(self, query):
+        """Get claims.
 
         Arguments:
             query {str} -- the initial query
@@ -392,12 +392,12 @@ class WorkFlow(object):
     def getSimilarity4Statements(self, folderpath):
         """Get similarity between candiadate statements and target statement."""
         getSimilarity = Evaluate.GetSimilarity('tfidf', self.rootpath)
-        tokens_statements, id2candiadateStatements = getSimilarity.getCorpusFromCandidateStatements(
+        tokens_candidates, id2claims = getSimilarity.getCorpusOfCandidateClaims(
             folderpath)
-        tokens_target = getSimilarity.getCorpusFromTargetStatements(folderpath)
+        tokens_target = getSimilarity.getCorpusOfTargetClaim(folderpath)
         # print("tokens_statements", len(tokens_statements))
         # print("tokens_target", tokens_target)
-        vectors_candidates = getSimilarity.getVector(tokens_statements)
+        vectors_candidates = getSimilarity.getVector(tokens_candidates)
         vector_target = getSimilarity.getVector(tokens_target)
         # print("vectors_candidates", vectors_candidates[0:1].shape)
         # print("vector_target", vector_target.shape)
@@ -412,54 +412,68 @@ class WorkFlow(object):
 
         id2similarities = dict(enumerate(list(similarities[0])))
         data = []
-        for key in id2candiadateStatements:
-            data.append([id2candiadateStatements[key], id2similarities[key]])
+        for key in id2claims.keys():
+            data.append([id2claims[key], id2similarities[key]])
         self.helper.dumpCsv(
             folderpath+"/final", "similarities.csv", ['statement', 'similarity'], data)
 
     def getSimilarityStatements2Tweets(self, folderpath):
-        """Get similarity between candidate statements and tweets.
+        """Get similarity between candidate claims and tweets.
 
         Arguments:
             folderpath {str} -- the path to data folder
 
         Returns:
-            None -- index_candiadate_statement_2_index_tweet.json and index_tweet_2_index_candiadate_statement.json are generated.
+            None -- index_tweet_2_index_candidate_claim.json;
+                    index_candidate_claim_2_index_tweet.json;
+                    index_candidate_claim_2_tweet.json are generated.
         """
         getSimilarity = Evaluate.GetSimilarity('tfidf', self.rootpath)
-        tokens_statements, id2candiadateStatements = getSimilarity.getCorpusFromCandidateStatements4Cluster(
+        tokens_claims, id2claims = getSimilarity.getCorpusOfCandidateClaims(
             folderpath)
-        print("length of statements ", len(tokens_statements))
+        print("length of statements ", len(tokens_claims))
 
-        tokens_tweets, id2tweets = getSimilarity.getCorpusFromTweets4Cluster(
+        tokens_tweets, id2tweets = getSimilarity.getCorpusOfTweets(
             folderpath)
         print("length of tweets ", len(tokens_tweets))
 
         # return None if any of them is None
-        if len(tokens_statements) == 0 or len(tokens_tweets) == 0:
+        if len(tokens_claims) == 0 or len(tokens_tweets) == 0:
             print("no statements or tweets.")
             return
-        vectors_candidates = getSimilarity.getVector(tokens_statements)
-        print("shape of vectors_candidates ", vectors_candidates.shape)
+        vectors_claims = getSimilarity.getVector(tokens_claims)
+        print("shape of vectors_claims ", vectors_claims.shape)
         vector_tweets = getSimilarity.getVector(tokens_tweets)
         print("shape of vector_tweets ", vector_tweets.shape)
 
         # shape is #vector_tweets x #vectors_candidates
         similarities = getSimilarity.getCosineSimilarity(
-            vectors_candidates, vector_tweets)
+            vectors_claims, vector_tweets)
         print("shape of similarities ", similarities.shape)
 
-        # get max indeices of candidates statement for each tweet
-        index_tweet_2_max_index_candiadate_statement = enumerate(
+        # get max indices of candidates statement for each tweet
+        index_tweet_2_max_index_candidate_claim = enumerate(
             list(np.argmax(similarities, axis=1)))
-        self.helper.dumpJson(folderpath+"/final", "index_tweet_2_index_candiadate_statement.json",
-                             index_tweet_2_max_index_candiadate_statement)
+        self.helper.dumpJson(folderpath+"/final",
+                             "index_tweet_2_index_candidate_claim.json",
+                             index_tweet_2_max_index_candidate_claim)
         # reverse the key and value
-        max_index_candiadate_statement_2_index_tweet = defaultdict(list)
-        for tid, sid in index_tweet_2_max_index_candiadate_statement:
-            max_index_candiadate_statement_2_index_tweet[sid].append(tid)
-        self.helper.dumpJson(folderpath+"/final", "index_candiadate_statement_2_index_tweet.json",
-                             max_index_candiadate_statement_2_index_tweet)
+        max_index_candidate_claim_2_index_tweet = defaultdict(list)
+        for tid, sid in index_tweet_2_max_index_candidate_claim:
+            max_index_candidate_claim_2_index_tweet[sid].append(tid)
+        self.helper.dumpJson(folderpath+"/final",
+                             "index_candidate_claim_2_index_tweet.json",
+                             max_index_candidate_claim_2_index_tweet)
+        # generate {index_claim: [tweet1, tweet2, ...]}
+        index_candidate_claim_2_tweet = defaultdict(list)
+        for index_candidate_claim in max_index_candidate_claim_2_index_tweet.keys():
+            for index_tweet in max_index_candidate_claim_2_index_tweet[index_candidate_claim]:
+                index_candidate_claim_2_tweet[index_candidate_claim].append(
+                    id2tweets[index_tweet])
+        self.helper.dumpJson(os.path.join(
+            folderpath, "final"), "index_candidate_claim_2_tweet.json",
+            index_candidate_claim_2_tweet)
+        print("index_candidate_claim_2_tweet.json has been saved.")
 
     def run4cluster(self):
         """Run getTopicPmi, extractSVOs and getQuery for each cluster.

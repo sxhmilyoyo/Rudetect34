@@ -293,31 +293,22 @@ class PreprocessData(object):
         #             r = random.randint(0, 2)
         #             filewriter.writerow([idx, target, content, s[r]])
 
-    def getCandidateStatements(self, folderPath):
-        """Get whole candiadate statements for each event.
-
-        Parameters
-        ----------
-        folderPath : str
-            the event folder path.
-
-        Returns
-        -------
-        list
-            [statement1, statement2, ...].
-
+    def getCandidateClaims(self, folderPath):
+        """Get candidate claims from subject2rankedClaims.json.
+        
+        Arguments:
+            folderPath {str} -- the folder path to event
+        
+        Returns:
+            list -- [claim1, claim2, ...]
         """
-        folderPath = os.path.join(folderPath, 'final', 'clusterData')
-        foldernames = [i for i in os.listdir(os.path.join(self.rootPath, folderPath)) if os.path.isdir(os.path.join(self.rootPath, folderPath, i))]
-        total = []
-        for foldername in foldernames:
-            filePath = os.path.join(folderPath, foldername, 'final', "subject2svoqueries.json")
-            subject2svoqueries = self.helper.loadJson(filePath)
-            for topic in subject2svoqueries.keys():
-                for svoquery in subject2svoqueries[topic]:
-                    c1 = self.cleanTweet4Word2Vec(svoquery['svo'])
-                    total.append(c1.lower())
-        return total
+        claims = []
+        filePath = os.path.join(folderPath, "final", subject2rankedClaims.json")
+        subject2rankedClaims = self.helper.loadJson(filePath)
+        for subject in subject2rankedClaims.keys():
+            for _, claim in subject2rankedClaims[subject]:
+                claims = claim.lower()
+        return claims
 
     def getTweetsFromTweetsLine(self, folderPath):
         """Get whole tweets for each cluster."""

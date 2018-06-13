@@ -50,38 +50,41 @@ class GetSimilarity(object):
         res = cosine_similarity(target_vector, corpus_vectors)
         return res
 
-    def getCorpusFromCandidateStatements(self, folderPath):
-        """Get svo from subject2svoqueries.json file.
-        
+    def getCorpusOfCandidateClaims(self, folderPath):
+        """Get corpus of candidate claims.
+
         Arguments:
             folderPath {string} -- the path to data folder
-        
-        Returns:
-            tuple -- (tokens, id2candiadateStatements)
-        """
-        candiadateStatements = self.preprocessData.getCandidateStatements(
-            folderPath)
-        id2candiadateStatements = dict(enumerate(candiadateStatements))
-        tokens = []
-        for candiadateStatement in candiadateStatements:
-            token = self.preprocessData.getTokens(candiadateStatement)
-            tokens.append(token)
-        return tokens, id2candiadateStatements
 
-    def getCorpusFromTargetStatements(self, folderPath):
-        """Get target statements from target_statement.txt.
-        
+        Returns:
+            tuple -- (tokens, id2claims)
+        """
+        claims = self.preprocessData.getCandidateClaims(
+            folderPath)
+
+        id2claims = dict(enumerate(claims))
+        self.helper.dumpJson(os.path.join(folderPath, "final"),
+                             "id2claims_total.json", id2claims)
+        print("id2claims_total.json has been saved.")
+        tokens = []
+        for claim in claims:
+            token = self.preprocessData.getTokens(claim)
+            tokens.append(token)
+        return tokens, id2claims
+
+    def getCorpusOfTargetClaim(self, folderPath):
+        """Get corpus of target claim from target_statement.txt.
+
         Arguments:
             folderPath {str} -- the path to data folder
-        
+
         Returns:
             list -- [token]
         """
-        with open(os.path.join(self.rootPath, folderPath, 'final', 'target_statement.txt')) as fp:
+        with open(os.path.join(self.rootPath, folderPath, 'target_statement.txt')) as fp:
             statement = fp.read()
         c1 = self.preprocessData.cleanTweet(statement)
-        c2 = self.preprocessData.cleanTweet4Word2Vec(c1)
-        token = self.preprocessData.getTokens(c2.lower())
+        token = self.preprocessData.getTokens(c1.lower())
         return [token]
 
     def getVector(self, corpus):
@@ -92,37 +95,39 @@ class GetSimilarity(object):
         tfidfX = tfidf.transform(corpus)
         return tfidfX
 
-    def getCorpusFromTweets4Cluster(self, folderPath):
+    def getCorpusOfTweets(self, folderPath):
         """Get tweets in token format for clustering.
-        
+
         Arguments:
             folderPath {str} -- the path to data folder
-        
+
         Returns:
             tuple -- (tokens, id2tweets)
         """
-        tweets = self.preprocessData.getTweetsFromTweetsLine(folderPath)
+        tweets = list(self.helper.getTweet(folderPath))
         id2tweets = dict(enumerate(tweets))
+        self.helper.dumpJson(os.path.join(folderPath, "final"), "id2tweets_total.json", id2tweets)
+        print("id2tweets_total.json has been saved.")
         tokens = []
         for tweet in tweets:
             token = self.preprocessData.getTokens(tweet)
             tokens.append(token)
         return tokens, id2tweets
 
-    def getCorpusFromCandidateStatements4Cluster(self, folderPath):
-        """Get candidate statements in token format for clustering.
-        
-        Arguments:
-            folderPath {str} -- the path to folder
-        
-        Returns:
-            tuple -- (tokens, id2candiadateStatements)
-        """
-        candiadateStatements = self.preprocessData.getCandidateStatements4Cluster(
-            folderPath)
-        id2candiadateStatements = dict(enumerate(candiadateStatements))
-        tokens = []
-        for candiadateStatement in candiadateStatements:
-            token = self.preprocessData.getTokens(candiadateStatement)
-            tokens.append(token)
-        return tokens, id2candiadateStatements
+    # def getCorpusFromCandidateStatements4Cluster(self, folderPath):
+    #     """Get corpus of candidate statements in token format for clustering.
+
+    #     Arguments:
+    #         folderPath {str} -- the path to folder
+
+    #     Returns:
+    #         tuple -- (tokens, id2candiadateStatements)
+    #     """
+    #     candiadateStatements = self.preprocessData.getCandidateStatements4Cluster(
+    #         folderPath)
+    #     id2candiadateStatements = dict(enumerate(candiadateStatements))
+    #     tokens = []
+    #     for candiadateStatement in candiadateStatements:
+    #         token = self.preprocessData.getTokens(candiadateStatement)
+    #         tokens.append(token)
+    #     return tokens, id2candiadateStatements

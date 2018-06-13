@@ -62,7 +62,7 @@ def main(rootpath, folderpath, query, start, end):
     print('='*100)
     print('Getting subject ...')
     print('='*100)
-    workFlow.getSubject(query)
+    workFlow.getClaims(query)
     """# get the topic model
     print('='*100)
     print('Getting topic model ...')
