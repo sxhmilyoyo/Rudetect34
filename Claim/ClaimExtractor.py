@@ -276,19 +276,37 @@ class ClaimExtractor(object):
         """
         currentNounID = int(currentParsedTerm[0])
         candidateDependencyNoun = []
+        preParsedTweetList = None
         while start >= sentStart:
             if parsedTweet[start][3] in set(["N", "^", "S"]) and int(parsedTweet[start][6]) == currentNounID:
-
                 parsedTweetList = list(parsedTweet[start])
                 parsedTweetList[6] = currentParsedTerm[6]
+                parsedTweetList[-1] = parsedTweetList[1] + currentParsedTerm[1]
+                if preParsedTweetList:
+                    parsedTweetList[-1] = parsedTweetList[1] + \
+                        " " + preParsedTweetList[-1]
+                else:
+                    parsedTweetList[-1] = parsedTweetList[1] + \
+                        " " + currentParsedTerm[1]
+                preParsedTweetList = parsedTweetList
+
                 candidateDependencyNoun.append(parsedTweetList)
-            elif int(parsedTweet[start][6]) == currentNounID and parsedTweet[start][3] == "D" and parsedTweet[start][1].lower() in set(["this", "that", "those", "these"]):
+            elif int(parsedTweet[start][6]) == currentNounID \
+                    and parsedTweet[start][3] == "D" \
+                    and parsedTweet[start][1].lower() in set(["this", "that", "those", "these"]):
                 # find the hashtag in this tweet for pronoun like "this, those", except "the"
                 hashtags = tweets[tweetID].hashtags.split()
                 if hashtags:
-
                     noSymbolHashtag = re.sub("([#])", "", hashtags[0])
                     parsedTweetList = list(parsedTweet[start])
+                    if preParsedTweetList:
+                        parsedTweetList[-1] = parsedTweetList[1] + \
+                            " " + preParsedTweetList[-1]
+                    else:
+                        parsedTweetList[-1] = parsedTweetList[1] + \
+                            " " + currentParsedTerm[1]
+                    # preParsedTweetList = parsedTweetList
+
                     parsedTweetList[1] = noSymbolHashtag
                     parsedTweetList[6] = currentParsedTerm[6]
                     candidateDependencyNoun.append(parsedTweetList)
@@ -366,7 +384,8 @@ class ClaimExtractor(object):
                 rootID = rootIndex+1
                 startIndex = rootIndex + 1
                 objects = self.__getObject(
-                    startIndex, totalLen, parsedTweet, rootID, tweetID, startSent, tweets)
+                    startIndex, totalLen, parsedTweet, rootID,
+                    tweetID, startSent, tweets)
                 # claimInfo: tweet id, claim
 
                 if objects or (objects == [] and verb not in set(["is", "was", "are", "were", "be"])):
@@ -424,7 +443,10 @@ class ClaimExtractor(object):
         for noun in nouns:
             if int(noun[0]) == int(subjectId):
                 break
-        subject = noun[1]
+        if noun[-1] != "_":
+            subject = noun[-1]
+        else:
+            subject = noun[1]
         rootID = int(noun[6])
         rootIndex = rootID - 1
         verb = parsedTweet[rootIndex][1]
@@ -450,48 +472,49 @@ class ClaimExtractor(object):
             parsedTerm = parsedTweet[startIndex]
             if parsedTerm[3] == "," and parsedTerm[1] in self.termination:
                 break
+            # the new parsed term should depend on previous term ID
             if int(parsedTerm[6]) == rootID:
+                # handle root_verb verb
                 if parsedTerm[3] == "V":
-                    # add second verb
                     objects.append(parsedTerm[1])
                     afterVerbObjects = self.__getObject(
-                        startIndex+1, totalLen, parsedTweet, int(parsedTerm[0]), tweetID, startSent, tweets)
+                        startIndex+1, totalLen, parsedTweet,
+                        int(parsedTerm[0]), tweetID, startSent, tweets)
                     objects = list(objects + afterVerbObjects)
-                    # nounInfo = self.__findNoun(
-                    #     startIndex+1, parsedTerm, parsedTweet)
-                    # if not nounInfo:
-                    #     print("breaking tweet id is {}".format(tweetID))
-                    #     break
-                    # dependencyNounInfos = self.__findDependencyNoun(
-                    #     parsedTweet, startSent, int(nounInfo[0])-1-1, nounInfo, tweets, tweetID)
-                    # if type(dependencyNounInfos) is list:
-                    #     while dependencyNounInfos:
-                    #         # add dependency noun
-                    #         objects.append(
-                    #             dependencyNounInfos.pop()[1])
-                    # # add noun
-                    # objects.append(nounInfo[1])
                     break
+                # handle root_verb to do
+                elif parsedTerm[3] == "P":
+                    objects.append(parsedTerm[1])
+                    afterVerbObjects = self.__getObject(
+                        startIndex+1, totalLen, parsedTweet,
+                        int(parsedTerm[0]), tweetID, startSent, tweets)
+                    objects = list(objects + afterVerbObjects)
+                    break
+                # handle root_verb sth.
                 elif parsedTerm[3] in set(["N", "^", "S"]):
                     dependencyNounInfos = self.__findDependencyNoun(
-                        parsedTweet, startSent, startIndex-1, parsedTerm, tweets, tweetID)
-                    if tweetID == 77:
+                        parsedTweet, startSent, startIndex-1, parsedTerm,
+                        tweets, tweetID)
+                    if tweetID == 150:
                         print("dependencyNounInfos is {}".format(
                             dependencyNounInfos))
                     if type(dependencyNounInfos) is list:
-                        while dependencyNounInfos:
-                            # add dependency noun
-                            objects.append(
-                                dependencyNounInfos.pop()[1])
-                    # add noun
-                    if tweetID == 77:
-                        print("objects are {}".format(objects))
-                    objects.append(parsedTerm[1])
-                    if tweetID == 77:
+                        # while dependencyNounInfos:
+                        #     # add dependency noun
+                        #     objects.append(
+                        #         dependencyNounInfos.pop()[1])
+                        tmp = dependencyNounInfos[-1]
+                        if tmp[-1] != "_":
+                            objects.append(tmp[-1])
+                        else:
+                            objects.append(tmp[1])
+                    else:
+                        objects.append(parsedTerm[1])
+                    if tweetID == 150:
                         print("objects are {}".format(objects))
                     break
+                # handle root_verb adj.
                 elif parsedTerm[3] == "A":
-                    # add adj
                     objects.append(parsedTerm[1])
                     break
             startIndex += 1
@@ -509,7 +532,8 @@ class ClaimExtractor(object):
             tuple -- parsed term
         """
         while startIndex < len(parsedTweet):
-            if parsedTweet[startIndex][3] in set(["S", "N", "^"]) and int(parsedTweet[startIndex][6]) == int(currentParsedTerm[0]):
+            if parsedTweet[startIndex][3] in set(["S", "N", "^"]) and \
+                    int(parsedTweet[startIndex][6]) == int(currentParsedTerm[0]):
                 return parsedTweet[startIndex]
             startIndex += 1
         return None
