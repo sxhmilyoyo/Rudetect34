@@ -48,7 +48,8 @@ class ClaimExtractor(object):
             taggedTweets {list} -- [[(form, pos, score), ...], [(form, pos, score), ...], ...]
 
         Returns:
-            newMergedTaggedTweets -- [[(form, pos, score), ...], [(form, pos, score), ...], ...]
+            newMergedTaggedTweets -- \
+                [[(form, pos, score), ...], [(form, pos, score), ...], ...]
         """
         newMergedTaggedTweets = []
         for taggedTweet in taggedTweets:
@@ -277,6 +278,7 @@ class ClaimExtractor(object):
         candidateDependencyNoun = []
         while start >= sentStart:
             if parsedTweet[start][3] in set(["N", "^", "S"]) and int(parsedTweet[start][6]) == currentNounID:
+
                 parsedTweetList = list(parsedTweet[start])
                 parsedTweetList[6] = currentParsedTerm[6]
                 candidateDependencyNoun.append(parsedTweetList)
@@ -308,7 +310,7 @@ class ClaimExtractor(object):
             mergedNoun -- {tweet_id: [noun1, noun2, ...], ...}
             subject2number -- {subject1: num1, subject2: num2, ...}
             subject2tweetInfo -- {subject1: (tweet id(str), subjectId(str)), subject2: (tweet id(str), subjectId(str)), ...}
-            parsedTweets -- {tweet_id: [(info_term1), (info_term2), ...], ...}            
+            parsedTweets -- {tweet_id: [(info_term1), (info_term2), ...], ...}
         """
         subject2number = defaultdict(int)
         subject2tweetInfo = defaultdict(list)
@@ -452,38 +454,48 @@ class ClaimExtractor(object):
                 if parsedTerm[3] == "V":
                     # add second verb
                     objects.append(parsedTerm[1])
-                    nounInfo = self.__findNoun(
-                        startIndex+1, parsedTerm, parsedTweet)
-                    if not nounInfo:
-                        print("breaking tweet id is {}".format(tweetID))
-                        break
+                    afterVerbObjects = self.__getObject(
+                        startIndex+1, totalLen, parsedTweet, int(parsedTerm[0]), tweetID, startSent, tweets)
+                    objects = list(objects + afterVerbObjects)
+                    # nounInfo = self.__findNoun(
+                    #     startIndex+1, parsedTerm, parsedTweet)
+                    # if not nounInfo:
+                    #     print("breaking tweet id is {}".format(tweetID))
+                    #     break
+                    # dependencyNounInfos = self.__findDependencyNoun(
+                    #     parsedTweet, startSent, int(nounInfo[0])-1-1, nounInfo, tweets, tweetID)
+                    # if type(dependencyNounInfos) is list:
+                    #     while dependencyNounInfos:
+                    #         # add dependency noun
+                    #         objects.append(
+                    #             dependencyNounInfos.pop()[1])
+                    # # add noun
+                    # objects.append(nounInfo[1])
+                    break
+                elif parsedTerm[3] in set(["N", "^", "S"]):
                     dependencyNounInfos = self.__findDependencyNoun(
-                        parsedTweet, startSent, int(nounInfo[0])-1-1, nounInfo, tweets, tweetID)
+                        parsedTweet, startSent, startIndex-1, parsedTerm, tweets, tweetID)
+                    if tweetID == 77:
+                        print("dependencyNounInfos is {}".format(
+                            dependencyNounInfos))
                     if type(dependencyNounInfos) is list:
                         while dependencyNounInfos:
                             # add dependency noun
                             objects.append(
                                 dependencyNounInfos.pop()[1])
                     # add noun
-                    objects.append(nounInfo[1])
-                    break
-                elif parsedTerm[3] in set(["N", "^", "S"]):
-                    dependencyNounInfos = self.__findDependencyNoun(
-                        parsedTweet, startSent, startIndex-1, parsedTerm, tweets, tweetID)
-                    if dependencyNounInfos is list:
-                        while dependencyNounInfos:
-                            # add dependency noun
-                            objects.append(
-                                dependencyNounInfos.pop()[1])
-                    # add noun
+                    if tweetID == 77:
+                        print("objects are {}".format(objects))
                     objects.append(parsedTerm[1])
+                    if tweetID == 77:
+                        print("objects are {}".format(objects))
                     break
                 elif parsedTerm[3] == "A":
                     # add adj
                     objects.append(parsedTerm[1])
                     break
             startIndex += 1
-        return objects
+        return objects[:]
 
     def __findNoun(self, startIndex, currentParsedTerm, parsedTweet):
         """Find noun dependent on currentParsedTerm from startIndex.
