@@ -9,7 +9,7 @@ import re
 # import sys
 # sys.path.append('../GetOldTweets-python')
 # import got
-import SVO
+import Claim
 import Utility
 import operator
 

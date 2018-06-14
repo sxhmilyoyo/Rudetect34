@@ -9,7 +9,7 @@ import Evaluate
 import got3
 import Information
 import OpinionMining
-import SVO
+import Claim
 import Twitter
 import Utility
 from chowmein import label_topic
@@ -204,7 +204,7 @@ class WorkFlow(object):
         """
         # folderPath = os.path.join(folderpath, 'final')
         # fullPath = os.path.join(self.rootpath, folderPath)
-        svoExtractor = SVO.SvoExtractor(self.rootpath, self.folderpath)
+        claimExtractor = Claim.ClaimExtractor(self.rootpath, self.folderpath)
         tweets = self.helper.getTweet(self.folderpath)
         tweets_list = []
         cleanedTweets = []
@@ -213,7 +213,7 @@ class WorkFlow(object):
             c1 = self.preprocessData.cleanTweet(tweet.text)
             cleanedTweets.append(c1)
         print("Parsing...")
-        mergedNoun, sortedSubject2Number, subject2tweetInfo, parsedTweets = svoExtractor.collectSubject(
+        mergedNoun, sortedSubject2Number, subject2tweetInfo, parsedTweets = claimExtractor.collectSubject(
             tweets_list, cleanedTweets)
         # sortedSubject2Number = self.helper.loadJson(
         #     os.path.join(self.folderpath, "final", "sorted_subject2number.json"))
@@ -221,10 +221,12 @@ class WorkFlow(object):
         #     os.path.join(self.folderpath, "final", "subject2tweetInfo.json"))
         # parsedTweets = self.helper.loadJson(
         #     os.path.join(self.folderpath, "final", "tweets_id2Info.json"))
-        candidateClaims = svoExtractor.extractSvo(
+        candidateClaims = claimExtractor.getCandidateClaims(
             tweets_list, mergedNoun, sortedSubject2Number, subject2tweetInfo, parsedTweets, 6)
-
-        svoExtractor.rankClaims(query[1:], tweets_list, candidateClaims)
+        mergedCandidateClaims = claimExtractor.mergeSimilarSubjects(
+            candidateClaims)
+        claimExtractor.rankClaims(
+            query[1:], tweets_list, mergedCandidateClaims)
 
         # for subject in subjects:
         #     print("extracting for subject: {}".format(subject))
