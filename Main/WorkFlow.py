@@ -159,42 +159,42 @@ class WorkFlow(object):
         print("tweets_topic_words_pmi.json has been saved.")
         return dist
 
-    def getCluster(self, vectorizer, numclusters):
-        """Get main function for getCluster.
+    # def getCluster(self, vectorizer, numclusters):
+    #     """Get main function for getCluster.
 
-        Parameters
-        ----------
-        vectorizer : str
-            the vectorizer used in addressing word2vec
-            options: 'mean', 'tfidf'
-        numclusters : int
-            the number of clusters
+    #     Parameters
+    #     ----------
+    #     vectorizer : str
+    #         the vectorizer used in addressing word2vec
+    #         options: 'mean', 'tfidf'
+    #     numclusters : int
+    #         the number of clusters
 
-        Returns
-        -------
-        None
+    #     Returns
+    #     -------
+    #     None
 
-        """
-        folderPath = os.path.join(self.folderpath, 'final')
-        vectorizer = vectorizer
-        numClusters = numclusters
-        preprocessor = Utility.PreprocessData(self.rootpath)
-        gc = Clustering.GetCluster(vectorizer, self.rootpath)
-        # get the kmeans model
-        print("Getting the k-means model...")
-        startTime = time.time()
-        km = gc.getKmeans(folderPath, numClusters)
-        print("---------- K-means: {} seconds ----------".
-              format(time.time() - startTime))
-        # get the doc2Label
-        print("Getting doc to label...")
-        gc.getDoc2Label(folderPath, km)
-        # get Label2Doc
-        print("Getting label to doc...")
-        gc.getLabel2Doc(folderPath, km)
-        # get tweets.pkl for each clusters
-        print("Storing tweets for clusters...")
-        preprocessor.storeTweets4Clusters(folderPath)
+    #     """
+    #     folderPath = os.path.join(self.folderpath, 'final')
+    #     vectorizer = vectorizer
+    #     numClusters = numclusters
+    #     preprocessor = Utility.PreprocessData(self.rootpath)
+    #     gc = Clustering.GetCluster(vectorizer, self.rootpath)
+    #     # get the kmeans model
+    #     print("Getting the k-means model...")
+    #     startTime = time.time()
+    #     km = gc.getKmeans(folderPath, numClusters)
+    #     print("---------- K-means: {} seconds ----------".
+    #           format(time.time() - startTime))
+    #     # get the doc2Label
+    #     print("Getting doc to label...")
+    #     gc.getDoc2Label(folderPath, km)
+    #     # get Label2Doc
+    #     print("Getting label to doc...")
+    #     gc.getLabel2Doc(folderPath, km)
+    #     # get tweets.pkl for each clusters
+    #     print("Storing tweets for clusters...")
+    #     preprocessor.storeTweets4Clusters(folderPath)
 
     def getClaims(self, query):
         """Get claims.
@@ -204,6 +204,8 @@ class WorkFlow(object):
         """
         # folderPath = os.path.join(folderpath, 'final')
         # fullPath = os.path.join(self.rootpath, folderPath)
+        self.preprocessData.generateTweetsLines(self.folderpath)
+
         claimExtractor = Claim.ClaimExtractor(self.rootpath, self.folderpath)
         tweets = self.helper.getTweet(self.folderpath)
         tweets_list = []
@@ -245,6 +247,31 @@ class WorkFlow(object):
 
         # self.helper.dumpJson(folderPath, 'subject2svos.json', subject2svos)
         # print("subject2svos.json has been saved.")
+
+    def getCluster(self):
+        # get claims
+        claims = list(self.helper.getClaim(self.folderpath))
+        # get tweets
+        tweets = self.helper.getTweet(self.folderpath)
+        cleanedTweets = []
+        for tweet in tweets:
+            # tweets_list.append(tweet)
+            c1 = self.preprocessData.cleanTweet(tweet.text)
+            cleanedTweets.append(c1)
+        getSen2Vec = Clustering.GetSen2Vec(
+            "/home/hao/Workplace/HaoXu/Library/skip_thoughts/pretrained/skip_thoughts_uni_2017_02_02",
+            "model.ckpt-501424")
+        encodedTweets = getSen2Vec.encodeSen(cleanedTweets)
+        claim2Tweets = defaultdict(list)
+        for index, claim in enumerate(claims):
+            encodedClaim = getSen2Vec.encodeSen([claim])
+            similarTweets = getSen2Vec.getSimilarTweets2Claim(
+                cleanedTweets, claim, encodedClaim, encodedTweets)
+            claim2Tweets[index] = similarTweets
+
+        self.helper.dumpJson(
+            self.folderpath, "final/claim2tweets.json", claim2Tweets)
+        print("claim2tweets.json have been saved.")
 
     def getQuery(self, folderpath):
         """Get query for svo of each cluster.

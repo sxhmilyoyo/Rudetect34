@@ -120,6 +120,18 @@ class Helper(object):
             for tweet in tweets:
                 yield tweet
 
+    def getClaim(self, folderPath):
+        """Get claim content from subject2rankedClaims.json.
+
+        Arguments:
+            folderPath {str} -- the path to subject2rankedClaims.json
+        """
+        subject2claims = self.loadJson(os.path.join(folderPath, 'final',
+                                                    "subject2rankedClaims.json"))
+        for subject in subject2claims:
+            for tweetID, claim in subject2claims[subject]:
+                yield claim
+
     def getWord2vec(self):
         """Get the word2vec model.
 

@@ -2,6 +2,8 @@ import sys
 # sys.path.append("..")
 sys.path.append('/home/hao/Workplace/HaoXu/Library/GetOldTweets-python')
 sys.path.append('/home/hao/Workplace/HaoXu/Library/ark-tweet-nlp-python')
+sys.path.append(
+    '/home/hao/Workplace/HaoXu/Library/models/research/skip_thoughts')
 sys.path.append('/home/hao/Workplace/HaoXu/Library')
 import click
 import logging
@@ -59,10 +61,11 @@ def main(rootpath, folderpath, query, start, end):
     workFlow.getWord2Vec()"""
 
     # get Nouns
-    print('='*100)
-    print('Getting subject ...')
-    print('='*100)
-    workFlow.getClaims(query)
+    # print('='*100)
+    # print('Getting subject ...')
+    # print('='*100)
+    # workFlow.getClaims(query)
+
     """# get the topic model
     print('='*100)
     print('Getting topic model ...')
@@ -72,13 +75,13 @@ def main(rootpath, folderpath, query, start, end):
     # while numTopic != preNumTopic:
     dist = workFlow.getTopicPmi(folderpath, numTopic)
     numTopic = helper.getTopicNum(dist)
-    print('='*100)
+    """
     # get cluster
     print('='*100)
     print('Getting clusters ...')
     print('-'*100)
-    workFlow.getCluster("tfidf", numTopic)
-    print('='*100)
+    workFlow.getCluster()
+    """
     # get topic model and SVO for each cluster
     print('='*100)
     print('Running for clusters: getting topic model and SVO and corpus for classification...')
