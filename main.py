@@ -80,7 +80,7 @@ def main(rootpath, folderpath, query, start, end):
     print('='*100)
     print('Getting clusters ...')
     print('-'*100)
-    workFlow.getCluster()
+    workFlow.getSimilarTweets4Claim()
     """
     # get topic model and SVO for each cluster
     print('='*100)

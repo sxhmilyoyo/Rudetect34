@@ -248,7 +248,7 @@ class WorkFlow(object):
         # self.helper.dumpJson(folderPath, 'subject2svos.json', subject2svos)
         # print("subject2svos.json has been saved.")
 
-    def getCluster(self):
+    def getSimilarTweets4Claim(self):
         # get claims
         claims = list(self.helper.getClaim(self.folderpath))
         # lowercase
@@ -260,16 +260,17 @@ class WorkFlow(object):
             # tweets_list.append(tweet)
             c1 = self.preprocessData.cleanTweet(tweet.text)
             cleanedTweets.append(c1)
-        getSen2Vec = Clustering.GetSen2Vec(
+        tweetsExtractor4Claim = Claim.TweetsExtractor4Claim(
             "/home/hao/Workplace/HaoXu/Library/skip_thoughts/pretrained/skip_thoughts_uni_2017_02_02",
             "model.ckpt-501424")
 
-        sentences, tweetIndex = getSen2Vec.splitSentences(cleanedTweets)
-        encodedSentences = getSen2Vec.encodeSen(sentences)
+        sentences, tweetIndex = tweetsExtractor4Claim.splitSentences(
+            cleanedTweets)
+        encodedSentences = tweetsExtractor4Claim.encodeSen(sentences)
 
         # for index, claim in enumerate(claims):
-        encodedClaims = getSen2Vec.encodeSen(claims)
-        claims2tweets = getSen2Vec.getSimilarTweets2Claims(
+        encodedClaims = tweetsExtractor4Claim.encodeSen(claims)
+        claims2tweets = tweetsExtractor4Claim.getTweets4Claims(
             sentences, encodedSentences, claims, encodedClaims, tweetIndex)
 
         for claimID, sentInfos in claims2tweets.items():

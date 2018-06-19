@@ -9,11 +9,11 @@ from collections import defaultdict
 import Utility
 
 
-class GetSen2Vec(object):
-    """Get sen2vec based on skip thoughts model."""
+class TweetsExtractor4Claim(object):
+    """Get similar tweets for claim based on sen2vec in skip thoughts model."""
 
     def __init__(self, modelPath, checkpointPath):
-        """Initialize the GetSen2Vec model.
+        """Initialize the TweetsExtractor4Claim model.
 
         Arguments:
             modelPath {str} -- the path to model folder
@@ -63,8 +63,8 @@ class GetSen2Vec(object):
 
         return encodedSentences
 
-    def getSimilarTweets2Claims(self, sentences, encodedSentences, claims, encodedClaims, tweetIndex, num=10):
-        """Get similar tweets to claim.
+    def getTweets4Claims(self, sentences, encodedSentences, claims, encodedClaims, tweetIndex, num=10):
+        """Get tweets for claim.
 
         Arguments:
             sentences {list} -- a list of sentences
