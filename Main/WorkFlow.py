@@ -251,6 +251,8 @@ class WorkFlow(object):
     def getCluster(self):
         # get claims
         claims = list(self.helper.getClaim(self.folderpath))
+        # lowercase
+        # claims = [claim.lower() for claim in claims]
         # get tweets
         tweets = self.helper.getTweet(self.folderpath)
         cleanedTweets = []
@@ -261,17 +263,21 @@ class WorkFlow(object):
         getSen2Vec = Clustering.GetSen2Vec(
             "/home/hao/Workplace/HaoXu/Library/skip_thoughts/pretrained/skip_thoughts_uni_2017_02_02",
             "model.ckpt-501424")
-        encodedTweets = getSen2Vec.encodeSen(cleanedTweets)
-        claim2Tweets = defaultdict(list)
-        for index, claim in enumerate(claims):
-            encodedClaim = getSen2Vec.encodeSen([claim])
-            similarTweets = getSen2Vec.getSimilarTweets2Claim(
-                cleanedTweets, claim, encodedClaim, encodedTweets)
-            claim2Tweets[index] = similarTweets
 
+        sentences, tweetIndex = getSen2Vec.splitSentences(cleanedTweets)
+        encodedSentences = getSen2Vec.encodeSen(sentences)
+
+        # for index, claim in enumerate(claims):
+        encodedClaims = getSen2Vec.encodeSen(claims)
+        claims2tweets = getSen2Vec.getSimilarTweets2Claims(
+            sentences, encodedSentences, claims, encodedClaims, tweetIndex)
+
+        for claimID, sentInfos in claims2tweets.items():
+            claims2tweets[claimID] = self.preprocessData.sortListofLists(
+                sentInfos, False)
         self.helper.dumpJson(
-            self.folderpath, "final/claim2tweets.json", claim2Tweets)
-        print("claim2tweets.json have been saved.")
+            self.folderpath, "final/sorted_claims2tweets.json", claims2tweets)
+        print("sorted_claims2tweets.json have been saved.")
 
     def getQuery(self, folderpath):
         """Get query for svo of each cluster.

@@ -12,6 +12,7 @@ import re
 import Claim
 import Utility
 import operator
+import string
 
 
 class PreprocessData(object):
@@ -137,7 +138,7 @@ class PreprocessData(object):
             if not os.path.exists(path):
                 os.makedirs(path)
             self.helper.dumpPickle(path, 'tweets.pkl', label2tweet[l])
-            print ("tweets.pkl for cluster {} has been saved.".format(l))
+            print("tweets.pkl for cluster {} has been saved.".format(l))
 
     def getTop5SVO(self, folderPath, svos):
         """Get top5 SVOs.
@@ -167,7 +168,8 @@ class PreprocessData(object):
             tweets = list(self.helper.getTweet(folderPath))
             # print("originalSVO: ", tweets[idx].text)
             if svoPhrase not in svo2info:
-                retweet_favorites_num = tweets[idx].retweets + tweets[idx].favorites + 1
+                retweet_favorites_num = tweets[idx].retweets + \
+                    tweets[idx].favorites + 1
                 svo2info[svoPhrase] = retweet_favorites_num
             else:
                 svo2info[svoPhrase] += 1
@@ -263,8 +265,9 @@ class PreprocessData(object):
         """
         # tweets = self.helper.getTweet(folderPath)
         # with open(os.path.join(self.rootPath, folderPath, "candidate_statements.txt")) as fp:
-            # statements = fp.readlines()
-        statements = self.helper.loadCsv(folderPath, "candidate_statements.csv")
+        # statements = fp.readlines()
+        statements = self.helper.loadCsv(
+            folderPath, "candidate_statements.csv")
         if statements is None or len(statements) == 0:
             return
         # p = os.path.join(self.rootPath, folderPath, "corpus_statements.csv")
@@ -295,15 +298,16 @@ class PreprocessData(object):
 
     def getCandidateClaims(self, folderPath):
         """Get candidate claims from subject2rankedClaims.json.
-        
+
         Arguments:
             folderPath {str} -- the folder path to event
-        
+
         Returns:
             list -- [claim1, claim2, ...]
         """
         claims = []
-        filePath = os.path.join(folderPath, "final", "subject2rankedClaims.json")
+        filePath = os.path.join(folderPath, "final",
+                                "subject2rankedClaims.json")
         subject2rankedClaims = self.helper.loadJson(filePath)
         for subject in subject2rankedClaims.keys():
             for _, claim in subject2rankedClaims[subject]:
@@ -316,7 +320,8 @@ class PreprocessData(object):
         # foldernames = os.listdir(os.path.join(self.rootPath, folderPath))
         total = []
         # for foldername in foldernames:
-        filePath = os.path.join(self.rootPath, folderPath, 'final', "tweets_line.txt")
+        filePath = os.path.join(self.rootPath, folderPath,
+                                'final', "tweets_line.txt")
         with open(filePath) as fp:
             tweets = fp.readlines()
         for tweet in tweets:
@@ -342,7 +347,7 @@ class PreprocessData(object):
         filePath = os.path.join(folderPath, 'final', "subject2svoqueries.json")
         subject2svoqueries = self.helper.loadJson(filePath)
         # if os.path.exists(os.path.join(self.rootPath, folderPath, 'final', "candidate_statements.txt")):
-                    # os.remove(os.path.join(self.rootPath, folderPath, 'final', "candidate_statements.txt"))
+        # os.remove(os.path.join(self.rootPath, folderPath, 'final', "candidate_statements.txt"))
         data = []
         queries = []
         for topic in subject2svoqueries.keys():
@@ -354,8 +359,10 @@ class PreprocessData(object):
                 queries.append([topic, svoquery['query']])
                 c1 = self.cleanTweet4Word2Vec(svoquery['svo'])
                 total.append(c1.lower())
-        self.helper.dumpCsv(os.path.join(folderPath, 'final'), "candidate_queries.csv", ['Subject', 'Query'], queries)        
-        self.helper.dumpCsv(os.path.join(folderPath, 'final'), "candidate_statements.csv", ['Subject', 'Statement'], data)        
+        self.helper.dumpCsv(os.path.join(folderPath, 'final'),
+                            "candidate_queries.csv", ['Subject', 'Query'], queries)
+        self.helper.dumpCsv(os.path.join(folderPath, 'final'), "candidate_statements.csv", [
+                            'Subject', 'Statement'], data)
         return total
 
     def getCorpus4csvFromSnippets(self, folderpath):
@@ -375,18 +382,20 @@ class PreprocessData(object):
         snippets = self.helper.loadJson(folderpath+"/snippets.json")
         if snippets is None or len(snippets) == 0:
             return
-        
-        title = ['ID', 'Target', 'Tweet', 'Stance', 'Origin', 'Total', 'Origin_ID']
+
+        title = ['ID', 'Target', 'Tweet', 'Stance',
+                 'Origin', 'Total', 'Origin_ID']
         s = ['NONE', 'AGAINST', 'FAVOR']
         data = []
-        
+
         k = 1
         for i in range(len(snippets)):
             if snippets[i]:
-                for j in range(len(snippets[i])): 
+                for j in range(len(snippets[i])):
                     if snippets[i][j]:
                         origin = snippets[i][j]['snippets']
-                        c_origin = self.cleanSnippet4Classification(snippets[i][j]['snippets'])
+                        c_origin = self.cleanSnippet4Classification(
+                            snippets[i][j]['snippets'])
                         c1 = self.cleanTweet4Word2Vec(origin)
                         c2 = self.cleanSnippet4Classification(c1)
                         content = c2
@@ -394,11 +403,12 @@ class PreprocessData(object):
                         r = random.randint(0, 2)
                         target = snippets[i][j]['topic']
                         total = len(snippets[i])
-                        data.append([idx, target, content, s[r], c_origin, total, snippets[i][j]['id']])
+                        data.append([idx, target, content, s[r],
+                                     c_origin, total, snippets[i][j]['id']])
                         k += 1
         self.helper.dumpCsv(folderpath, "corpus_snippets.csv", title, data)
-    
-    def sortDict(self, d):
+
+    def sortDict(self, d, reverse=True):
         """Sort the dictionary.
 
         Args:
@@ -407,12 +417,28 @@ class PreprocessData(object):
             list: sorted_dict
         """
         sorted_dict = sorted(d.items(), key=operator.itemgetter(1),
-                             reverse=True)
+                             reverse=reverse)
         return sorted_dict
+
+    def sortListofLists(self, l, reverse=True):
+        """Sort the list of lists.
+
+        Arguments:
+            l {list} -- a list of lists
+
+        Keyword Arguments:
+            reverse {bool} -- reverse or not (default: {True})
+
+        Returns:
+            list -- a list of lists
+        """
+
+        sorted_list = sorted(l, key=operator.itemgetter(1), reverse=reverse)
+        return sorted_list
 
     def generateTweetsLines(self, folderPath):
         """Generate tweets content line by line.
-        
+
         Arguments:
             folderPath {str} -- the path to folder
         """
@@ -424,6 +450,20 @@ class PreprocessData(object):
                 # c2 = preprocessData.cleanTweet4Word2Vec(c1)
                 fp.write(c1 + '\n')
         print("tweets_lines.txt has been saved.")
+
+    @classmethod
+    def removePunctuation(self, s):
+        """Remove punctuation in str.
+
+        Arguments:
+            s {str} -- a string
+
+        Returns:
+            str -- a string w/t punctuation
+        """
+        table = str.maketrans({key: None for key in string.punctuation})
+        return s.translate(table)
+
     # def getData4Sen140API(self, folderpath):
     #     """Generate the data for Sentiment140API.
     #
