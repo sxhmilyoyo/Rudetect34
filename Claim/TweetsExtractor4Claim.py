@@ -20,7 +20,7 @@ class TweetsExtractor4Claim(object):
             checkpointPath {str} -- the filename of mode.ckpt-xxxx
         """
         self.modelPath = modelPath
-        self.checkpointPath = os.path.join(modelPath, checkpointPath)
+        self.checkpointPath = os.path.join(modelPath, "..", checkpointPath)
         self.vocabFile = os.path.join(modelPath, "vocab.txt")
         self.embeddingMatrixFile = os.path.join(modelPath, "embeddings.npy")
 

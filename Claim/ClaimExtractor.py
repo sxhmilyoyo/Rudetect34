@@ -353,21 +353,33 @@ class ClaimExtractor(object):
         print("subject2tweetInfo.json has been saved.")
         return mergedNoun, sortedSubject2Number, subject2tweetInfo, parsedTweets
 
-    def getCandidateClaims(self, tweets, mergedNoun, sortedSubject2Number, subject2tweetInfo, parsedTweets, top=3):
+    def getCandidateClaims(self, tweets, mergedNoun, sortedSubject2Number, subject2tweetInfo, parsedTweets, initQuery, top=3):
         """Get candidate claims from tweets based on subject.
 
         Arguments:
             tweets {list} -- the list of tweets
             mergedNoun {dict} -- {tweet_id: [noun1, noun2, ...], ...}
-            sortedNoun2Number {list} -- [[subject1, number], ...]
+            sortedSubject2Number {list} -- [[subject1, number], ...]
             subject2tweetInfo {dict} -- {subject1: (tweet id(str), subjectId(str)), subject2: (tweet id(str), subjectId(str)), ...}
             parsedTweets {dict} -- {tweet_id: [(info_term1), (info_term2), ...], ...}
+            initQuery {str} -- the initial query
             top {int} -- the number of top subjects to be analyzed
         Returns:
             dict -- {subject1: [claim1, claim2, ...], ...}
         """
+        # make sure subject related to initial query existed.
+        subjects = [subject for subject, number in sortedSubject2Number]
+        subjects2query = process.extract(initQuery, subjects)
+        relatedSubjects = [sub for sub, score in subjects2query if score >= 50]
+        remain = top - len(relatedSubjects)
+        count = 0
         candidateClaims = defaultdict(list)
-        for subject, _ in sortedSubject2Number[:top]:
+        for subject, _ in sortedSubject2Number:
+            if count >= remain:
+                break
+            if subject in relatedSubjects:
+                continue
+            count += 1
             print("subject is {}".format(subject))
             for tweetID, subjectId in subject2tweetInfo[subject]:
                 # get edited parsed term
@@ -412,7 +424,7 @@ class ClaimExtractor(object):
         while subjects:
             temp = subjects.pop(0)
             for s in subjects:
-                if fuzz.partial_ratio(temp, s) == 100:
+                if fuzz.partial_ratio(temp.lower(), s.lower()) == 100:
                     similarSubjects[temp].append(s)
             for s in similarSubjects[temp]:
                 subjects.pop(subjects.index(s))
@@ -495,9 +507,9 @@ class ClaimExtractor(object):
                     dependencyNounInfos = self.__findDependencyNoun(
                         parsedTweet, startSent, startIndex-1, parsedTerm,
                         tweets, tweetID)
-                    if tweetID == 150:
-                        print("dependencyNounInfos is {}".format(
-                            dependencyNounInfos))
+                    # if tweetID == 150:
+                    #     print("dependencyNounInfos is {}".format(
+                    #         dependencyNounInfos))
                     if type(dependencyNounInfos) is list:
                         # while dependencyNounInfos:
                         #     # add dependency noun
@@ -510,8 +522,8 @@ class ClaimExtractor(object):
                             objects.append(tmp[1])
                     else:
                         objects.append(parsedTerm[1])
-                    if tweetID == 150:
-                        print("objects are {}".format(objects))
+                    # if tweetID == 150:
+                    #     print("objects are {}".format(objects))
                     break
                 # handle root_verb adj.
                 elif parsedTerm[3] == "A":
@@ -558,7 +570,7 @@ class ClaimExtractor(object):
             start += 1
         return subjectId-1
 
-    def rankClaims(self, initQuery, tweets, candidateClaims, top=5):
+    def rankClaims(self, initQuery, tweets, candidateClaims, top=3):
         """Rank candidate claims.
 
         Arguments:
@@ -573,6 +585,8 @@ class ClaimExtractor(object):
         subjects = list(candidateClaims.keys())
         relatedSubjects = process.extract(initQuery, subjects)
         finalSubjects = [sub for sub, score in relatedSubjects if score >= 50]
+        if finalSubjects == []:
+            finalSubjects = subjects[:3] if len(subjects) >= 3 else subjects[:]
         subject2claimFeature = defaultdict(dict)
         subject2rankedClaims = defaultdict(list)
         for subject in finalSubjects:

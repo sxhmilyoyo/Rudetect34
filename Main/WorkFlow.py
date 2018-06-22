@@ -14,6 +14,7 @@ import Twitter
 import Utility
 from chowmein import label_topic
 from gensim.models.word2vec import LineSentence, Word2Vec
+from pathlib import Path
 
 
 class WorkFlow(object):
@@ -59,36 +60,46 @@ class WorkFlow(object):
         None
 
         """
-        folderPath = os.path.join(self.rootpath, self.folderpath, 'final')
-        tweets = self.helper.getTweet(os.path.join(self.folderpath, 'final'))
-        with codecs.open(os.path.join(folderPath,
-                                      "tweets_line_word2vec.txt"),
-                         "w", encoding='utf8') as fp:
-            for tweet in tweets:
-                # print (type(tweet.text.encode('utf8')))
-                c1 = self.preprocessData.cleanTweet(tweet.text)
-                c2 = self.preprocessData.cleanTweet4Word2Vec(c1)
-                fp.write(c2.lower() + '\n')
+        root = Path(self.rootpath)
+        events = [x for x in root.iterdir() if x.is_dir()]
 
-        data4word2vec = LineSentence(os.path.join(folderPath,
-                                                  "tweets_line_word2vec.txt"))
-        if not os.path.exists(os.path.join(self.rootpath, 'w2vmodel')):
-            print("Start training word2vec model with {}...".format(self.folderpath)
+        tweets_line_word2vec_path = root / "tweets_line_word2vec.txt"
+        if tweets_line_word2vec_path.exists():
+            os.remove(str(tweets_line_word2vec_path))
+        with codecs.open(str(tweets_line_word2vec_path), "a") as fp:
+            for event in events:
+                print("addressing with {}".format(str(event)))
+                total = 0
+                tweets = self.helper.getTweet(str(event.name))
+                for tweet in tweets:
+                    # print (type(tweet.text.encode('utf8')))
+                    c1 = self.preprocessData.cleanTweet(tweet.text)
+                    fp.write(c1 + '\n')
+                    total += 1
+                print("total tweets is {}".format(total))
+
+        data4word2vec = LineSentence(str(root / "tweets_line_word2vec.txt"))
+        w2vmodelPath = root / "w2vmodel"
+        if not w2vmodelPath.exists():
+            print("Start training word2vec model with {}...".format(str(root))
                   )
-            model = Word2Vec(sentences=data4word2vec, size=100,
+            model = Word2Vec(sentences=data4word2vec, size=200,
                              alpha=0.025, window=5, min_count=5,
                              sample=0, seed=1, workers=1, min_alpha=0.0001,
                              sg=1, hs=1, negative=5, cbow_mean=0
                              )
         else:
-            print("Start updating word2vec model with {}...".format(self.folderpath)
+            print("Start updating word2vec model with {}...".format(str(root))
                   )
-            model = Word2Vec.load(os.path.join(self.rootpath, 'w2vmodel'))
+            model = Word2Vec.load(str(root / 'w2vmodel'))
             model.build_vocab(data4word2vec, update=True)
             model.train(data4word2vec, total_examples=model.corpus_count,
                         epochs=model.iter)
-        model.save(os.path.join(self.rootpath, "w2vmodel"))
-        print("Finished training word2vec and saved it as w2vmodel.")
+        model.save(str(root / "w2vmodel"))
+        w2v = model.wv
+        w2v.save_word2vec_format(str(root / "w2v.bin"), binary=True)
+        print("Finished training word2vec model and saved it as w2vmodel.")
+        print("Finished training word2vec vectors and saved it as w2v.bin.")
 
     def getTopicPmi(self, folderpath, numTopic):
         """Get topic with pmi.
@@ -159,43 +170,6 @@ class WorkFlow(object):
         print("tweets_topic_words_pmi.json has been saved.")
         return dist
 
-    # def getCluster(self, vectorizer, numclusters):
-    #     """Get main function for getCluster.
-
-    #     Parameters
-    #     ----------
-    #     vectorizer : str
-    #         the vectorizer used in addressing word2vec
-    #         options: 'mean', 'tfidf'
-    #     numclusters : int
-    #         the number of clusters
-
-    #     Returns
-    #     -------
-    #     None
-
-    #     """
-    #     folderPath = os.path.join(self.folderpath, 'final')
-    #     vectorizer = vectorizer
-    #     numClusters = numclusters
-    #     preprocessor = Utility.PreprocessData(self.rootpath)
-    #     gc = Clustering.GetCluster(vectorizer, self.rootpath)
-    #     # get the kmeans model
-    #     print("Getting the k-means model...")
-    #     startTime = time.time()
-    #     km = gc.getKmeans(folderPath, numClusters)
-    #     print("---------- K-means: {} seconds ----------".
-    #           format(time.time() - startTime))
-    #     # get the doc2Label
-    #     print("Getting doc to label...")
-    #     gc.getDoc2Label(folderPath, km)
-    #     # get Label2Doc
-    #     print("Getting label to doc...")
-    #     gc.getLabel2Doc(folderPath, km)
-    #     # get tweets.pkl for each clusters
-    #     print("Storing tweets for clusters...")
-    #     preprocessor.storeTweets4Clusters(folderPath)
-
     def getClaims(self, query):
         """Get claims.
 
@@ -261,7 +235,7 @@ class WorkFlow(object):
             c1 = self.preprocessData.cleanTweet(tweet.text)
             cleanedTweets.append(c1)
         tweetsExtractor4Claim = Claim.TweetsExtractor4Claim(
-            "/home/hao/Workplace/HaoXu/Library/skip_thoughts/pretrained/skip_thoughts_uni_2017_02_02",
+            "/home/hao/Workplace/HaoXu/Data/skip_thoughts/pretrained/skip_thoughts_uni_2017_02_02/exp_vocab",
             "model.ckpt-501424")
 
         sentences, tweetIndex = tweetsExtractor4Claim.splitSentences(

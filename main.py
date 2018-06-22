@@ -61,10 +61,10 @@ def main(rootpath, folderpath, query, start, end):
     workFlow.getWord2Vec()"""
 
     # get Nouns
-    # print('='*100)
-    # print('Getting subject ...')
-    # print('='*100)
-    # workFlow.getClaims(query)
+    print('='*100)
+    print('Getting subject ...')
+    print('='*100)
+    workFlow.getClaims(query)
 
     """# get the topic model
     print('='*100)
@@ -76,11 +76,11 @@ def main(rootpath, folderpath, query, start, end):
     dist = workFlow.getTopicPmi(folderpath, numTopic)
     numTopic = helper.getTopicNum(dist)
     """
-    # get cluster
-    print('='*100)
-    print('Getting clusters ...')
-    print('-'*100)
-    workFlow.getSimilarTweets4Claim()
+    # # get cluster
+    # print('='*100)
+    # print('Getting clusters ...')
+    # print('-'*100)
+    # workFlow.getSimilarTweets4Claim()
     """
     # get topic model and SVO for each cluster
     print('='*100)
