@@ -49,10 +49,10 @@ def main(rootpath, folderpath, query, start, end):
     workFlow = Main.WorkFlow(rootpath, folderpath)
     # get tweets
 
-    """print('='*100)
+    print('='*100)
     print('Getting tweets ...')
     print('='*100)
-    workFlow.getTweets(query, start, end)"""
+    workFlow.getTweets(query, start, end)
 
     """# get word2vec
     print('='*100)
@@ -60,11 +60,11 @@ def main(rootpath, folderpath, query, start, end):
     print('='*100)
     workFlow.getWord2Vec()"""
 
-    # get Nouns
-    print('='*100)
-    print('Getting subject ...')
-    print('='*100)
-    workFlow.getClaims(query)
+    # # get Nouns
+    # print('='*100)
+    # print('Getting subject ...')
+    # print('='*100)
+    # workFlow.getClaims(query)
 
     """# get the topic model
     print('='*100)

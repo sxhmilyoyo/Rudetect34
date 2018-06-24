@@ -370,16 +370,24 @@ class ClaimExtractor(object):
         # make sure subject related to initial query existed.
         subjects = [subject for subject, number in sortedSubject2Number]
         subjects2query = process.extract(initQuery, subjects)
-        relatedSubjects = [sub for sub, score in subjects2query if score >= 50]
+        print("subject to query similarity {}".format(subjects2query))
+        relatedSubjects = [sub for sub, score in subjects2query if score > 90]
+        print("related subjects is {}".format(relatedSubjects))
         remain = top - len(relatedSubjects)
         count = 0
+        candidateSubjects = []
         candidateClaims = defaultdict(list)
         for subject, _ in sortedSubject2Number:
             if count >= remain:
                 break
+            candidateSubjects.append(subject)
             if subject in relatedSubjects:
+                relatedSubjects.remove(subject)
                 continue
             count += 1
+        if relatedSubjects:
+            candidateSubjects += relatedSubjects
+        for subject in candidateSubjects:
             print("subject is {}".format(subject))
             for tweetID, subjectId in subject2tweetInfo[subject]:
                 # get edited parsed term
@@ -585,8 +593,16 @@ class ClaimExtractor(object):
         subjects = list(candidateClaims.keys())
         relatedSubjects = process.extract(initQuery, subjects)
         finalSubjects = [sub for sub, score in relatedSubjects if score >= 50]
-        if finalSubjects == []:
-            finalSubjects = subjects[:3] if len(subjects) >= 3 else subjects[:]
+        if len(finalSubjects) < top:
+            remain = len(finalSubjects) - top
+            count = 0
+            for subject in subjects:
+                if count >= remain:
+                    break
+                if subject in finalSubjects:
+                    continue
+                finalSubjects.append(subject)
+                count += 1
         subject2claimFeature = defaultdict(dict)
         subject2rankedClaims = defaultdict(list)
         for subject in finalSubjects:
