@@ -45,26 +45,26 @@ class GetTweets(object):
 
     def get_address_twitter(self, query, folderPath, maxTweets):
         """Get and address tweets."""
-        print ("start crawling from {} to {} with file {}".format(self.start,
-                                                                  self.end,
-                                                                  os.path.join
-                                                                  (folderPath,
-                                                                   self.filename)))
+        print("start crawling from {} to {} with file {}".format(self.start,
+                                                                 self.end,
+                                                                 os.path.join
+                                                                 (folderPath,
+                                                                  self.filename)))
         criteria = self.getTwitter.setCriteria(query, self.start, self.end,
                                                maxTweets)
         # print (criteria)
-        print ("crawling tweets...")
+        print("crawling tweets...")
         totalNumTweets = self.getTwitter.getTweets(criteria,
                                                    os.path.join(folderPath,
                                                                 'rawData'),
                                                    self.filename)
 
-        print ("recording the number of tweets...")
+        print("recording the number of tweets...")
         self.addressTweet.recordTweetNum(folderPath, query, totalNumTweets)
         # address tweets
-        print ("get hashtags...")
+        print("get hashtags...")
         self.addressTweet.getHashtags(folderPath, query)
-        print ("get userIdName...")
+        print("get userIdName...")
         self.addressTweet.getUserName(folderPath)
 
         top10HashTags = self.helper.loadPickle(os.path.join(folderPath,
@@ -72,14 +72,14 @@ class GetTweets(object):
                                                             ))
         self.addressTweet.getPlot(top10HashTags, folderPath,
                                   "top10HashTags.png", True)
-        print ("top10HashTags.png has been saved...")
+        print("top10HashTags.png has been saved...")
 
         top10UserName = self.helper.loadPickle(os.path.join(folderPath,
                                                             "top10UserName.pkl"
                                                             ))
         self.addressTweet.getPlot(top10UserName, folderPath,
                                   "top10UserName.png", False)
-        print ("top10UserName.png has been saved...")
+        print("top10UserName.png has been saved...")
 
     # def getFinalHashTags(queries, originhashtags, getTwitter, start, end,
     #                      maxTweets, folderPath, filename, addressTweet, helper,
@@ -212,10 +212,10 @@ class GetTweets(object):
 
         folderPath = os.path.join(self.folderpath, 'experiment')
         # filename = "tweets.pkl"
-        maxTweets = 1000
+        maxTweets = 1000 * 1
 
-        print ("*" * 100)
-        print ("crawling with query {}...".format(originquery))
+        print("*" * 100)
+        print("crawling with query {}...".format(originquery))
 
         self.get_address_twitter(originquery, folderPath, maxTweets)
 
@@ -225,7 +225,7 @@ class GetTweets(object):
                                                             ))
         print(top10HashTags)
         top10ht = list(top10HashTags.keys())[:]
-        print ("original top10 hashtags {}".format(top10ht))
+        print("original top10 hashtags {}".format(top10ht))
 
         # filtering
         queries = top10ht[:]
@@ -242,8 +242,8 @@ class GetTweets(object):
         finalH = filterH[:]
 
         finalQ = ' OR '.join(finalH)
-        print ("*" * 100)
-        print ("finally crawling with query {}...".format(finalQ))
+        print("*" * 100)
+        print("finally crawling with query {}...".format(finalQ))
         # times += 1
         maxTweets = 3000
         folderPath = os.path.join(self.folderpath, 'final')

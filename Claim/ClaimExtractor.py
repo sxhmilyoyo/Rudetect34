@@ -232,6 +232,7 @@ class ClaimExtractor(object):
                 while start < len(parsedTweet) and start < verbRootIndex:
                     merge = list(parsedTweet[start])
                     if merge[3] in set(["N", "^", "S"]) and int(merge[6]) == int(verbRootID):
+                        # find after
                         j = start + 1
                         while j < len(parsedTweet) and j < verbRootIndex:
                             if parsedTweet[j][3] in set(["N", "^", "S"]) and int(parsedTweet[j][6]) == int(verbRootID):
@@ -241,16 +242,18 @@ class ClaimExtractor(object):
                                 # print("index is ", index)
                                 break
                         # find dependencyNoun as final subject
-                        subjects = self.__findDependencyNoun(
+                        # find previously
+                        subject = self.__findDependencyNoun(
                             parsedTweet, sentStart, start-1, merge, tweets, tweetID)
-                        if type(subjects[0]) is list:
-                            subject = subjects[-1]
-                        else:
-                            subject = subjects
+                        # if type(subjects[0]) is list:
+                        #     subject = subjects[-1]
+                        # else:
+                        #     subject = subjects
                         subject[3] = "N"
                         subject[7] = "NSUBJ"
-                        start = j + 1
+                        # start = j + 1
                         mergedNoun[tweetID].append(subject)
+                        break
                     else:
                         start += 1
         self.helper.dumpJson(
@@ -261,7 +264,7 @@ class ClaimExtractor(object):
         return mergedNoun
 
     def __findDependencyNoun(self, parsedTweet, sentStart, start, currentParsedTerm, tweets, tweetID):
-        """Find the previous noun dependent on current noun.
+        """Find the previous noun or adjective dependent on current noun.
 
         Arguments:
             parsedTweet {list} -- [(term1_info), (term2_info), ()]
@@ -272,25 +275,28 @@ class ClaimExtractor(object):
             tweetID {int} -- the id of the tweet
 
         Returns:
-            list -- [description]
+            list -- parsed term
         """
+        currentParsedList = list(currentParsedTerm)
         currentNounID = int(currentParsedTerm[0])
-        candidateDependencyNoun = []
+        # candidateDependencyNoun = []
         preParsedTweetList = None
         while start >= sentStart:
-            if parsedTweet[start][3] in set(["N", "^", "S"]) and int(parsedTweet[start][6]) == currentNounID:
-                parsedTweetList = list(parsedTweet[start])
-                parsedTweetList[6] = currentParsedTerm[6]
-                parsedTweetList[-1] = parsedTweetList[1] + currentParsedTerm[1]
-                if preParsedTweetList:
-                    parsedTweetList[-1] = parsedTweetList[1] + \
-                        " " + preParsedTweetList[-1]
-                else:
-                    parsedTweetList[-1] = parsedTweetList[1] + \
-                        " " + currentParsedTerm[1]
-                preParsedTweetList = parsedTweetList
+            if parsedTweet[start][3] in set(["N", "^", "S", "A", "$"]) and int(parsedTweet[start][6]) == currentNounID:
+                # parsedTweetList = list(parsedTweet[start])
+                # parsedTweetList[6] = currentParsedTerm[6]
+                # parsedTweetList[-1] = parsedTweetList[1] + currentParsedTerm[1]
+                currentParsedList[1] = parsedTweet[start][1] + \
+                    " " + currentParsedList[1]
+                # if preParsedTweetList:
+                #     parsedTweetList[-1] = parsedTweetList[1] + \
+                #         " " + preParsedTweetList[-1]
+                # else:
+                #     parsedTweetList[-1] = parsedTweetList[1] + \
+                #         " " + currentParsedTerm[1]
+                # preParsedTweetList = parsedTweetList
 
-                candidateDependencyNoun.append(parsedTweetList)
+                # candidateDependencyNoun.append(parsedTweetList)
             elif int(parsedTweet[start][6]) == currentNounID \
                     and parsedTweet[start][3] == "D" \
                     and parsedTweet[start][1].lower() in set(["this", "that", "those", "these"]):
@@ -309,12 +315,13 @@ class ClaimExtractor(object):
 
                     parsedTweetList[1] = noSymbolHashtag
                     parsedTweetList[6] = currentParsedTerm[6]
-                    candidateDependencyNoun.append(parsedTweetList)
-                    break
+                    # candidateDependencyNoun.append(parsedTweetList)
+                    return parsedTweetList
             start -= 1
-        if candidateDependencyNoun:
-            return candidateDependencyNoun
-        return currentParsedTerm
+        # if candidateDependencyNoun:
+        #     return candidateDependencyNoun
+        # return currentParsedTerm
+        return currentParsedList
 
     def collectSubject(self, tweets, cleanedTweets):
         """Collect the information of subject in tweets.
@@ -353,7 +360,7 @@ class ClaimExtractor(object):
         print("subject2tweetInfo.json has been saved.")
         return mergedNoun, sortedSubject2Number, subject2tweetInfo, parsedTweets
 
-    def getCandidateClaims(self, tweets, mergedNoun, sortedSubject2Number, subject2tweetInfo, parsedTweets, initQuery, top=3):
+    def getCandidateClaims(self, tweets, mergedNoun, sortedSubject2Number, subject2tweetInfo, parsedTweets, initQuery, top=5):
         """Get candidate claims from tweets based on subject.
 
         Arguments:
@@ -409,6 +416,9 @@ class ClaimExtractor(object):
                 # claimInfo: tweet id, claim
 
                 if objects or (objects == [] and verb not in set(["is", "was", "are", "were", "be"])):
+                    # print("sub ", type(sub))
+                    # print("verb ", type(verb))
+                    # print("objects ", type(objects), objects)
                     claimInfo = (tweetID, " ".join([sub, verb]+objects))
                     candidateClaims[subject].append(claimInfo)
         self.helper.dumpJson(self.fileFolderPath,
@@ -478,7 +488,7 @@ class ClaimExtractor(object):
         Arguments:
             startIndex {int} -- the start index
             totalLen {int} -- the total length of the tweet
-            parsedTweet {list} -- [description]
+            parsedTweet {list} -- [(term_info1), (term_info2), ...]
             rootID {int} -- root ID
             tweetID {int} -- tweet ID
             startSent {int} -- the start index of the current sentence
@@ -512,30 +522,43 @@ class ClaimExtractor(object):
                     break
                 # handle root_verb sth.
                 elif parsedTerm[3] in set(["N", "^", "S"]):
+                    # find previously
                     dependencyNounInfos = self.__findDependencyNoun(
                         parsedTweet, startSent, startIndex-1, parsedTerm,
                         tweets, tweetID)
-                    # if tweetID == 150:
-                    #     print("dependencyNounInfos is {}".format(
-                    #         dependencyNounInfos))
-                    if type(dependencyNounInfos) is list:
-                        # while dependencyNounInfos:
-                        #     # add dependency noun
-                        #     objects.append(
-                        #         dependencyNounInfos.pop()[1])
-                        tmp = dependencyNounInfos[-1]
-                        if tmp[-1] != "_":
-                            objects.append(tmp[-1])
-                        else:
-                            objects.append(tmp[1])
-                    else:
-                        objects.append(parsedTerm[1])
-                    # if tweetID == 150:
-                    #     print("objects are {}".format(objects))
+                    # if type(dependencyNounInfos) is list:
+                    #     # while dependencyNounInfos:
+                    #     #     # add dependency noun
+                    #     #     objects.append(
+                    #     #         dependencyNounInfos.pop()[1])
+                    #     tmp = dependencyNounInfos[-1]
+                    #     if tmp[-1] != "_":
+                    #         objects.append(tmp[-1])
+                    #     else:
+                    #         objects.append(tmp[1])
+                    # else:
+                    #     objects.append(parsedTerm[1])
+                    objects.append(dependencyNounInfos[1])
+                    # find postposition
+                    afterVerbObjects = self.__getObject(
+                        startIndex+1, totalLen, parsedTweet,
+                        int(parsedTerm[0]), tweetID, startSent, tweets)
+                    objects = list(objects + afterVerbObjects)
                     break
                 # handle root_verb adj.
                 elif parsedTerm[3] == "A":
                     objects.append(parsedTerm[1])
+                    break
+                # handle coordinating conjunction
+                elif parsedTerm[3] == "&":
+                    preConjunctionObjects = self.__getObject(
+                        0, totalLen, parsedTweet,
+                        int(parsedTerm[0]), tweetID, startSent, tweets)
+                    afterConjunctionObjects = self.__getObject(
+                        startIndex+1, totalLen, parsedTweet,
+                        int(parsedTerm[0]), tweetID, startSent, tweets)
+                    objects = list(preConjunctionObjects +
+                                   [parsedTerm[3]] + afterConjunctionObjects)
                     break
             startIndex += 1
         return objects[:]
@@ -552,33 +575,33 @@ class ClaimExtractor(object):
             tuple -- parsed term
         """
         while startIndex < len(parsedTweet):
-            if parsedTweet[startIndex][3] in set(["S", "N", "^"]) and \
+            if parsedTweet[startIndex][3] in set(["S", "N", "^", "A"]) and \
                     int(parsedTweet[startIndex][6]) == int(currentParsedTerm[0]):
                 return parsedTweet[startIndex]
             startIndex += 1
         return None
 
-    def __findDependencyonSubject(self, startSent, subjectId, parsedTweet):
-        """Find the index of the leftmost term dependent on subject.
+    # def __findDependencyonSubject(self, startSent, subjectId, parsedTweet):
+    #     """Find the index of the leftmost term dependent on subject.
 
-        Arguments:
-            startSent {int} -- the beginning index of the current sentence
-            subjectId {int} -- the id of the subject
-            parsedTweet {list} -- [(info_term1), (info_term2), ...]
+    #     Arguments:
+    #         startSent {int} -- the beginning index of the current sentence
+    #         subjectId {int} -- the id of the subject
+    #         parsedTweet {list} -- [(info_term1), (info_term2), ...]
 
-        Returns:
-            int -- the index of the leftmost term dependent on subject
-        """
-        start = startSent
-        # Id is bigger than index by one
-        while start < (subjectId-1):
-            head = int(parsedTweet[start][6])
-            if head == subjectId:
-                return start
-            start += 1
-        return subjectId-1
+    #     Returns:
+    #         int -- the index of the leftmost term dependent on subject
+    #     """
+    #     start = startSent
+    #     # Id is bigger than index by one
+    #     while start < (subjectId-1):
+    #         head = int(parsedTweet[start][6])
+    #         if head == subjectId:
+    #             return start
+    #         start += 1
+    #     return subjectId-1
 
-    def rankClaims(self, initQuery, tweets, candidateClaims, top=3):
+    def rankClaims(self, initQuery, tweets, candidateClaims, top=10):
         """Rank candidate claims.
 
         Arguments:
@@ -592,9 +615,9 @@ class ClaimExtractor(object):
         """
         subjects = list(candidateClaims.keys())
         relatedSubjects = process.extract(initQuery, subjects)
-        finalSubjects = [sub for sub, score in relatedSubjects if score >= 50]
+        finalSubjects = [sub for sub, score in relatedSubjects if score > 90]
         if len(finalSubjects) < top:
-            remain = len(finalSubjects) - top
+            remain = top - len(finalSubjects)
             count = 0
             for subject in subjects:
                 if count >= remain:
@@ -603,6 +626,7 @@ class ClaimExtractor(object):
                     continue
                 finalSubjects.append(subject)
                 count += 1
+        print("final subjects are {}".format(finalSubjects))
         subject2claimFeature = defaultdict(dict)
         subject2rankedClaims = defaultdict(list)
         for subject in finalSubjects:
