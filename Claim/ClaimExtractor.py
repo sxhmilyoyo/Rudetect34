@@ -231,16 +231,19 @@ class ClaimExtractor(object):
                 # for i in range(index, len(taggedTweet)):
                 while start < len(parsedTweet) and start < verbRootIndex:
                     merge = list(parsedTweet[start])
-                    if merge[3] in set(["N", "^", "S"]) and int(merge[6]) == int(verbRootID):
+                    if int(merge[6]) == int(verbRootID) and \
+                            (merge[3] in set(["N", "^", "S"])
+                             or (merge[1].lower()
+                                 in set(["where", "who", "what", "how", "when", "why"]))):
                         # find after
                         j = start + 1
                         while j < len(parsedTweet) and j < verbRootIndex:
                             if parsedTweet[j][3] in set(["N", "^", "S"]) and int(parsedTweet[j][6]) == int(verbRootID):
                                 merge[1] = merge[1] + " " + parsedTweet[j][1]
-                                j += 1
-                            else:
-                                # print("index is ", index)
-                                break
+                            j += 1
+                            # else:
+                            #     # print("index is ", index)
+                            #     break
                         # find dependencyNoun as final subject
                         # find previously
                         subject = self.__findDependencyNoun(
@@ -282,7 +285,7 @@ class ClaimExtractor(object):
         # candidateDependencyNoun = []
         preParsedTweetList = None
         while start >= sentStart:
-            if parsedTweet[start][3] in set(["N", "^", "S", "A", "$"]) and int(parsedTweet[start][6]) == currentNounID:
+            if parsedTweet[start][3] in set(["N", "^", "S", "A", "$", "O"]) and int(parsedTweet[start][6]) == currentNounID:
                 # parsedTweetList = list(parsedTweet[start])
                 # parsedTweetList[6] = currentParsedTerm[6]
                 # parsedTweetList[-1] = parsedTweetList[1] + currentParsedTerm[1]
@@ -366,7 +369,7 @@ class ClaimExtractor(object):
         print("subject2tweetInfo.json has been saved.")
         return mergedNoun, sortedSubject2Number, subject2tweetInfo, parsedTweets
 
-    def getCandidateClaims(self, tweets, mergedNoun, sortedSubject2Number, subject2tweetInfo, parsedTweets, initQuery, top=5):
+    def getCandidateClaims(self, tweets, mergedNoun, sortedSubject2Number, subject2tweetInfo, parsedTweets, initQuery):
         """Get candidate claims from tweets based on subject.
 
         Arguments:
@@ -376,35 +379,16 @@ class ClaimExtractor(object):
             subject2tweetInfo {dict} -- {subject1: (tweet id(str), subjectId(str)), subject2: (tweet id(str), subjectId(str)), ...}
             parsedTweets {dict} -- {tweet_id: [(info_term1), (info_term2), ...], ...}
             initQuery {str} -- the initial query
-            top {int} -- the number of top subjects to be analyzed
         Returns:
-            dict -- {subject1: [claim1, claim2, ...], ...}
+            list -- [[tweetID, subjectID, afterSubjectIdx, claim1], ...]
         """
         # make sure subject related to initial query existed.
-        subjects = [subject for subject, number in sortedSubject2Number]
-        subjects2query = process.extract(initQuery, subjects)
-        print("subject to query similarity {}".format(subjects2query))
-        relatedSubjects = [sub for sub, score in subjects2query if score >= 90]
-        print("related subjects is {}".format(relatedSubjects))
-        remain = top - len(relatedSubjects)
-        count = 0
-        candidateSubjects = []
-        candidateClaims = defaultdict(list)
-        for subject, _ in sortedSubject2Number:
-            if count >= remain:
-                break
-            candidateSubjects.append(subject)
-            if subject in relatedSubjects:
-                relatedSubjects.remove(subject)
-                continue
-            count += 1
-        if relatedSubjects:
-            candidateSubjects += relatedSubjects
+        candidateClaims = []
+        candidateSubjects = [subject for subject,
+                             number in sortedSubject2Number]
         for subject in candidateSubjects:
             print("subject is {}".format(subject))
             for tweetID, subjectId in subject2tweetInfo[subject]:
-                # get edited parsed term
-
                 subjectId = int(subjectId)
                 # original parsed tweet
                 parsedTweet = parsedTweets[tweetID]
@@ -427,13 +411,16 @@ class ClaimExtractor(object):
                     # print("verb ", type(verb))
                     # print("objects ", type(objects), objects)
                     objects_form = [obj[1] for obj in objects]
-                    claimInfo = (tweetID, " ".join([sub, verb]+objects_form))
-                    candidateClaims[subject].append(claimInfo)
+                    claim = " ".join([sub, verb]+objects_form)
+                    afterSubjectIdx = claim.index(sub) + len(sub)
+                    claimInfo = [tweetID, subjectId, afterSubjectIdx, claim]
+                    candidateClaims.append(claimInfo)
         self.helper.dumpJson(self.fileFolderPath,
                              "candidateClaims.json", candidateClaims)
         print("candidateClaims.json has been saved.")
-        # find similar subjects
-        return candidateClaims
+        # merge the clause with its original claim
+        candidateClaimsMergedClause = self.__mergeClause(candidateClaims)
+        return candidateClaimsMergedClause
 
     def mergeSimilarSubjects(self, candidateClaims):
         """Merge similar subjects and their corresponding claims.
@@ -542,6 +529,12 @@ class ClaimExtractor(object):
                         int(parsedTerm[0]), tweetID, startSent, tweets)
                     objects = list(objects + afterPostposition)
                     # break
+                elif parsedTerm[3] == "O":
+                    objects.append(parsedTerm)
+                    afterPostposition = self.__getObject(
+                        startIndex+1, totalLen, parsedTweet,
+                        int(parsedTerm[0]), tweetID, startSent, tweets)
+                    objects = list(objects + afterPostposition)
                 # handle root_verb sth.
                 elif parsedTerm[3] in set(["N", "^", "S"]):
                     # find previously
@@ -634,57 +627,102 @@ class ClaimExtractor(object):
     #         start += 1
     #     return subjectId-1
 
-    def rankClaims(self, initQuery, tweets, candidateClaims, top=10):
+    def __mergeClause(self, candidateClaims):
+        """Merge the clause with its original claim.
+
+        Arguments:
+            candidateClaims {list} -- [[tweetID, subjectID, afterSubjectIdx, claim1], ...]
+
+        Returns:
+            list -- [[tweetID, subjectID, afterSubjectIdx, claim1], ...]
+        """
+        tweetID2Claims = defaultdict(list)
+        flag = True
+        for tweetID, subjectID, afterSubjectIdx, claim in candidateClaims:
+            tweetID2Claims[tweetID].append([subjectID, afterSubjectIdx, claim])
+        for tweetID, info in tweetID2Claims.items():
+            if tweetID == 115:
+                print(info)
+            if len(info) > 1:
+                for i in range(len(info)):
+                    pre = info[i]
+                    for j in range(len(info)):
+                        if i == j:
+                            continue
+                        curr = info[j]
+                        if abs(pre[0] - curr[0]) == 1:
+                            flag = False
+                            break
+                    if not flag:
+                        break
+                if pre[0] < curr[0]:
+                    pre[2] = pre[2][:pre[1]+1] + \
+                        curr[2] + " " + pre[2][pre[1]+1:]
+                    info.pop(j)
+                else:
+                    curr[2] = curr[2][:curr[1]+1] + \
+                        pre[2] + " " + curr[2][curr[1]+1:]
+                    info.pop(i)
+                # tweetID2Claims[tweetID] = info
+                if tweetID == 115:
+                    print(info)
+                    print(tweetID2Claims[tweetID])
+        candidateClaimsMergedClause = [
+            [key]+v for key, value in tweetID2Claims.items() for v in value]
+
+        self.helper.dumpJson(self.fileFolderPath,
+                             "candidateClaimsMergedClause.json", candidateClaimsMergedClause)
+        print("candidateClaimsMergedClause.json has been saved.")
+        return candidateClaimsMergedClause
+
+    def rankClaims(self, initQuery, tweets, candidateClaims):
         """Rank candidate claims.
 
         Arguments:
             initQuery {str} -- the initial query
             tweets {list} -- the list of tweets
-            candidateClaims {dict} -- {subject1: [claim1, claim2, ...], ...}
+            candidateClaims {list} -- [[tweetID, claim1], ...]
             top {int} -- the number of top claims
 
         Returns:
-            dict -- {subject1: [claim1, claim2, ...], ...}
+            list -- [[TweetID, claim1], ...]
         """
-        subjects = list(candidateClaims.keys())
-        relatedSubjects = process.extract(initQuery, subjects)
-        finalSubjects = [sub for sub, score in relatedSubjects if score > 90]
-        if len(finalSubjects) < top:
-            remain = top - len(finalSubjects)
-            count = 0
-            for subject in subjects:
-                if count >= remain:
-                    break
-                if subject in finalSubjects:
-                    continue
-                finalSubjects.append(subject)
-                count += 1
-        print("final subjects are {}".format(finalSubjects))
-        subject2claimFeature = defaultdict(dict)
-        subject2rankedClaims = defaultdict(list)
-        for subject in finalSubjects:
-            print("subject is {}".format(subject))
-            claimIndex2feature = defaultdict(int)
-            candidateClaims4Subject = candidateClaims[subject]
-            for claimIndex, claimInfo in enumerate(candidateClaims4Subject):
-                tweetIndex = int(claimInfo[0])
-                tweet = tweets[tweetIndex]
-                # print("claim is {}".format(claimInfo[1]))
-                # print("tweet is {}".format(tweet.text))
-                # print("tweet's permalink is {}".format(tweet.permalink))
-                feature = tweet.reply + tweet.retweets + tweet.favorites
-                claimIndex2feature[claimIndex] = feature
-            subject2claimFeature[subject] = claimIndex2feature
-            sortedClaimIndex2feature = self.preprocessData.sortDict(
-                claimIndex2feature)
-            for claimIndex, _ in sortedClaimIndex2feature[:top]:
-                subject2rankedClaims[subject].append(
-                    candidateClaims4Subject[claimIndex])
+        # subjects = list(candidateClaims.keys())
+        # relatedSubjects = process.extract(initQuery, subjects)
+        # finalSubjects = [sub for sub, score in relatedSubjects if score > 90]
+        # if len(finalSubjects) < top:
+        #     remain = top - len(finalSubjects)
+        #     count = 0
+        #     for subject in subjects:
+        #         if count >= remain:
+        #             break
+        #         if subject in finalSubjects:
+        #             continue
+        #         finalSubjects.append(subject)
+        #         count += 1
+        # print("final subjects are {}".format(finalSubjects))
+        rankedClaims = []
+        # for subject in finalSubjects:
+        # print("subject is {}".format(subject))
+        claimIndex2feature = defaultdict(int)
+        # candidateClaims4Subject = candidateClaims[subject]
+        for claimIndex, claimInfo in enumerate(candidateClaims):
+            tweetIndex = int(claimInfo[0])
+            tweet = tweets[tweetIndex]
+            # print("claim is {}".format(claimInfo[1]))
+            # print("tweet is {}".format(tweet.text))
+            # print("tweet's permalink is {}".format(tweet.permalink))
+            feature = tweet.reply + tweet.retweets + tweet.favorites
+            claimIndex2feature[claimIndex] = feature
+        sortedClaimIndex2feature = self.preprocessData.sortDict(
+            claimIndex2feature)
+        for claimIndex, _ in sortedClaimIndex2feature:
+            rankedClaims.append(candidateClaims[claimIndex])
 
         self.helper.dumpJson(self.fileFolderPath,
-                             "claimIndex2feature.json", subject2claimFeature)
-        print("subject2claimFeature.json has been saved.")
+                             "claimIndex2feature.json", claimIndex2feature)
+        print("claimIndex2feature.json has been saved.")
         self.helper.dumpJson(self.fileFolderPath,
-                             "subject2rankedClaims.json", subject2rankedClaims)
-        print("subject2rankedClaims.json has been saved.")
-        return subject2rankedClaims
+                             "rankedClaims.json", rankedClaims)
+        print("rankedClaims.json has been saved.")
+        return rankedClaims

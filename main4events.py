@@ -18,7 +18,7 @@ def main(rootpath):
     for folder in folders:
         # if folder in ["immigration_0612_0624", "FalseFlag_0518_0523",  "Capriccio_0516_0523"]:
         #     continue
-        if folder != "SouthwestKey_0620_0624":
+        if folder != "WhereAreTheChildren_0418_0527":
             continue
         print("Running code for {}".format(folder))
         args = ['python', 'main.py', '-r', rootpath,

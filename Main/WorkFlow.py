@@ -197,12 +197,12 @@ class WorkFlow(object):
         #     os.path.join(self.folderpath, "final", "subject2tweetInfo.json"))
         # parsedTweets = self.helper.loadJson(
         #     os.path.join(self.folderpath, "final", "tweets_id2Info.json"))
-        candidateClaims = claimExtractor.getCandidateClaims(
-            tweets_list, mergedNoun, sortedSubject2Number, subject2tweetInfo, parsedTweets, query[1:], 5)
-        mergedCandidateClaims = claimExtractor.mergeSimilarSubjects(
-            candidateClaims)
+        candidateClaimsMergedClause = claimExtractor.getCandidateClaims(
+            tweets_list, mergedNoun, sortedSubject2Number, subject2tweetInfo, parsedTweets, query[1:])
+        # mergedCandidateClaims = claimExtractor.mergeSimilarSubjects(
+        #     candidateClaims)
         claimExtractor.rankClaims(
-            query[1:], tweets_list, mergedCandidateClaims)
+            query[1:], tweets_list, candidateClaimsMergedClause)
 
         # for subject in subjects:
         #     print("extracting for subject: {}".format(subject))
