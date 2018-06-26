@@ -202,10 +202,12 @@ class WorkFlow(object):
         # parsedTweets = self.helper.loadJson(
         #     os.path.join(self.folderpath, "final", "tweets_id2Info.json"))
         candidateClaimsMergedClause = claimExtractor.getCandidateClaims(
-            tweets_list, mergedNoun, sortedSubject2Number, subject2tweetInfo, parsedTweets, query[1:])
+            tweets_list, mergedNoun, sortedSubject2Number, subject2tweetInfo,
+            parsedTweets, query[1:])
         # mergedCandidateClaims = claimExtractor.mergeSimilarSubjects(
         #     candidateClaims)
-        similarClaimsComponents = getSimilarity.getSimilarClaims()
+        similarClaimsComponents = getSimilarity.getSimilarClaims(
+            candidateClaimsMergedClause, tweets)
         self.helper.dumpJson(self.folderpath+"/final",
                              "similar_claims_components.json", similarClaimsComponents)
         print("similar_claims_components.json has been saved.")

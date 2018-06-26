@@ -102,7 +102,7 @@ class GetSimilarity(object):
         """Get similar claims.
 
         Arguments:
-            claims {list} -- a list of claims
+            claims {list} -- [[tweetID, subjectID, afterSubjectIdx, claim1], ...]
             tweets {list} -- a list of tweets
 
         Returns:
