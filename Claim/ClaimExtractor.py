@@ -286,8 +286,8 @@ class ClaimExtractor(object):
                 # parsedTweetList = list(parsedTweet[start])
                 # parsedTweetList[6] = currentParsedTerm[6]
                 # parsedTweetList[-1] = parsedTweetList[1] + currentParsedTerm[1]
-                currentParsedList[1] = parsedTweet[start][1] + \
-                    " " + currentParsedList[1]
+                # currentParsedList[1] = parsedTweet[start][1] + \
+                #     " " + currentParsedList[1]
                 # if preParsedTweetList:
                 #     parsedTweetList[-1] = parsedTweetList[1] + \
                 #         " " + preParsedTweetList[-1]
@@ -297,9 +297,15 @@ class ClaimExtractor(object):
                 # preParsedTweetList = parsedTweetList
 
                 # candidateDependencyNoun.append(parsedTweetList)
+
+                # recursively find the dependency noun on current parsed list
+                dependedOnCurrentParsedTerm = self.__findDependencyNoun(
+                    parsedTweet, sentStart, start-1, parsedTweet[start], tweets, tweetID)
+                currentParsedList[1] = dependedOnCurrentParsedTerm[1] + \
+                    " " + currentParsedList[1]
             elif int(parsedTweet[start][6]) == currentNounID \
                     and parsedTweet[start][3] == "D" \
-                    and parsedTweet[start][1].lower() in set(["this", "that", "those", "these"]):
+                    and parsedTweet[start][1].lower() in set(["this", "that", "those", "these", "his", "her", "its", "their"]):
                 # find the hashtag in this tweet for pronoun like "this, those", except "the"
                 hashtags = tweets[tweetID].hashtags.split()
                 if hashtags:
@@ -378,7 +384,7 @@ class ClaimExtractor(object):
         subjects = [subject for subject, number in sortedSubject2Number]
         subjects2query = process.extract(initQuery, subjects)
         print("subject to query similarity {}".format(subjects2query))
-        relatedSubjects = [sub for sub, score in subjects2query if score > 90]
+        relatedSubjects = [sub for sub, score in subjects2query if score >= 90]
         print("related subjects is {}".format(relatedSubjects))
         remain = top - len(relatedSubjects)
         count = 0
@@ -439,10 +445,11 @@ class ClaimExtractor(object):
         subjects = list(candidateClaims.keys())
         similarSubjects = defaultdict(list)
         mergedCandidateClaims = defaultdict(list)
+        prog = re.compile('[^a-zA-Z]')
         while subjects:
             temp = subjects.pop(0)
             for s in subjects:
-                if fuzz.partial_ratio(temp.lower(), s.lower()) == 100:
+                if fuzz.partial_ratio("".join(prog.split(temp.lower())), "".join(prog.split(s.lower()))) >= 90:
                     similarSubjects[temp].append(s)
             for s in similarSubjects[temp]:
                 subjects.pop(subjects.index(s))
@@ -498,6 +505,14 @@ class ClaimExtractor(object):
             list -- the list of objects
         """
         objects = []
+        # handle the conjunction with head 0
+        if startIndex < totalLen:
+            parsedTerm = parsedTweet[startIndex]
+            if int(parsedTerm[6]) == 0 and parsedTerm[3] == "&":
+                afterConjunctionObjects = self.__getObject(
+                    startIndex+1, totalLen, parsedTweet,
+                    int(parsedTerm[0]), tweetID, startSent, tweets)
+                objects = list([parsedTerm[1]] + afterConjunctionObjects)
         while startIndex < totalLen:
             parsedTerm = parsedTweet[startIndex]
             if parsedTerm[3] == "," and parsedTerm[1] in self.termination:
@@ -506,20 +521,24 @@ class ClaimExtractor(object):
             if int(parsedTerm[6]) == rootID:
                 # handle root_verb verb
                 if parsedTerm[3] == "V":
-                    objects.append(parsedTerm[1])
+                    dependedOnCurrentParsedTerm = self.__findDependencyNoun(
+                        parsedTweet, startSent, startIndex-1, parsedTerm,
+                        tweets, tweetID)
+                    objects.append(dependedOnCurrentParsedTerm[1])
+                    # objects.append(parsedTerm[1])
                     afterVerbObjects = self.__getObject(
                         startIndex+1, totalLen, parsedTweet,
                         int(parsedTerm[0]), tweetID, startSent, tweets)
                     objects = list(objects + afterVerbObjects)
-                    break
+                    # break
                 # handle root_verb to do
                 elif parsedTerm[3] == "P":
                     objects.append(parsedTerm[1])
-                    afterVerbObjects = self.__getObject(
+                    afterPostposition = self.__getObject(
                         startIndex+1, totalLen, parsedTweet,
                         int(parsedTerm[0]), tweetID, startSent, tweets)
-                    objects = list(objects + afterVerbObjects)
-                    break
+                    objects = list(objects + afterPostposition)
+                    # break
                 # handle root_verb sth.
                 elif parsedTerm[3] in set(["N", "^", "S"]):
                     # find previously
@@ -540,15 +559,26 @@ class ClaimExtractor(object):
                     #     objects.append(parsedTerm[1])
                     objects.append(dependencyNounInfos[1])
                     # find postposition
-                    afterVerbObjects = self.__getObject(
+                    postposition = self.__getObject(
                         startIndex+1, totalLen, parsedTweet,
                         int(parsedTerm[0]), tweetID, startSent, tweets)
-                    objects = list(objects + afterVerbObjects)
-                    break
-                # handle root_verb adj.
+                    objects = list(objects + postposition)
+                    # break
+                # handle adj.
                 elif parsedTerm[3] == "A":
                     objects.append(parsedTerm[1])
-                    break
+                    afterAdj = self.__getObject(
+                        startIndex+1, totalLen, parsedTweet,
+                        int(parsedTerm[0]), tweetID, startSent, tweets)
+                    objects = list(objects + afterAdj)
+                    # break
+                # handle adv.
+                elif parsedTerm[3] == "R":
+                    objects.append(parsedTerm[1])
+                    afterAdj = self.__getObject(
+                        startIndex+1, totalLen, parsedTweet,
+                        int(parsedTerm[0]), tweetID, startSent, tweets)
+                    objects = list(objects + afterAdj)
                 # handle coordinating conjunction
                 elif parsedTerm[3] == "&":
                     preConjunctionObjects = self.__getObject(
@@ -558,8 +588,8 @@ class ClaimExtractor(object):
                         startIndex+1, totalLen, parsedTweet,
                         int(parsedTerm[0]), tweetID, startSent, tweets)
                     objects = list(preConjunctionObjects +
-                                   [parsedTerm[3]] + afterConjunctionObjects)
-                    break
+                                   [parsedTerm[1]] + afterConjunctionObjects)
+                    # break
             startIndex += 1
         return objects[:]
 
