@@ -120,14 +120,15 @@ class Helper(object):
             for tweet in tweets:
                 yield tweet
 
-    def getClaim(self, folderPath):
+    def getClaim(self, folderPath, filename):
         """Get claim content from subject2rankedClaims.json.
 
         Arguments:
-            folderPath {str} -- the path to subject2rankedClaims.json
+            folderPath {str} -- the path to folder that contains file of claim
+            filename {str} -- the filename of the claim.
         """
         subject2claims = self.loadJson(os.path.join(folderPath, 'final',
-                                                    "subject2rankedClaims.json"))
+                                                    filename))
         for subject in subject2claims:
             for tweetID, claim in subject2claims[subject]:
                 yield claim
@@ -264,7 +265,8 @@ class Helper(object):
         getTwitterData.getTweets(criteria, foldername,
                                  username + ".pkl", tweetFlag)
 
-    def to_graph(self, groupNodes):
+    @classmethod
+    def to_graph(cls, groupNodes):
         """Generate graph based on groupNodes.
 
         Parameters
@@ -281,10 +283,11 @@ class Helper(object):
         G = networkx.Graph()
         for groupNode in groupNodes:
             G.add_nodes_from(groupNode)
-            G.add_edges_from(self.to_edges(groupNode))
+            G.add_edges_from(cls.to_edges(groupNode))
         return G
 
-    def to_edges(self, groupNode):
+    @classmethod
+    def to_edges(cls, groupNode):
         """Generate edge between neighbor points.
 
         Parameters
@@ -305,7 +308,8 @@ class Helper(object):
             yield last, current
             last = current
 
-    def getConnectedComponents(self, groupNodes):
+    @classmethod
+    def getConnectedComponents(cls, groupNodes):
         """Get connected components from group of nodes.
 
         Parameters
@@ -319,5 +323,5 @@ class Helper(object):
             list of connected components
 
         """
-        G = self.to_graph(groupNodes)
+        G = cls.to_graph(groupNodes)
         return list(connected_components(G))

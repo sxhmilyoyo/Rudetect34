@@ -181,6 +181,10 @@ class WorkFlow(object):
         self.preprocessData.generateTweetsLines(self.folderpath)
 
         claimExtractor = Claim.ClaimExtractor(self.rootpath, self.folderpath)
+        getSimilarity = Claim.GetSimilarity(
+            "/home/hao/Workplace/HaoXu/Data/skip_thoughts/pretrained/skip_thoughts_uni_2017_02_02/exp_vocab",
+            "model.ckpt-501424")
+
         tweets = self.helper.getTweet(self.folderpath)
         tweets_list = []
         cleanedTweets = []
@@ -201,26 +205,12 @@ class WorkFlow(object):
             tweets_list, mergedNoun, sortedSubject2Number, subject2tweetInfo, parsedTweets, query[1:])
         # mergedCandidateClaims = claimExtractor.mergeSimilarSubjects(
         #     candidateClaims)
-        claimExtractor.rankClaims(
-            query[1:], tweets_list, candidateClaimsMergedClause)
-
-        # for subject in subjects:
-        #     print("extracting for subject: {}".format(subject))
-        #     print(self.rootpath)
-        #     taggedSents = svoExtraction.tag_sentences(self.rootpath, subject,
-        #                                               document)
-        #     # print(taggedSents)
-        #     svos = [
-        #         (svoExtraction.get_svo(sentence, subject), idx)
-        #         for sentence, idx in taggedSents
-        #     ]
-        #     # address svos
-        #     filteredSvos = self.preprocessData.getTop5SVO(folderPath, svos)
-        #     # print(filteredSvos)
-        #     subject2svos[subject] = filteredSvos
-
-        # self.helper.dumpJson(folderPath, 'subject2svos.json', subject2svos)
-        # print("subject2svos.json has been saved.")
+        similarClaimsComponents = getSimilarity.getSimilarClaims()
+        self.helper.dumpJson(self.folderpath+"/final",
+                             "similar_claims_components.json", similarClaimsComponents)
+        print("similar_claims_components.json has been saved.")
+        # claimExtractor.rankClaims(
+        #     query[1:], tweets_list, candidateClaimsMergedClause)
 
     def getSimilarTweets4Claim(self):
         # get claims
@@ -234,17 +224,17 @@ class WorkFlow(object):
             # tweets_list.append(tweet)
             c1 = self.preprocessData.cleanTweet(tweet.text)
             cleanedTweets.append(c1)
-        tweetsExtractor4Claim = Claim.TweetsExtractor4Claim(
+        getSimilarity = Claim.GetSimilarity(
             "/home/hao/Workplace/HaoXu/Data/skip_thoughts/pretrained/skip_thoughts_uni_2017_02_02/exp_vocab",
             "model.ckpt-501424")
 
-        sentences, tweetIndex = tweetsExtractor4Claim.splitSentences(
+        sentences, tweetIndex = getSimilarity.splitSentences(
             cleanedTweets)
-        encodedSentences = tweetsExtractor4Claim.encodeSen(sentences)
+        encodedSentences = getSimilarity.encodeSen(sentences)
 
         # for index, claim in enumerate(claims):
-        encodedClaims = tweetsExtractor4Claim.encodeSen(claims)
-        claims2tweets = tweetsExtractor4Claim.getTweets4Claims(
+        encodedClaims = getSimilarity.encodeSen(claims)
+        claims2tweets = getSimilarity.getTweets4Claims(
             sentences, encodedSentences, claims, encodedClaims, tweetIndex)
 
         for claimID, sentInfos in claims2tweets.items():

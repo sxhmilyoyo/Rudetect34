@@ -408,7 +408,8 @@ class PreprocessData(object):
                         k += 1
         self.helper.dumpCsv(folderpath, "corpus_snippets.csv", title, data)
 
-    def sortDict(self, d, reverse=True):
+    @classmethod
+    def sortDict(cls, d, reverse=True):
         """Sort the dictionary.
 
         Args:
@@ -452,7 +453,7 @@ class PreprocessData(object):
         print("tweets_lines.txt has been saved.")
 
     @classmethod
-    def removePunctuation(self, s):
+    def removePunctuation(cls, s):
         """Remove punctuation in str.
 
         Arguments:

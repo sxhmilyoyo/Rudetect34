@@ -9,8 +9,8 @@ from collections import defaultdict
 import Utility
 
 
-class TweetsExtractor4Claim(object):
-    """Get similar tweets for claim based on sen2vec in skip thoughts model."""
+class GetSimilarity(object):
+    """Get similar tweets for claim or claims based on sen2vec in skip thoughts model."""
 
     def __init__(self, modelPath, checkpointPath):
         """Initialize the TweetsExtractor4Claim model.
@@ -97,3 +97,34 @@ class TweetsExtractor4Claim(object):
         #         print(" %s (%.3f) %d" %
         #               (sent, score, twIndx))
         return claims2tweets
+
+    def getSimilarClaims(self, claims, tweets):
+        """Get similar claims.
+
+        Arguments:
+            claims {list} -- a list of claims
+            tweets {list} -- a list of tweets
+
+        Returns:
+            list -- [claim1, claim2, ...]
+        """
+
+        claimsContent = [claim[3] for claim in claims]
+        encodedClaims = self.encodeSen(claimsContent)
+        scores = sd.cdist(encodedClaims, encodedClaims, "cosine")
+        similarClaimsIndeices = np.argwhere(scores > 0.5)
+
+        similarClaimsIndeicesComponents = Utility.Helper.getConnectedComponents(
+            similarClaimsIndeices)
+        similarClaimsComponents = defaultdict(set)
+        for component in similarClaimsIndeicesComponents:
+            tweet2number = defaultdict(int)
+            for index in component:
+                tweetID = claims[index][0]
+                text = tweets[tweetID].text
+                features = tweets[tweetID].reply + \
+                    tweets[tweetID].retweets + tweets[tweetID].favorites
+                tweet2number[text] += features
+            sortedTweet2Number = Utility.PreprocessData.sortDict(tweet2number)
+            similarClaimsComponents[sortedTweet2Number[0][0]] = component
+        return similarClaimsComponents
