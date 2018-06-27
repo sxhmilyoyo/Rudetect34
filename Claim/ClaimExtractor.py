@@ -310,22 +310,26 @@ class ClaimExtractor(object):
                     and parsedTweet[start][3] == "D" \
                     and parsedTweet[start][1].lower() in set(["this", "that", "those", "these", "his", "her", "its", "their"]):
                 # find the hashtag in this tweet for pronoun like "this, those", except "the"
-                hashtags = tweets[tweetID].hashtags.split()
-                if hashtags:
-                    noSymbolHashtag = re.sub("([#])", "", hashtags[0])
-                    parsedTweetList = list(parsedTweet[start])
-                    if preParsedTweetList:
-                        parsedTweetList[-1] = parsedTweetList[1] + \
-                            " " + preParsedTweetList[-1]
-                    else:
-                        parsedTweetList[-1] = parsedTweetList[1] + \
-                            " " + currentParsedTerm[1]
-                    # preParsedTweetList = parsedTweetList
+                # hashtags = tweets[tweetID].hashtags.split()
+                # if hashtags:
+                #     noSymbolHashtag = re.sub("([#])", "", hashtags[0])
+                    # parsedTweetList = list(parsedTweet[start])
+                    # if preParsedTweetList:
+                    #     parsedTweetList[-1] = parsedTweetList[1] + \
+                    #         " " + preParsedTweetList[-1]
+                    # else:
+                    #     parsedTweetList[-1] = parsedTweetList[1] + \
+                    #         " " + currentParsedTerm[1]
+                    # # preParsedTweetList = parsedTweetList
 
-                    parsedTweetList[1] = noSymbolHashtag
-                    parsedTweetList[6] = currentParsedTerm[6]
-                    # candidateDependencyNoun.append(parsedTweetList)
-                    return parsedTweetList
+                    # parsedTweetList[1] = noSymbolHashtag
+                    # parsedTweetList[6] = currentParsedTerm[6]
+                    # # candidateDependencyNoun.append(parsedTweetList)
+                    # return parsedTweetList
+                dependedOnCurrentParsedTerm = self.__findDependencyNoun(
+                    parsedTweet, sentStart, start-1, parsedTweet[start], tweets, tweetID)
+                currentParsedList[1] = dependedOnCurrentParsedTerm[1] + \
+                    " " + currentParsedList[1]
             start -= 1
         # if candidateDependencyNoun:
         #     return candidateDependencyNoun
@@ -406,7 +410,7 @@ class ClaimExtractor(object):
                 # claimInfo: tweet id, claim
 
                 # if objects or (objects == [] and verb not in set(["is", "was", "are", "were", "be"])):
-                if objects and objects[-1][3] != "V":
+                if objects and objects[-1][3] in set(["N", "^", "S", "A"]):
                     # print("sub ", type(sub))
                     # print("verb ", type(verb))
                     # print("objects ", type(objects), objects)
@@ -637,11 +641,12 @@ class ClaimExtractor(object):
             list -- [[tweetID, subjectID, afterSubjectIdx, claim1], ...]
         """
         tweetID2Claims = defaultdict(list)
-        flag = True
+
         for tweetID, subjectID, afterSubjectIdx, claim in candidateClaims:
             tweetID2Claims[tweetID].append([subjectID, afterSubjectIdx, claim])
         for tweetID, info in tweetID2Claims.items():
-            if tweetID == 115:
+            flag = True
+            if tweetID == 77:
                 print(info)
             if len(info) > 1:
                 for i in range(len(info)):
@@ -651,37 +656,43 @@ class ClaimExtractor(object):
                             continue
                         curr = info[j]
                         if abs(pre[0] - curr[0]) == 1:
+                            if tweetID == 77:
+                                print("test")
                             flag = False
                             break
                     if not flag:
                         break
-                if pre[0] < curr[0]:
-                    pre[2] = pre[2][:pre[1]+1] + \
-                        curr[2] + " " + pre[2][pre[1]+1:]
-                    info.pop(j)
-                else:
-                    curr[2] = curr[2][:curr[1]+1] + \
-                        pre[2] + " " + curr[2][curr[1]+1:]
-                    info.pop(i)
-                # tweetID2Claims[tweetID] = info
-                if tweetID == 115:
-                    print(info)
-                    print(tweetID2Claims[tweetID])
+                if not flag:
+                    if tweetID == 77:
+                        print("77 {} {}".format(pre[0], curr[0]))
+                    if pre[0] < curr[0]:
+                        pre[2] = pre[2][:pre[1]+1] + \
+                            curr[2] + " " + pre[2][pre[1]+1:]
+                        info.pop(j)
+                    else:
+                        curr[2] = curr[2][:curr[1]+1] + \
+                            pre[2] + " " + curr[2][curr[1]+1:]
+                        info.pop(i)
+                    # tweetID2Claims[tweetID] = info
+                    if tweetID == 77:
+                        print(info)
+                        print(tweetID2Claims[tweetID])
         candidateClaimsMergedClause = [
             [key]+v for key, value in tweetID2Claims.items() for v in value]
 
         self.helper.dumpJson(self.fileFolderPath,
-                             "candidateClaimsMergedClause.json", candidateClaimsMergedClause)
+                             "candidateClaimsMergedClause.json",
+                             candidateClaimsMergedClause)
         print("candidateClaimsMergedClause.json has been saved.")
         return candidateClaimsMergedClause
 
-    def rankClaims(self, initQuery, tweets, candidateClaims):
+    def rankClaims(self, initQuery, tweets, candidateClaimsMergedClause):
         """Rank candidate claims.
 
         Arguments:
             initQuery {str} -- the initial query
             tweets {list} -- the list of tweets
-            candidateClaims {list} -- [[tweetID, claim1], ...]
+            candidateClaimsMergedClause {list} -- [[tweetID, subjectID, afterSubjectIdx, claim1], ...]
             top {int} -- the number of top claims
 
         Returns:
@@ -706,7 +717,7 @@ class ClaimExtractor(object):
         # print("subject is {}".format(subject))
         claimIndex2feature = defaultdict(int)
         # candidateClaims4Subject = candidateClaims[subject]
-        for claimIndex, claimInfo in enumerate(candidateClaims):
+        for claimIndex, claimInfo in enumerate(candidateClaimsMergedClause):
             tweetIndex = int(claimInfo[0])
             tweet = tweets[tweetIndex]
             # print("claim is {}".format(claimInfo[1]))
@@ -717,7 +728,7 @@ class ClaimExtractor(object):
         sortedClaimIndex2feature = self.preprocessData.sortDict(
             claimIndex2feature)
         for claimIndex, _ in sortedClaimIndex2feature:
-            rankedClaims.append(candidateClaims[claimIndex])
+            rankedClaims.append(candidateClaimsMergedClause[claimIndex])
 
         self.helper.dumpJson(self.fileFolderPath,
                              "claimIndex2feature.json", claimIndex2feature)

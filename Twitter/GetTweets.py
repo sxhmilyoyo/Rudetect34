@@ -37,7 +37,7 @@ class GetTweets(object):
         self.folderpath = folderpath
         self.start = start
         self.end = end
-        self.filename = "tweets.pkl"
+        self.filename = "tweets.json"
         self.originhashtag = originhashtag
         self.helper = Utility.Helper(rootpath)
         self.addressTweet = Twitter.AddressTweet(rootpath)
@@ -67,19 +67,19 @@ class GetTweets(object):
         print("get userIdName...")
         self.addressTweet.getUserName(folderPath)
 
-        top10HashTags = self.helper.loadPickle(os.path.join(folderPath,
-                                                            "top10HashTags.pkl"
+        top5HashTags = self.helper.loadJson(os.path.join(folderPath,
+                                                            "top5HashTags.json"
                                                             ))
-        self.addressTweet.getPlot(top10HashTags, folderPath,
-                                  "top10HashTags.png", True)
-        print("top10HashTags.png has been saved...")
+        self.addressTweet.getPlot(top5HashTags, folderPath,
+                                  "top5HashTags.png", True)
+        print("top5HashTags.png has been saved...")
 
-        top10UserName = self.helper.loadPickle(os.path.join(folderPath,
-                                                            "top10UserName.pkl"
+        top5UserName = self.helper.loadJson(os.path.join(folderPath,
+                                                            "top5UserName.json"
                                                             ))
-        self.addressTweet.getPlot(top10UserName, folderPath,
-                                  "top10UserName.png", False)
-        print("top10UserName.png has been saved...")
+        self.addressTweet.getPlot(top5UserName, folderPath,
+                                  "top5UserName.png", False)
+        print("top5UserName.png has been saved...")
 
     # def getFinalHashTags(queries, originhashtags, getTwitter, start, end,
     #                      maxTweets, folderPath, filename, addressTweet, helper,
@@ -200,7 +200,7 @@ class GetTweets(object):
 
         Try 2 times to get tweets:
             1. get all the tweets with query
-            2. get all the tweets with new query(top10 hashtags)
+            2. get all the tweets with new query(top5 hashtags)
         """
         if 'AND' not in self.originhashtag:
             originhashtags = self.originhashtag.split()
@@ -211,7 +211,7 @@ class GetTweets(object):
             originquery = self.originhashtag
 
         folderPath = os.path.join(self.folderpath, 'experiment')
-        # filename = "tweets.pkl"
+        # filename = "tweets.json"
         maxTweets = 1000 * 1
 
         print("*" * 100)
@@ -219,16 +219,16 @@ class GetTweets(object):
 
         self.get_address_twitter(originquery, folderPath, maxTweets)
 
-        # update queries use the top10 hashtags
-        top10HashTags = self.helper.loadPickle(os.path.join(folderPath,
-                                                            'top10HashTags.pkl'
+        # update queries use the top5 hashtags
+        top5HashTags = self.helper.loadJson(os.path.join(folderPath,
+                                                            'top5HashTags.json'
                                                             ))
-        print(top10HashTags)
-        top10ht = list(top10HashTags.keys())[:]
-        print("original top10 hashtags {}".format(top10ht))
+        print(top5HashTags)
+        top5ht = list(top5HashTags.keys())[:]
+        print("original top5 hashtags {}".format(top5ht))
 
         # filtering
-        queries = top10ht[:]
+        queries = top5ht[:]
         if 'AND' in originquery:
             if originquery not in queries:
                 queries.append(originquery)

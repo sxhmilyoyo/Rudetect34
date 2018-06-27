@@ -193,8 +193,9 @@ class WorkFlow(object):
             c1 = self.preprocessData.cleanTweet(tweet.text)
             cleanedTweets.append(c1)
         print("Parsing...")
-        mergedNoun, sortedSubject2Number, subject2tweetInfo, parsedTweets = claimExtractor.collectSubject(
-            tweets_list, cleanedTweets)
+        mergedNoun, sortedSubject2Number, \
+            subject2tweetInfo, parsedTweets = claimExtractor.collectSubject(
+                tweets_list, cleanedTweets)
         # sortedSubject2Number = self.helper.loadJson(
         #     os.path.join(self.folderpath, "final", "sorted_subject2number.json"))
         # subject2tweetInfo = self.helper.loadJson(
@@ -206,13 +207,18 @@ class WorkFlow(object):
             parsedTweets, query[1:])
         # mergedCandidateClaims = claimExtractor.mergeSimilarSubjects(
         #     candidateClaims)
-        similarClaimsComponents = getSimilarity.getSimilarClaims(
-            candidateClaimsMergedClause, tweets)
+        similarClaimsComponents, sortedSimilarClaims = getSimilarity.getSimilarClaims(
+            candidateClaimsMergedClause, tweets_list)
         self.helper.dumpJson(self.folderpath+"/final",
-                             "similar_claims_components.json", similarClaimsComponents)
+                             "similar_claims_components.json",
+                             similarClaimsComponents)
         print("similar_claims_components.json has been saved.")
+        self.helper.dumpJson(self.folderpath+"/final",
+                             "ranked_similar_claims.json",
+                             sortedSimilarClaims)
+        print("ranked_similar_claims.json has been saved.")
         # claimExtractor.rankClaims(
-        #     query[1:], tweets_list, candidateClaimsMergedClause)
+        #     query[1:], tweets_list, similarClaimsComponents)
 
     def getSimilarTweets4Claim(self):
         # get claims

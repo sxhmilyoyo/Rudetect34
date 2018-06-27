@@ -20,7 +20,7 @@ class AddressTweet(object):
         getHashtags(filePath)
         getUserName(filePath)
         sortDict(d)
-        getTop10(self, d, sortedDict)
+        getTop5(self, d, sortedDict)
         getStatistics(self, d)
         getPlot(self, sorted_d, filePath, filename, flag_percent)
         getSortedHashTags(self, hashtags)
@@ -38,12 +38,12 @@ class AddressTweet(object):
         self.helper = Utility.Helper(self.rootPath)
 
     def getHashtags(self, filePath, query):
-        """Get hashtags from tweet object and save it in .pkl file.
+        """Get hashtags from tweet object and save it in .json file.
 
-        Save the hashtags(dict) into hashTags.pkl
-        Save the sorted hashtags(tuple) into sortedHashTags.pkl
-        Save the top10 hashtags(dict) into top10HashTags.pkl
-        Save the plot of top10 hashtags into top10HashTags.png
+        Save the hashtags(dict) into hashTags.json
+        Save the sorted hashtags(tuple) into sortedHashTags.json
+        Save the top5 hashtags(dict) into top5HashTags.json
+        Save the plot of top5 hashtags into top5HashTags.png
         Args:
             filePath (str): the path of the file that contains tweet objects.
             Example: self.rootPath/filePath/rawData
@@ -65,31 +65,31 @@ class AddressTweet(object):
         print(s)
 
         sortedHashTags = self.sortDict(hashTags)
-        top10HashTags = self.getTop10(hashTags, sortedHashTags)
-        top10 = set([key for key in top10HashTags.keys()])
+        top5HashTags = self.getTop5(hashTags, sortedHashTags)
+        top5 = set([key for key in top5HashTags.keys()])
         for h in s.keys():
-            if h in top10:
+            if h in top5:
                 continue
-            top10HashTags[h] = (0, 0)
+            top5HashTags[h] = (0, 0)
 
-        self.helper.dumpPickle(filePath, "hashTags.pkl", hashTags)
-        print ("hashTags.pkl has been saved.")
-        self.helper.dumpPickle(filePath, "sortedHashTags.pkl", sortedHashTags)
-        print ("sortedHashTags.pkl has been saved.")
-        self.helper.dumpPickle(filePath, "top10HashTags.pkl", top10HashTags)
-        print ("top10HashTags.pkl has been saved.")
+        self.helper.dumpJson(filePath, "hashTags.json", hashTags)
+        print("hashTags.json has been saved.")
+        self.helper.dumpJson(filePath, "sortedHashTags.json", sortedHashTags)
+        print("sortedHashTags.json has been saved.")
+        self.helper.dumpJson(filePath, "top5HashTags.json", top5HashTags)
+        print("top5HashTags.json has been saved.")
         averageHashTags = self.getStatistics(hashTags)
-        print ("Average number of hashtag is {}".format(averageHashTags))
-        self.getPlot(top10HashTags, filePath, "top10HashTags.png", True)
-        print ("top10HashTags.pkl has been saved.")
+        print("Average number of hashtag is {}".format(averageHashTags))
+        self.getPlot(top5HashTags, filePath, "top5HashTags.png", True)
+        print("top5HashTags.json has been saved.")
 
     def getUserName(self, filePath):
-        """Get username from tweet objects and save it in .pkl file.
+        """Get username from tweet objects and save it in .json file.
 
-        Save the userName(dict) into hashTags.pkl
-        Save the sorted userName(tuple) into sortedHashTags.pkl
-        Save the top10 userName(dict) into top10HashTags.pkl
-        Save the plot of top10 userName into top10HashTags.png
+        Save the userName(dict) into hashTags.json
+        Save the sorted userName(tuple) into sortedHashTags.json
+        Save the top5 userName(dict) into top5HashTags.json
+        Save the plot of top5 userName into top5HashTags.png
         Args:
             filePath (str): the path of the file that contains tweet objects.
         Returns:
@@ -105,17 +105,17 @@ class AddressTweet(object):
             for tweet in tweets:
                 userName[tweet.username] += 1
         sortedUserName = self.sortDict(userName)
-        top10UserName = self.getTop10(userName, sortedUserName)
-        self.helper.dumpPickle(filePath, "userName.pkl", userName)
-        print ("userName.pkl has been saved.")
-        self.helper.dumpPickle(filePath, "sortedUserName.pkl", sortedUserName)
-        print ("sortedUserName.pkl has been saved.")
-        self.helper.dumpPickle(filePath, "top10UserName.pkl", top10UserName)
-        print ("top10UserName.pkl has been saved.")
+        top5UserName = self.getTop5(userName, sortedUserName)
+        self.helper.dumpJson(filePath, "userName.json", userName)
+        print("userName.json has been saved.")
+        self.helper.dumpJson(filePath, "sortedUserName.json", sortedUserName)
+        print("sortedUserName.json has been saved.")
+        self.helper.dumpJson(filePath, "top5UserName.json", top5UserName)
+        print("top5UserName.json has been saved.")
         averageUserName = self.getStatistics(userName)
-        print ("Average tweet for each tweeter is {}".format(averageUserName))
-        self.getPlot(top10UserName, filePath, "top10UserName.png", False)
-        print ("top10UserName.pkl has been saved.")
+        print("Average tweet for each tweeter is {}".format(averageUserName))
+        self.getPlot(top5UserName, filePath, "top5UserName.png", False)
+        print("top5UserName.json has been saved.")
 
     def sortDict(self, d):
         """Sort the dictionary.
@@ -129,26 +129,26 @@ class AddressTweet(object):
                              reverse=True)
         return sorted_dict
 
-    def getTop10(self, d, sortedDict):
-        """Get top10 hashtags from tweet objects.
+    def getTop5(self, d, sortedDict):
+        """Get top5 hashtags from tweet objects.
 
         Args:
             d (dict): the dictionary {hashtag: number}
             sortedDict (list): the sorted dictionary [(hashtag, number)]
         Returns:
-            dict: top10
+            dict: top5
 
         """
         numValue = sum(d.values())
-        top10 = defaultdict(tuple)
-        if len(sortedDict) < 10:
+        top5 = defaultdict(tuple)
+        if len(sortedDict) < 5:
             length = len(sortedDict)
         else:
-            length = 10
+            length = 5
         for i in range(length):
-            top10[sortedDict[i][0]] = (sortedDict[i][1] / float(numValue) * 100,
-                                       sortedDict[i][1])
-        return top10
+            top5[sortedDict[i][0]] = (sortedDict[i][1] / float(numValue) * 100,
+                                      sortedDict[i][1])
+        return top5
 
     def getStatistics(self, d):
         """Get the statistics based on the data.
@@ -199,7 +199,7 @@ class AddressTweet(object):
 
         """
         if os.path.isfile(os.path.join(self.rootPath, folderPath,
-                          'tweetNum.json')):
+                                       'tweetNum.json')):
             tweetNum = self.helper.loadJson(folderPath + '/tweetNum.json')
         else:
             tweetNum = {}
@@ -208,7 +208,7 @@ class AddressTweet(object):
 
     def getSimilarHashTags(self, originHashtag, hashtags):
         """Get similar hashtags w.r.t. the original hashtags.
-    
+
         Args:
             hashtags (list): a list of hashtags from the tweets
             orignHashtags (str): the initial hashtag
@@ -230,15 +230,15 @@ class AddressTweet(object):
         # print ("new hashtags are: {}".format(res))
         return res
     #
-    # def getFinalTop10HashTags(self, similarHashTags, hashtags):
-    #     """Get the top10 hashtags based on the formula: times.
+    # def getFinaltop5HashTags(self, similarHashTags, hashtags):
+    #     """Get the top5 hashtags based on the formula: times.
     #
     #     Args:
     #         similarHashTags (dict): the dictionary of hashtags with similar
     #                                 scores
     #         hashtags (dict): the dictionary of hashtags with number
     #     Returns:
-    #         list: finalTop10HashTags
+    #         list: finaltop5HashTags
     #     """
     #     temp = {}
     #     for hashtag in similarHashTags.keys():
@@ -277,6 +277,6 @@ class AddressTweet(object):
     #     # test 20 hashtags
     #     sortedHashTags = sorted(hashtags.items(), key=operator.itemgetter(1),
     #                             reverse=True)
-    #     self.helper.dumpPickle("Texas Shooting/4", "TotalHashtags_test.pkl",
+    #     self.helper.dumpJson("Texas Shooting/4", "TotalHashtags_test.json",
     #                            sortedHashTags)
     #     return sortedHashTags

@@ -112,19 +112,23 @@ class GetSimilarity(object):
         claimsContent = [claim[3] for claim in claims]
         encodedClaims = self.encodeSen(claimsContent)
         scores = sd.cdist(encodedClaims, encodedClaims, "cosine")
-        similarClaimsIndeices = np.argwhere(scores > 0.5)
+        similarClaimsIndeices = np.argwhere(scores < 0.5)
 
         similarClaimsIndeicesComponents = Utility.Helper.getConnectedComponents(
-            similarClaimsIndeices)
-        similarClaimsComponents = defaultdict(set)
+            similarClaimsIndeices.tolist())
+        similarClaimsComponents = defaultdict(list)
+        similarClaims = defaultdict(int)
         for component in similarClaimsIndeicesComponents:
             tweet2number = defaultdict(int)
             for index in component:
                 tweetID = claims[index][0]
-                text = tweets[tweetID].text
+                text = claims[index][3]
                 features = tweets[tweetID].reply + \
                     tweets[tweetID].retweets + tweets[tweetID].favorites
                 tweet2number[text] += features
             sortedTweet2Number = Utility.PreprocessData.sortDict(tweet2number)
-            similarClaimsComponents[sortedTweet2Number[0][0]] = component
-        return similarClaimsComponents
+            similarClaimsComponents[sortedTweet2Number[0][0]] = list(component)
+            similarClaims[sortedTweet2Number[0][0]] = sortedTweet2Number[0][1]
+            sortedSimilarClaims = Utility.PreprocessData.sortDict(
+                similarClaims)
+        return similarClaimsComponents, sortedSimilarClaims
