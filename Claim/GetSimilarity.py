@@ -13,23 +13,28 @@ from sklearn.cluster import DBSCAN
 class GetSimilarity(object):
     """Get similar tweets for claim or claims based on sen2vec in skip thoughts model."""
 
-    def __init__(self, modelPath, checkpointPath):
+    def __init__(self, rootPath, folderPath, modelPath="", checkpointPath=""):
         """Initialize the TweetsExtractor4Claim model.
 
         Arguments:
+            rootPath {str} -- the path to data root folder
             modelPath {str} -- the path to model folder
             checkpointPath {str} -- the filename of mode.ckpt-xxxx
         """
-        self.modelPath = modelPath
-        self.checkpointPath = os.path.join(modelPath, "..", checkpointPath)
-        self.vocabFile = os.path.join(modelPath, "vocab.txt")
-        self.embeddingMatrixFile = os.path.join(modelPath, "embeddings.npy")
+        self.helper = Utility.Helper(rootPath)
+        self.fileFolderPath = os.path.join(folderPath, "final")
+        if modelPath != "" and checkpointPath != "":
+            self.modelPath = modelPath
+            self.checkpointPath = os.path.join(modelPath, "..", checkpointPath)
+            self.vocabFile = os.path.join(modelPath, "vocab.txt")
+            self.embeddingMatrixFile = os.path.join(
+                modelPath, "embeddings.npy")
 
-        self.encoder = encoder_manager.EncoderManager()
-        self.encoder.load_model(configuration.model_config(),
-                                vocabulary_file=self.vocabFile,
-                                embedding_matrix_file=self.embeddingMatrixFile,
-                                checkpoint_path=self.checkpointPath)
+            self.encoder = encoder_manager.EncoderManager()
+            self.encoder.load_model(configuration.model_config(),
+                                    vocabulary_file=self.vocabFile,
+                                    embedding_matrix_file=self.embeddingMatrixFile,
+                                    checkpoint_path=self.checkpointPath)
 
     def splitSentences(self, cleanedTweets):
         """Split sentences in each tweet.
@@ -101,101 +106,101 @@ class GetSimilarity(object):
         #               (sent, score, twIndx))
         return claims2tweets
 
-    def getSimilarClaims(self, claims, tweets):
-        """Get similar claims.
+    # def getSimilarClaims(self, claims, tweets):
+    #     """Get similar claims.
 
-        Arguments:
-            claims {list} -- [[tweetID, subjectID, afterSubjectIdx, claim1], ...]
-            tweets {list} -- a list of tweets
+    #     Arguments:
+    #         claims {list} -- [[tweetID, subjectID, afterSubjectIdx, claim1], ...]
+    #         tweets {list} -- a list of tweets
 
-        Returns:
-            list -- [claim1, claim2, ...]
-        """
-        # tweetID_675 = None
-        # tweetID_14 = None
-        # tweetID_956 = None
-        # for index, item in enumerate(claims):
-        #     if item[0] == 675:
-        #         print("index of tweetID 675 ", index)
-        #         tweetID_675 = index
-        #     if item[0] == 14:
-        #         print("index of tweetID 14 ", index)
-        #         tweetID_14 = index
-        #     if item[0] == 956:
-        #         print("index of tweetID 956 ", index)
-        #         tweetID_956 = index
-        #     if tweetID_675 and tweetID_14 and tweetID_956:
-        #         break
+    #     Returns:
+    #         list -- [claim1, claim2, ...]
+    #     """
+    #     # tweetID_675 = None
+    #     # tweetID_14 = None
+    #     # tweetID_956 = None
+    #     # for index, item in enumerate(claims):
+    #     #     if item[0] == 675:
+    #     #         print("index of tweetID 675 ", index)
+    #     #         tweetID_675 = index
+    #     #     if item[0] == 14:
+    #     #         print("index of tweetID 14 ", index)
+    #     #         tweetID_14 = index
+    #     #     if item[0] == 956:
+    #     #         print("index of tweetID 956 ", index)
+    #     #         tweetID_956 = index
+    #     #     if tweetID_675 and tweetID_14 and tweetID_956:
+    #     #         break
 
-        claimsContent = [claim[3] for claim in claims]
-        # encodedClaims = [self.encodeSen([cc]) for cc in claimsContent]
-        # encodedClaims_numpy = np.concatenate(encodedClaims)
-        encodedClaims = self.encodeSen(claimsContent)
+    #     claimsContent = [claim[3] for claim in claims]
+    #     # encodedClaims = [self.encodeSen([cc]) for cc in claimsContent]
+    #     # encodedClaims_numpy = np.concatenate(encodedClaims)
+    #     encodedClaims = self.encodeSen(claimsContent)
 
-        # scores = sd.cdist(encodedClaims_numpy, encodedClaims_numpy, "cosine")
-        scores = sd.cdist(encodedClaims, encodedClaims, "cosine")
-        similarClaimsIndeices = np.argwhere(scores < 0.5)
+    #     # scores = sd.cdist(encodedClaims_numpy, encodedClaims_numpy, "cosine")
+    #     scores = sd.cdist(encodedClaims, encodedClaims, "cosine")
+    #     similarClaimsIndeices = np.argwhere(scores < 0.5)
 
-        # test = [claimsContent[tweetID_675],
-        #         claimsContent[tweetID_14], claimsContent[tweetID_956]]
-        # encodedtest = self.encodeSen(test)
-        # scores_test = sd.cdist(encodedtest, encodedtest, "cosine")
-        # print("test ", scores_test)
+    #     # test = [claimsContent[tweetID_675],
+    #     #         claimsContent[tweetID_14], claimsContent[tweetID_956]]
+    #     # encodedtest = self.encodeSen(test)
+    #     # scores_test = sd.cdist(encodedtest, encodedtest, "cosine")
+    #     # print("test ", scores_test)
 
-        # print(encodedtest[0])
-        # print(encodedClaims[tweetID_675])
+    #     # print(encodedtest[0])
+    #     # print(encodedClaims[tweetID_675])
 
-        # print("657 ", np.array_equal(
-        #     encodedtest[0], encodedClaims[tweetID_675]))
-        # print("14 ", np.array_equal(encodedtest[1], encodedClaims[tweetID_14]))
-        # print("956 ", np.array_equal(
-        #     encodedtest[2], encodedClaims[tweetID_956]))
+    #     # print("657 ", np.array_equal(
+    #     #     encodedtest[0], encodedClaims[tweetID_675]))
+    #     # print("14 ", np.array_equal(encodedtest[1], encodedClaims[tweetID_14]))
+    #     # print("956 ", np.array_equal(
+    #     #     encodedtest[2], encodedClaims[tweetID_956]))
 
-        # print("tweetID_675: claims index {} {}".format(
-        #     tweetID_675, claimsContent[tweetID_675]))
-        # print("pair indexes lower than 0.5 {}".format(
-        #     np.argwhere(scores[tweetID_675] < 0.5).tolist()))
+    #     # print("tweetID_675: claims index {} {}".format(
+    #     #     tweetID_675, claimsContent[tweetID_675]))
+    #     # print("pair indexes lower than 0.5 {}".format(
+    #     #     np.argwhere(scores[tweetID_675] < 0.5).tolist()))
 
-        # tmp_675 = np.argwhere(scores[tweetID_675] < 0.5).tolist()
-        # print("original claim {}".format(claimsContent[tweetID_675]))
-        # for t in tmp_675:
-        #     print("claim {} score {}".format(
-        #         claimsContent[t[0]], scores[tweetID_675][t[0]]))
+    #     # tmp_675 = np.argwhere(scores[tweetID_675] < 0.5).tolist()
+    #     # print("original claim {}".format(claimsContent[tweetID_675]))
+    #     # for t in tmp_675:
+    #     #     print("claim {} score {}".format(
+    #     #         claimsContent[t[0]], scores[tweetID_675][t[0]]))
 
-        # print("tweetID_14: claims index {} {}".format(
-        #     tweetID_14, claimsContent[tweetID_14]))
-        # print("pair indexes lower than 0.5 {}".format(
-        #     np.argwhere(scores[tweetID_14] < 0.5).tolist()))
+    #     # print("tweetID_14: claims index {} {}".format(
+    #     #     tweetID_14, claimsContent[tweetID_14]))
+    #     # print("pair indexes lower than 0.5 {}".format(
+    #     #     np.argwhere(scores[tweetID_14] < 0.5).tolist()))
 
-        # tmp_14 = np.argwhere(scores[tweetID_14] < 0.5).tolist()
-        # print("original claim {}".format(claimsContent[tweetID_14]))
-        # for t in tmp_14:
-        #     print("claim {} score {}".format(
-        #         claimsContent[t[0]], scores[tweetID_14][t[0]]))
+    #     # tmp_14 = np.argwhere(scores[tweetID_14] < 0.5).tolist()
+    #     # print("original claim {}".format(claimsContent[tweetID_14]))
+    #     # for t in tmp_14:
+    #     #     print("claim {} score {}".format(
+    #     #         claimsContent[t[0]], scores[tweetID_14][t[0]]))
 
-        similarClaimsIndeicesComponents = Utility.Helper.getConnectedComponents(
-            similarClaimsIndeices.tolist())
-        similarClaimsComponents = defaultdict(list)
-        similarClaims = defaultdict(int)
-        for component in similarClaimsIndeicesComponents:
-            tweet2features = defaultdict(int)
-            for index in component:
-                tweetID = claims[index][0]
-                text = claims[index][3]
-                features = tweets[tweetID].reply + \
-                    tweets[tweetID].retweets + \
-                    tweets[tweetID].favorites + 1
-                tweet2features[text] += features
-            sortedTweet2Number = Utility.PreprocessData.sortDict(
-                tweet2features)
-            similarClaimsComponents[sortedTweet2Number[0][0]] = list(component)
-            componentFeatures = [feature for text,
-                                 feature in sortedTweet2Number]
-            similarClaims[sortedTweet2Number[0][0]] = sum(
-                componentFeatures) / len(componentFeatures)
-        sortedSimilarClaims = Utility.PreprocessData.sortDict(
-            similarClaims)
-        return similarClaimsComponents, sortedSimilarClaims
+    #     similarClaimsIndeicesComponents = Utility.Helper.getConnectedComponents(
+    #         similarClaimsIndeices.tolist())
+    #     similarClaimsComponents = defaultdict(list)
+    #     similarClaims = defaultdict(int)
+    #     for component in similarClaimsIndeicesComponents:
+    #         tweet2features = defaultdict(int)
+    #         for index in component:
+    #             tweetID = claims[index][0]
+    #             text = claims[index][3]
+    #             features = tweets[tweetID].reply + \
+    #                 tweets[tweetID].retweets + \
+    #                 tweets[tweetID].favorites + 1
+    #             tweet2features[text] += features
+    #         sortedTweet2Number = Utility.PreprocessData.sortDict(
+    #             tweet2features)
+    #         similarClaimsComponents[sortedTweet2Number[0][0]] = list(component)
+    #         componentFeatures = [feature for text,
+    #                              feature in sortedTweet2Number]
+    #         similarClaims[sortedTweet2Number[0][0]] = sum(
+    #             componentFeatures) / len(componentFeatures)
+    #     sortedSimilarClaims = Utility.PreprocessData.sortDict(
+    #         similarClaims)
+    #     return similarClaimsComponents, sortedSimilarClaims
 
     def getClusteredClaims(self, claims, tweets):
         """Get clusters of the claims by DBSCAN.
@@ -205,9 +210,9 @@ class GetSimilarity(object):
             tweets {list} -- a list of tweets
 
         Returns:
-            dict -- {cluster1: [claim1, ...], ...}
+            tuple -- (cluster2claimsIndexes, cluster2claimsContents)
         """
-        cluster2claims = defaultdict(list)
+        cluster2claimsIndexes = defaultdict(list)
         claimsContent = [claim[3] for claim in claims]
         encodedClaims = self.encodeSen(claimsContent)
         scores = sd.cdist(encodedClaims, encodedClaims, "cosine")
@@ -216,13 +221,106 @@ class GetSimilarity(object):
         labels = db.labels_
 
         for index, label in enumerate(labels):
-            if label == -1:
-                continue
-            cluster2claims[label].append(index)
+            cluster2claimsIndexes[label].append(index)
 
-        for key, value in cluster2claims.items():
-            print("=" * 100)
-            print("cluster {}".format(key))
-            for v in value:
-                print(claimsContent[v])
-        return cluster2claims
+        self.helper.dumpJson(
+            self.fileFolderPath, "cluster_to_claims_indexes.json", cluster2claimsIndexes)
+        print("cluster_to_claims_indexes.json has been saved.")
+        # for key, value in cluster2claimsIndexes.items():
+        #     print("=" * 100)
+        #     print("cluster {}".format(key))
+        #     for v in value:
+        #         cluster2claimsContents[key].append(claimsContent[v])
+        #         print(claimsContent[v])
+        return cluster2claimsIndexes
+
+    # def rankClusteredClaims(self, cluster2claimsIndexes, claims):
+    #     for label, claimIndexes in cluster2claimsIndexes.items():
+
+    def rankClusteredClaims(self, cluster2claimsIndexes, claims, tweets):
+        """Rank claims in clusters.
+
+        Arguments:
+            cluster2claimsIndexes {dict} -- {cluster1: [claim1Index, claim2Index, ...], ...}
+            claims {list} -- [[tweetID, subjectID, afterSubjectIdx, claim1], ...]
+            tweets {list} -- a list of tweets
+        Returns:
+            list -- [(representativeClaim1, feature), (representativeClaim2, features), ...]
+        """
+        representativeClaim2ClaimsCluster = defaultdict(list)
+        representativeClaim2ClusterFeatures = defaultdict(float)
+        for label, claimIndexes in cluster2claimsIndexes.items():
+            tweet2features = self.__getFeature4Claims(
+                claimIndexes, claims, tweets)
+            sortedTweet2Number = Utility.PreprocessData.sortDict(
+                tweet2features)
+            self.__getRepresentativeClaim(
+                sortedTweet2Number, claimIndexes, claims,
+                representativeClaim2ClaimsCluster)
+            self.__getFeature4Cluster(
+                sortedTweet2Number,
+                representativeClaim2ClusterFeatures)
+        self.helper.dumpJson(
+            self.fileFolderPath,
+            "representative_claim_to_claims_cluster.json",
+            representativeClaim2ClaimsCluster)
+        print("representative_claim_to_claims_cluster.json has been saved.")
+        self.helper.dumpJson(
+            self.fileFolderPath,
+            "representative_claim_to_cluster_feature.json",
+            representativeClaim2ClusterFeatures)
+        print("representative_claim_to_cluster_feature.json has been saved.")
+        rankedClusterClaims = Utility.PreprocessData.sortDict(
+            representativeClaim2ClusterFeatures)
+        self.helper.dumpJson(self.fileFolderPath,
+                             "ranked_cluster_claims.json",
+                             rankedClusterClaims)
+        print("ranked_cluster_claims.json has been saved.")
+        return rankedClusterClaims
+
+    def __getRepresentativeClaim(self, sortedTweet2Number, claimIndexes,
+                                 claims, representativeClaim2ClaimsCluster):
+        """Get representative claim for each cluster.
+
+        Arguments:
+            sortedTweet2Number {list} -- [(tweet, feature), ...]
+            claimIndexes {list} -- [claimIndex1, claimIndex2, ...]
+            claims {list} -- [[tweetID, subjectID, afterSubjectIdx, claim1], ...]
+            representativeClaim2ClaimsCluster {dict} -- {claim: [claim1, claim2, ...], ...}
+        """
+        claimsContent = [claims[index][3] for index in claimIndexes]
+        representativeClaim2ClaimsCluster[sortedTweet2Number[0]
+                                          [0]] = claimsContent[:]
+
+    def __getFeature4Claims(self, claimIndexes, claims, tweets):
+        """Get feature for claims.
+
+        Arguments:
+            claimIndexes {list} -- [claimIndex1, claimIndex2, ...]
+            claims {list} -- [[tweetID, subjectID, afterSubjectIdx, claim1], ...]
+            tweets {list} -- a list of tweets
+
+        Returns:
+            dict -- {tweet: feature, ...}
+        """
+        tweet2features = defaultdict(int)
+        for claimIndex in claimIndexes:
+            tweetID = claims[claimIndex][0]
+            text = claims[claimIndex][3]
+            features = tweets[tweetID].reply + \
+                tweets[tweetID].retweets + \
+                tweets[tweetID].favorites + 1
+            tweet2features[text] += features
+        return tweet2features
+
+    def __getFeature4Cluster(self, sortedTweet2Number,
+                             representativeClaim2ClusterFeatures):
+        """Get feature for each cluster.
+
+        Arguments:
+            sortedTweet2Number {list} -- [(tweet, feature), ...]
+            representativeClaim2ClusterFeatures {dict} -- {claim: feature, ...}
+        """
+        clusterFeatures = [feature for text, feature in sortedTweet2Number]
+        representativeClaim2ClusterFeatures[sortedTweet2Number[0][0]] = sum(
+            clusterFeatures) / len(clusterFeatures)

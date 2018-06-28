@@ -181,15 +181,10 @@ class WorkFlow(object):
         self.preprocessData.generateTweetsLines(self.folderpath)
 
         claimExtractor = Claim.ClaimExtractor(self.rootpath, self.folderpath)
-        getSimilarity = Claim.GetSimilarity(
-            "/home/hao/Workplace/HaoXu/Data/skip_thoughts/pretrained/skip_thoughts_uni_2017_02_02/exp_vocab",
-            "model.ckpt-501424")
 
-        tweets = self.helper.getTweet(self.folderpath)
-        tweets_list = []
+        tweets_list = list(self.helper.getTweet(self.folderpath))
         cleanedTweets = []
-        for tweet in tweets:
-            tweets_list.append(tweet)
+        for tweet in tweets_list:
             c1 = self.preprocessData.cleanTweet(tweet.text)
             cleanedTweets.append(c1)
         print("Parsing...")
@@ -205,10 +200,32 @@ class WorkFlow(object):
         candidateClaimsMergedClause = claimExtractor.getCandidateClaims(
             tweets_list, mergedNoun, sortedSubject2Number, subject2tweetInfo,
             parsedTweets, query[1:])
+
+        return candidateClaimsMergedClause
         # mergedCandidateClaims = claimExtractor.mergeSimilarSubjects(
         #     candidateClaims)
-        getSimilarity.getClusteredClaims(
-            candidateClaimsMergedClause, tweets_list)
+
+    def getClusterClaims(self, query):
+        claims = self.getClaims(query)
+        getSimilarity = Claim.GetSimilarity(
+            self.rootpath,
+            self.folderpath,
+            "/home/hao/Workplace/HaoXu/Data/skip_thoughts/pretrained/skip_thoughts_uni_2017_02_02/exp_vocab",
+            "model.ckpt-501424")
+        tweets_list = list(self.helper.getTweet(self.folderpath))
+        cluster2claimsIndexes = getSimilarity.getClusteredClaims(
+            claims, tweets_list)
+        return cluster2claimsIndexes, claims
+
+    def getClusterRankClaims(self, query):
+        cluster2claimsIndexes, claims = self.getClusterClaims(query)
+        getSimilarity = Claim.GetSimilarity(
+            self.rootpath,
+            self.folderpath)
+        tweets_list = list(self.helper.getTweet(self.folderpath))
+        rankedClusterClaims = getSimilarity.rankClusteredClaims(
+            cluster2claimsIndexes, claims, tweets_list)
+        return rankedClusterClaims
 
         """similarClaimsComponents, sortedSimilarClaims = getSimilarity.getSimilarClaims(
             candidateClaimsMergedClause, tweets_list)
