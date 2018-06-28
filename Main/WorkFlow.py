@@ -207,7 +207,10 @@ class WorkFlow(object):
             parsedTweets, query[1:])
         # mergedCandidateClaims = claimExtractor.mergeSimilarSubjects(
         #     candidateClaims)
-        similarClaimsComponents, sortedSimilarClaims = getSimilarity.getSimilarClaims(
+        getSimilarity.getClusteredClaims(
+            candidateClaimsMergedClause, tweets_list)
+
+        """similarClaimsComponents, sortedSimilarClaims = getSimilarity.getSimilarClaims(
             candidateClaimsMergedClause, tweets_list)
         self.helper.dumpJson(self.folderpath+"/final",
                              "similar_claims_components.json",
@@ -216,7 +219,8 @@ class WorkFlow(object):
         self.helper.dumpJson(self.folderpath+"/final",
                              "ranked_similar_claims.json",
                              sortedSimilarClaims)
-        print("ranked_similar_claims.json has been saved.")
+        print("ranked_similar_claims.json has been saved.")"""
+
         # claimExtractor.rankClaims(
         #     query[1:], tweets_list, similarClaimsComponents)
 

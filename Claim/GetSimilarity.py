@@ -7,6 +7,7 @@ from nltk import sent_tokenize
 from nltk import word_tokenize
 from collections import defaultdict
 import Utility
+from sklearn.cluster import DBSCAN
 
 
 class GetSimilarity(object):
@@ -195,3 +196,33 @@ class GetSimilarity(object):
         sortedSimilarClaims = Utility.PreprocessData.sortDict(
             similarClaims)
         return similarClaimsComponents, sortedSimilarClaims
+
+    def getClusteredClaims(self, claims, tweets):
+        """Get clusters of the claims by DBSCAN.
+
+        Arguments:
+            claims {list} -- [[tweetID, subjectID, afterSubjectIdx, claim1], ...]
+            tweets {list} -- a list of tweets
+
+        Returns:
+            dict -- {cluster1: [claim1, ...], ...}
+        """
+        cluster2claims = defaultdict(list)
+        claimsContent = [claim[3] for claim in claims]
+        encodedClaims = self.encodeSen(claimsContent)
+        scores = sd.cdist(encodedClaims, encodedClaims, "cosine")
+
+        db = DBSCAN(eps=0.35, min_samples=2, metric="precomputed").fit(scores)
+        labels = db.labels_
+
+        for index, label in enumerate(labels):
+            if label == -1:
+                continue
+            cluster2claims[label].append(index)
+
+        for key, value in cluster2claims.items():
+            print("=" * 100)
+            print("cluster {}".format(key))
+            for v in value:
+                print(claimsContent[v])
+        return cluster2claims
