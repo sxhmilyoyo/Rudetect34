@@ -16,17 +16,24 @@ def main(rootpath):
     print("="*100)
 
     for folder in folders:
+        # exclude some events
         # if folder in ["immigration_0612_0624", "FalseFlag_0518_0523",  "Capriccio_0516_0523"]:
         #     continue
-        # if folder != "Capriccio_0516_0523_new":
-        #     continue
-        if folder[0] == ".":
+
+        # specify an event
+        if folder != "Gabapentin_0628_0121":
             continue
+
+        # run total events
+        # if folder[0] == ".":
+        #     continue
+
         print("Running code for {}".format(folder))
         args = ['python', 'main.py', '-r', rootpath,
                 '-f', folder, '-q', "#"+folder.split("_")[0], '-s', 'test', '-e', 'test']
         print("Command line is {}".format(" ".join(args)))
         subprocess.call(args)
+        # break
         time.sleep(random.randint(1, 121))
 
 

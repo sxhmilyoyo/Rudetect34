@@ -61,7 +61,7 @@ class WorkFlow(object):
 
         """
         root = Path(self.rootpath)
-        events = [x for x in root.iterdir() if x.is_dir()]
+        events = [x for x in root.iterdir() if x.is_dir() and x.name[0] != "."]
 
         tweets_line_word2vec_path = root / "tweets_line_word2vec.txt"
         if tweets_line_word2vec_path.exists():

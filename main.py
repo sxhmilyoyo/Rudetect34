@@ -54,11 +54,11 @@ def main(rootpath, folderpath, query, start, end):
     # print('='*100)
     # workFlow.getTweets(query, start, end)
 
-    """# get word2vec
-    print('='*100)
-    print('Getting word2vec ...')
-    print('='*100)
-    workFlow.getWord2Vec()"""
+    # # get word2vec
+    # print('='*100)
+    # print('Getting word2vec ...')
+    # print('='*100)
+    # workFlow.getWord2Vec()
 
     # get Claims
     print('='*100)
