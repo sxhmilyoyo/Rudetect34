@@ -391,7 +391,7 @@ class ClaimExtractor(object):
         candidateSubjects = [subject for subject,
                              number in sortedSubject2Number]
         for subject in candidateSubjects:
-            print("subject is {}".format(subject))
+            # print("subject is {}".format(subject))
             for tweetID, subjectId in subject2tweetInfo[subject]:
                 subjectId = int(subjectId)
                 # original parsed tweet
@@ -404,8 +404,7 @@ class ClaimExtractor(object):
                     mergedNoun, tweetID, subjectId, parsedTweet)
                 rootID = rootIndex+1
                 startIndex = rootIndex + 1
-                flag = {"N": False, "V": True, "O": False,
-                        "R": False, "P": False, "A": False, "&": False}
+                flag = ["V"]
                 objects = self.__getObject(
                     startIndex, totalLen, parsedTweet, rootID,
                     tweetID, startSent, tweets, flag)
@@ -495,7 +494,7 @@ class ClaimExtractor(object):
             tweetID {int} -- tweet ID
             startSent {int} -- the start index of the current sentence
             tweets {list} -- the list of tweets
-            flag {dict} -- the flag for each pos tag
+            flag {dict} -- the flag for previous pos tag
 
         Returns:
             list -- the list of parsed terms as objects
@@ -518,7 +517,8 @@ class ClaimExtractor(object):
             if int(parsedTerm[6]) == rootID:
                 # handle root_verb verb
                 if parsedTerm[3] == "V":
-                    flag["V"] = True
+                    tmp = flag.pop()
+                    flag.append("V")
                     dependedOnCurrentParsedTerm = self.__findDependencyNoun(
                         parsedTweet, startSent, startIndex-1, parsedTerm,
                         tweets, tweetID)
@@ -527,28 +527,37 @@ class ClaimExtractor(object):
                     afterVerbObjects = self.__getObject(
                         startIndex+1, totalLen, parsedTweet,
                         int(parsedTerm[0]), tweetID, startSent, tweets, flag)
+                    flag.pop()
+                    flag.append(tmp)
                     objects = list(objects + afterVerbObjects)
                     # break
                 # handle root_verb to do
                 elif parsedTerm[3] == "P":
-                    flag["P"] = True
+                    tmp = flag.pop()
+                    flag.append("P")
                     objects.append(parsedTerm)
                     afterPostposition = self.__getObject(
                         startIndex+1, totalLen, parsedTweet,
                         int(parsedTerm[0]), tweetID, startSent, tweets, flag)
+                    flag.pop()
+                    flag.append(tmp)
                     objects = list(objects + afterPostposition)
                     # break
                 # handle pronoun
-                elif parsedTerm[3] == "O" and flag["V"]:
-                    flag["O"] = True
+                elif parsedTerm[3] == "O" and "V" not in flag:
+                    tmp = flag.pop()
+                    flag.append("O")
                     objects.append(parsedTerm)
                     afterPostposition = self.__getObject(
                         startIndex+1, totalLen, parsedTweet,
                         int(parsedTerm[0]), tweetID, startSent, tweets, flag)
+                    flag.pop()
+                    flag.append(tmp)
                     objects = list(objects + afterPostposition)
                 # handle root_verb sth.
                 elif parsedTerm[3] in set(["N", "^", "S"]):
-                    flag["N"] = True
+                    tmp = flag.pop()
+                    flag.append("N")
                     # find previously
                     dependencyNounInfos = self.__findDependencyNoun(
                         parsedTweet, startSent, startIndex-1, parsedTerm,
@@ -570,34 +579,45 @@ class ClaimExtractor(object):
                     postposition = self.__getObject(
                         startIndex+1, totalLen, parsedTweet,
                         int(parsedTerm[0]), tweetID, startSent, tweets, flag)
+                    flag.pop()
+                    flag.append(tmp)
                     objects = list(objects + postposition)
                     # break
                 # handle adj.
-                elif parsedTerm[3] == "A" and not flag["N"]:
-                    flag["A"] = True
+                elif parsedTerm[3] == "A" and "N" not in flag:
+                    tmp = flag.pop()
+                    flag.append("A")
                     objects.append(parsedTerm)
                     afterAdj = self.__getObject(
                         startIndex+1, totalLen, parsedTweet,
                         int(parsedTerm[0]), tweetID, startSent, tweets, flag)
+                    flag.pop()
+                    flag.append(tmp)
                     objects = list(objects + afterAdj)
                     # break
                 # handle adv.
-                elif parsedTerm[3] == "R" and not flag["V"]:
-                    flag["R"] = True
+                elif parsedTerm[3] == "R" and "V" not in flag:
+                    tmp = flag.pop()
+                    flag.append("R")
                     objects.append(parsedTerm)
                     afterAdj = self.__getObject(
                         startIndex+1, totalLen, parsedTweet,
                         int(parsedTerm[0]), tweetID, startSent, tweets, flag)
+                    flag.pop()
+                    flag.append(tmp)
                     objects = list(objects + afterAdj)
                 # handle coordinating conjunction
                 elif parsedTerm[3] == "&":
-                    flag["&"] = True
+                    tmp = flag.pop()
+                    flag.append("&")
                     preConjunctionObjects = self.__getObject(
                         0, int(parsedTerm[0])-1, parsedTweet,
                         int(parsedTerm[0]), tweetID, startSent, tweets, flag)
                     afterConjunctionObjects = self.__getObject(
                         startIndex+1, totalLen, parsedTweet,
                         int(parsedTerm[0]), tweetID, startSent, tweets, flag)
+                    flag.pop()
+                    flag.append(tmp)
                     objects = list(preConjunctionObjects +
                                    [parsedTerm] + afterConjunctionObjects)
                     # break

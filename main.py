@@ -64,7 +64,7 @@ def main(rootpath, folderpath, query, start, end):
     print('='*100)
     print('Getting subject ...')
     print('='*100)
-    workFlow.getClaims(query)
+    workFlow.getClusterRankClaims(query)
 
     """# get the topic model
     print('='*100)

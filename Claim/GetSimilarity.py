@@ -217,12 +217,12 @@ class GetSimilarity(object):
         encodedClaims = self.encodeSen(claimsContent)
         scores = sd.cdist(encodedClaims, encodedClaims, "cosine")
 
-        db = DBSCAN(eps=0.35, min_samples=2, metric="precomputed").fit(scores)
+        db = DBSCAN(eps=0.3, min_samples=2, metric="precomputed").fit(scores)
         labels = db.labels_
 
         for index, label in enumerate(labels):
-            cluster2claimsIndexes[label].append(index)
-
+            cluster2claimsIndexes[str(label)].append(index)
+        # print(cluster2claimsIndexes)
         self.helper.dumpJson(
             self.fileFolderPath, "cluster_to_claims_indexes.json", cluster2claimsIndexes)
         print("cluster_to_claims_indexes.json has been saved.")
@@ -250,16 +250,21 @@ class GetSimilarity(object):
         representativeClaim2ClaimsCluster = defaultdict(list)
         representativeClaim2ClusterFeatures = defaultdict(float)
         for label, claimIndexes in cluster2claimsIndexes.items():
+            flag = False
+            label = int(label)
             tweet2features = self.__getFeature4Claims(
                 claimIndexes, claims, tweets)
+            if label == -1:
+                # flag = True
+                continue
             sortedTweet2Number = Utility.PreprocessData.sortDict(
                 tweet2features)
             self.__getRepresentativeClaim(
                 sortedTweet2Number, claimIndexes, claims,
-                representativeClaim2ClaimsCluster)
+                representativeClaim2ClaimsCluster, flag)
             self.__getFeature4Cluster(
                 sortedTweet2Number,
-                representativeClaim2ClusterFeatures)
+                representativeClaim2ClusterFeatures, flag)
         self.helper.dumpJson(
             self.fileFolderPath,
             "representative_claim_to_claims_cluster.json",
@@ -279,7 +284,7 @@ class GetSimilarity(object):
         return rankedClusterClaims
 
     def __getRepresentativeClaim(self, sortedTweet2Number, claimIndexes,
-                                 claims, representativeClaim2ClaimsCluster):
+                                 claims, representativeClaim2ClaimsCluster, flag):
         """Get representative claim for each cluster.
 
         Arguments:
@@ -287,10 +292,15 @@ class GetSimilarity(object):
             claimIndexes {list} -- [claimIndex1, claimIndex2, ...]
             claims {list} -- [[tweetID, subjectID, afterSubjectIdx, claim1], ...]
             representativeClaim2ClaimsCluster {dict} -- {claim: [claim1, claim2, ...], ...}
+            flag {boolean} -- flag for label: -1
         """
         claimsContent = [claims[index][3] for index in claimIndexes]
-        representativeClaim2ClaimsCluster[sortedTweet2Number[0]
-                                          [0]] = claimsContent[:]
+        if not flag:
+            representativeClaim2ClaimsCluster[sortedTweet2Number[0]
+                                              [0]] = claimsContent[:]
+        else:
+            for cc in claimsContent:
+                representativeClaim2ClaimsCluster[cc] = cc
 
     def __getFeature4Claims(self, claimIndexes, claims, tweets):
         """Get feature for claims.
@@ -299,7 +309,6 @@ class GetSimilarity(object):
             claimIndexes {list} -- [claimIndex1, claimIndex2, ...]
             claims {list} -- [[tweetID, subjectID, afterSubjectIdx, claim1], ...]
             tweets {list} -- a list of tweets
-
         Returns:
             dict -- {tweet: feature, ...}
         """
@@ -314,13 +323,18 @@ class GetSimilarity(object):
         return tweet2features
 
     def __getFeature4Cluster(self, sortedTweet2Number,
-                             representativeClaim2ClusterFeatures):
+                             representativeClaim2ClusterFeatures, flag):
         """Get feature for each cluster.
 
         Arguments:
             sortedTweet2Number {list} -- [(tweet, feature), ...]
             representativeClaim2ClusterFeatures {dict} -- {claim: feature, ...}
+            flag {boolean} -- flag for label: -1
         """
-        clusterFeatures = [feature for text, feature in sortedTweet2Number]
-        representativeClaim2ClusterFeatures[sortedTweet2Number[0][0]] = sum(
-            clusterFeatures) / len(clusterFeatures)
+        if not flag:
+            clusterFeatures = [feature for text, feature in sortedTweet2Number]
+            representativeClaim2ClusterFeatures[sortedTweet2Number[0][0]] = sum(
+                clusterFeatures) / len(clusterFeatures)
+        else:
+            for text, feature in sortedTweet2Number:
+                representativeClaim2ClusterFeatures[text] = feature

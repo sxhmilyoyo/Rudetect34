@@ -21,7 +21,7 @@ def main(rootpath):
         #     continue
 
         # specify an event
-        if folder != "Gabapentin_0628_0121":
+        if folder != "immigrants_0622_0624":
             continue
 
         # run total events
