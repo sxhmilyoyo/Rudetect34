@@ -239,7 +239,12 @@ class ClaimExtractor(object):
                         j = start + 1
                         while j < len(parsedTweet) and j < verbRootIndex:
                             if parsedTweet[j][3] in set(["N", "^", "S"]) and int(parsedTweet[j][6]) == int(verbRootID):
-                                merge[1] = merge[1] + " " + parsedTweet[j][1]
+                                if merge[1].lower() in set(["where", "who", "what", "how", "when", "why"]):
+                                    merge = list(parsedTweet[j])
+                                    start = j
+                                else:
+                                    merge[1] = merge[1] + \
+                                        " " + parsedTweet[j][1]
                             j += 1
                             # else:
                             #     # print("index is ", index)
@@ -584,7 +589,7 @@ class ClaimExtractor(object):
                     objects = list(objects + postposition)
                     # break
                 # handle adj.
-                elif parsedTerm[3] == "A" and "N" not in flag:
+                elif parsedTerm[3] == "A" and "N" not in flag and "V" not in flag:
                     tmp = flag.pop()
                     flag.append("A")
                     objects.append(parsedTerm)
