@@ -213,18 +213,19 @@ class WorkFlow(object):
             "/home/hao/Workplace/HaoXu/Data/skip_thoughts/pretrained/skip_thoughts_uni_2017_02_02/exp_vocab",
             "model.ckpt-501424")
         tweets_list = list(self.helper.getTweet(self.folderpath))
-        cluster2claimsIndexes = getSimilarity.getClusteredClaims(
+        cluster2claimsIndexes, cluster2coreSampleIndices = getSimilarity.getClusteredClaims(
             claims, tweets_list)
-        return cluster2claimsIndexes, claims
+        return cluster2claimsIndexes, cluster2coreSampleIndices, claims
 
     def getClusterRankClaims(self, query):
-        cluster2claimsIndexes, claims = self.getClusterClaims(query)
+        cluster2claimsIndexes, cluster2coreSampleIndices, claims = self.getClusterClaims(
+            query)
         getSimilarity = Claim.GetSimilarity(
             self.rootpath,
             self.folderpath)
         tweets_list = list(self.helper.getTweet(self.folderpath))
         rankedClusterClaims = getSimilarity.rankClusteredClaims(
-            cluster2claimsIndexes, claims, tweets_list)
+            cluster2claimsIndexes, cluster2coreSampleIndices, claims, tweets_list)
         return rankedClusterClaims
 
         """similarClaimsComponents, sortedSimilarClaims = getSimilarity.getSimilarClaims(

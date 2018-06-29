@@ -17,11 +17,11 @@ def main(rootpath):
 
     for folder in folders:
         # exclude some events
-        # if folder in ["immigration_0612_0624", "FalseFlag_0518_0523",  "Capriccio_0516_0523"]:
+        # if folder not in ["SouthwestKey_0620_0624", "WhereAreTheChildren_0418_0527"]:
         #     continue
 
         # specify an event
-        if folder != "SanctuaryCities_0516_0523":
+        if folder != "WhereAreTheChildren_0418_0527":
             continue
 
         # run total events
