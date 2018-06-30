@@ -1,8 +1,5 @@
 absl-py
 alabaster
-anaconda-client
-anaconda-navigator
-anaconda-project
 asn1crypto
 astor
 astroid
@@ -14,7 +11,6 @@ backports.shutil-get-terminal-size
 beautifulsoup4
 bitarray
 bkcharts
-blaze
 bleach
 bokeh
 boto
@@ -32,7 +28,6 @@ clyent
 colorama
 conda
 conda-build
-conda-verify
 conllu
 contextlib2
 cryptography
@@ -98,7 +93,6 @@ mistune
 mpmath
 msgpack-python
 multipledispatch
-navigator-updater
 nbconvert
 nbformat
 networkx

@@ -1,40 +1,32 @@
 import os
 import numpy as np
 import scipy.spatial.distance as sd
-from skip_thoughts import configuration
-from skip_thoughts import encoder_manager
 from nltk import sent_tokenize
 from nltk import word_tokenize
 from collections import defaultdict
 import Utility
 from sklearn.cluster import DBSCAN
+from .SkipThoughtsModel import SkipThoughtsModel
+from .Sen2Vec import Sent2Vec
 
 
 class GetSimilarity(object):
     """Get similar tweets for claim or claims based on sen2vec in skip thoughts model."""
 
-    def __init__(self, rootPath, folderPath, modelPath="", checkpointPath=""):
+    def __init__(self, rootPath, folderPath, model=None):
         """Initialize the TweetsExtractor4Claim model.
 
         Arguments:
             rootPath {str} -- the path to data root folder
-            modelPath {str} -- the path to model folder
-            checkpointPath {str} -- the filename of mode.ckpt-xxxx
+            folderPath {str} -- the event name
         """
         self.helper = Utility.Helper(rootPath)
         self.fileFolderPath = os.path.join(folderPath, "final")
-        if modelPath != "" and checkpointPath != "":
-            self.modelPath = modelPath
-            self.checkpointPath = os.path.join(modelPath, "..", checkpointPath)
-            self.vocabFile = os.path.join(modelPath, "vocab.txt")
-            self.embeddingMatrixFile = os.path.join(
-                modelPath, "embeddings.npy")
-
-            self.encoder = encoder_manager.EncoderManager()
-            self.encoder.load_model(configuration.model_config(),
-                                    vocabulary_file=self.vocabFile,
-                                    embedding_matrix_file=self.embeddingMatrixFile,
-                                    checkpoint_path=self.checkpointPath)
+        if model["name"] == "skipthoughts":
+            self.model = SkipThoughtsModel(
+                model["modelPath"], model["checkpointPath"])
+        if model["name"] == "sent2vec":
+            self.model = Sent2Vec(model["modelPath"])
 
     def splitSentences(self, cleanedTweets):
         """Split sentences in each tweet.
@@ -57,19 +49,19 @@ class GetSimilarity(object):
                     tweetIndex.append(index)
         return sentences, tweetIndex
 
-    def encodeSen(self, sentences):
-        """Encode the sentences based on the sent2vec model.
+    # def encodeSen(self, sentences):
+    #     """Encode the sentences based on the sent2vec model.
 
-        Arguments:
-            sentences {list} -- a list of sentences
+    #     Arguments:
+    #         sentences {list} -- a list of sentences
 
-        Returns:
-            list -- a list of encoded sentences
-        """
+    #     Returns:
+    #         list -- a list of encoded sentences
+    #     """
 
-        encodedSentences = self.encoder.encode(sentences)
+    #     encodedSentences = self.encoder.encode(sentences)
 
-        return encodedSentences
+    #     return encodedSentences
 
     def getTweets4Claims(self, sentences, encodedSentences, claims, encodedClaims, tweetIndex, num=10):
         """Get tweets for claim.
@@ -214,7 +206,7 @@ class GetSimilarity(object):
         """
         cluster2claimsIndexes = defaultdict(list)
         claimsContent = [claim[4] for claim in claims]
-        encodedClaims = self.encodeSen(claimsContent)
+        encodedClaims = self.model.encodeSen(claimsContent)
         scores = sd.cdist(encodedClaims, encodedClaims, "cosine")
 
         db = DBSCAN(eps=0.45, min_samples=2, metric="precomputed").fit(scores)
