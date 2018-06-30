@@ -208,9 +208,9 @@ class WorkFlow(object):
     def getClusterClaims(self, query):
         claims = self.getClaims(query)
         model = {"name": "skipthoughts",
-                 "modelPath": self.rootpath +
+                 "modelPath": self.rootpath + "/.." +
                  "/skip_thoughts/pretrained/skip_thoughts_uni_2017_02_02/exp_vocab",
-                 "checkPointPath": "model.ckpt-501424"}
+                 "checkpointPath": "model.ckpt-501424"}
         getSimilarity = Claim.GetSimilarity(
             self.rootpath,
             self.folderpath,

@@ -7,7 +7,7 @@ from collections import defaultdict
 import Utility
 from sklearn.cluster import DBSCAN
 from .SkipThoughtsModel import SkipThoughtsModel
-from .Sen2Vec import Sent2Vec
+from .Sent2Vec import Sent2Vec
 
 
 class GetSimilarity(object):
@@ -19,14 +19,16 @@ class GetSimilarity(object):
         Arguments:
             rootPath {str} -- the path to data root folder
             folderPath {str} -- the event name
+            model {dict} -- model information
         """
         self.helper = Utility.Helper(rootPath)
         self.fileFolderPath = os.path.join(folderPath, "final")
-        if model["name"] == "skipthoughts":
-            self.model = SkipThoughtsModel(
-                model["modelPath"], model["checkpointPath"])
-        if model["name"] == "sent2vec":
-            self.model = Sent2Vec(model["modelPath"])
+        if model:
+            if model["name"] == "skipthoughts":
+                self.model = SkipThoughtsModel(
+                    model["modelPath"], model["checkpointPath"])
+            if model["name"] == "sent2vec":
+                self.model = Sent2Vec(model["modelPath"])
 
     def splitSentences(self, cleanedTweets):
         """Split sentences in each tweet.
