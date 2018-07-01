@@ -1,11 +1,11 @@
 import sys
 # sys.path.append("..")
-sys.path.append('/home/hao/Workplace/HaoXu/Library/GetOldTweets-python')
-sys.path.append('/home/hao/Workplace/HaoXu/Library/ark-tweet-nlp-python')
-sys.path.append(
-    '/home/hao/Workplace/HaoXu/Library/models/research/skip_thoughts')
-sys.path.append('/home/hao/Workplace/HaoXu/Library')
-import click
+sys.path.append('/home/1877/Library/GetOldTweets-python')
+sys.path.append('/home/1877/Library/ark-tweet-nlp-python')
+# sys.path.append(
+#     '/home/1877/Library/models/research/skip_thoughts')
+# sys.path.append('/home/hao/Workplace/HaoXu/Library')
+# import click
 import logging
 logging.disable(logging.CRITICAL)
 # print sys.path
@@ -14,12 +14,12 @@ import Utility
 import os
 
 
-@click.command()
-@click.option("--rootpath", "-r", help="the root path of the data")
-@click.option("--folderpath", "-f", help="the folder path of the event")
-@click.option("--query", "-q", help="the hashtags you want to search")
-@click.option("--start", "-s", help="the start date of the event")
-@click.option("--end", "-e", help="the end date of the event")
+# @click.command()
+# @click.option("--rootpath", "-r", help="the root path of the data")
+# @click.option("--folderpath", "-f", help="the folder path of the event")
+# @click.option("--query", "-q", help="the hashtags you want to search")
+# @click.option("--start", "-s", help="the start date of the event")
+# @click.option("--end", "-e", help="the end date of the event")
 def main(rootpath, folderpath, query, start, end):
     """Get the main function for the workflow.
 
@@ -115,4 +115,33 @@ def main(rootpath, folderpath, query, start, end):
 
 
 if __name__ == '__main__':
-    main()
+    rootpath = "/home/1877/Data/Rudetect34_0.4"
+
+    folders = [folder for folder in os.listdir(
+        rootpath) if os.path.isdir(rootpath+"/"+folder)]
+    print("="*100)
+    print(folders)
+    print("="*100)
+
+    for folder in folders:
+        # exclude some events
+        # if folder not in ["SouthwestKey_0620_0624", "WhereAreTheChildren_0418_0527"]:
+        #     continue
+
+        # specify an event
+        # if folder != "WhereAreTheChildren_0418_0527":
+        #     continue
+
+        # run total events
+        if folder[0] == ".":
+            continue
+
+        print("Running code for {}".format(folder))
+        args = ['python', 'main.py', '-r', rootpath,
+                '-f', folder, '-q', "#"+folder.split("_")[0], '-s', 'test', '-e', 'test']
+        # args = ['python', 'main.py']
+        print("Command line is {}".format(" ".join(args)))
+        # subprocess.call(args)
+        # break
+        # time.sleep(random.randint(1, 121))
+        main(rootpath, folder, "#"+folder.split("_")[0], 'test', 'test')

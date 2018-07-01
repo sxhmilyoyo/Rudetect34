@@ -1,4 +1,4 @@
-import click
+# import click
 import codecs
 import os
 import sys
@@ -12,10 +12,10 @@ from collections import defaultdict
 import Utility
 
 
-@click.command()
-@click.option('--rootpath', '-r', help='the root path of data')
-@click.option('--folderpath', '-f', help='the folder path of data')
-@click.option('--numTopic', '-n', type=int, help='the number of topic')
+# @click.command()
+# @click.option('--rootpath', '-r', help='the root path of data')
+# @click.option('--folderpath', '-f', help='the folder path of data')
+# @click.option('--numTopic', '-n', type=int, help='the number of topic')
 def main_topicPmi(rootpath, folderpath, numTopic):
     """Get topic with pmi."""
     # get tweets

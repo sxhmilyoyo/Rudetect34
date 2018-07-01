@@ -1,7 +1,7 @@
-import click
+# import click
 
-@click.command()
-@click.option('--item', '-t', type=int)
+# @click.command()
+# @click.option('--item', '-t', type=int)
 def f(item):
     print ("{}".format(item/2))
 

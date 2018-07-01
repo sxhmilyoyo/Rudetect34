@@ -1,4 +1,4 @@
-import click
+# import click
 import os
 import sys
 import time
@@ -9,11 +9,11 @@ import Clustering
 import Utility
 
 
-@click.command()
-@click.option('--rootpath', '-r', help='the root path of data')
-@click.option('--folderpath', '-f', help='the folder path of data')
-@click.option('--vectorizer', '-v', help='choose vectorizer(mean or tfidf)')
-@click.option('--numclusters', '-n', type=int, help='the number of cluster')
+# @click.command()
+# @click.option('--rootpath', '-r', help='the root path of data')
+# @click.option('--folderpath', '-f', help='the folder path of data')
+# @click.option('--vectorizer', '-v', help='choose vectorizer(mean or tfidf)')
+# @click.option('--numclusters', '-n', type=int, help='the number of cluster')
 def main_cluster(rootpath, folderpath, vectorizer, numclusters):
     """Get main function for getCluster."""
     folderPath = os.path.join(folderpath, 'final')

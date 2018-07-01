@@ -1,6 +1,6 @@
 import sys
 sys.path.insert(0, '..')
-import click
+# import click
 import codecs
 import os
 # from SVO.SubjectExtraction import SubjectExtraction
@@ -9,9 +9,9 @@ import SVO
 import Utility
 
 
-@click.command()
-@click.option('--rootpath', '-r', help='the root path of data')
-@click.option('--folderpath', '-f', help='the folder path of data')
+# @click.command()
+# @click.option('--rootpath', '-r', help='the root path of data')
+# @click.option('--folderpath', '-f', help='the folder path of data')
 def main_extractsubject(rootpath, folderpath):
     """Extract the subjectsect."""
     # dataPath = "/local/data/haoxu/Rudetect/DevinKelley_Antifa/"

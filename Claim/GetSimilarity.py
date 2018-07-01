@@ -208,10 +208,21 @@ class GetSimilarity(object):
         """
         cluster2claimsIndexes = defaultdict(list)
         claimsContent = [claim[4] for claim in claims]
+        print("encoding claims...")
         encodedClaims = self.model.encodeSen(claimsContent)
-        scores = sd.cdist(encodedClaims, encodedClaims, "cosine")
+        # encodedClaims = encodedClaims.astype(np.float64)
+        print("finished encoding claims.")
+        # print("data ", encodedClaims[0][0])
+        # print("type ", type(encodedClaims[0][0]))
 
-        db = DBSCAN(eps=0.45, min_samples=2, metric="precomputed").fit(scores)
+        # scores = sd.cdist(encodedClaims, encodedClaims, "cosine")
+
+        # print("score ", scores[0][0])
+        # print("type ", type(scores[0][0]))
+        # print("encoded Claims ", scores)
+
+        db = DBSCAN(eps=0.45, min_samples=2,
+                    metric="cosine").fit(encodedClaims)
         labels = db.labels_.tolist()
 
         for index, label in enumerate(labels):
@@ -283,7 +294,7 @@ class GetSimilarity(object):
                 representativeClaim2ClusterFeatures, flag)
         self.helper.dumpJson(
             self.fileFolderPath,
-            "representative_claim_to_claims_cluster.json",
+            "representative_claim_to_claims_cluster_test.json",
             representativeClaim2ClaimsCluster)
         print("representative_claim_to_claims_cluster.json has been saved.")
         self.helper.dumpJson(

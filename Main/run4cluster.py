@@ -1,11 +1,11 @@
-import click
+# import click
 import os
 import subprocess
 
 
-@click.command()
-@click.option('--rootpath', '-r', help='the root path of data')
-@click.option('--folderpath', '-f', help='the folder path of data')
+# @click.command()
+# @click.option('--rootpath', '-r', help='the root path of data')
+# @click.option('--folderpath', '-f', help='the folder path of data')
 def main(rootpath, folderpath):
     """Run getTopicPmi and extractSubject atuomatically."""
     folderPath = os.path.join(folderpath, 'final/clusterData')

@@ -206,21 +206,15 @@ class WorkFlow(object):
         #     candidateClaims)
 
     def getClusterClaims(self, query):
-        # claims = self.getClaims(query)
-        filePath = os.path.join(self.folderpath, "final",
-                                "candidateClaimsMergedClause.json")
-        print("filePath ", filePath)
-        claims = self.helper.loadJson(filePath)
-        skipthoughts_model = {"name": "skipthoughts",
-                              "modelPath": self.rootpath + "/.." +
-                              "/skip_thoughts/pretrained/skip_thoughts_uni_2017_02_02/exp_vocab",
-                              "checkpointPath": "model.ckpt-501424"}
-        sent2vec_model = {"name": "sent2vec",
-                          "modelPath": "/lustre/scratch/haoxu/twitter_bigrams.bin"}
+        claims = self.getClaims(query)
+        model = {"name": "skipthoughts",
+                 "modelPath": self.rootpath +
+                 "/skip_thoughts/pretrained/skip_thoughts_uni_2017_02_02/exp_vocab",
+                 "checkPointPath": "model.ckpt-501424"}
         getSimilarity = Claim.GetSimilarity(
             self.rootpath,
             self.folderpath,
-            sent2vec_model)
+            model)
         tweets_list = list(self.helper.getTweet(self.folderpath))
         cluster2claimsIndexes, cluster2coreSampleIndices = getSimilarity.getClusteredClaims(
             claims, tweets_list)

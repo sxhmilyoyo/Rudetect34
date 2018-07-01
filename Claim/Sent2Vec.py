@@ -11,7 +11,9 @@ class Sent2Vec(object):
             modelPath {str} -- the path to model
         """
         self.encoder = sent2vec.Sent2vecModel()
+        print("loading {} model...".format(modelPath))
         self.encoder.load_model(modelPath)
+        print("finished loading model.")
 
     def encodeSen(self, sentences):
         """Encode sentences.

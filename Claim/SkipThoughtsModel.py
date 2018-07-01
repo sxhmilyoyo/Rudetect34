@@ -1,5 +1,5 @@
-from skip_thoughts import configuration
-from skip_thoughts import encoder_manager
+# from skip_thoughts import configuration
+# from skip_thoughts import encoder_manager
 import os
 
 

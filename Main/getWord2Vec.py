@@ -1,4 +1,4 @@
-import click
+# import click
 import codecs
 from gensim.models.word2vec import LineSentence
 from gensim.models.word2vec import Word2Vec
@@ -12,12 +12,12 @@ import got
 import Utility
 
 
-@click.command()
-@click.option('--rootpath', prompt='the root path of data',
-              help='the root path of data')
-@click.option('--folderpath',
-              prompt='the folder paths of data(seperate with whitespace)',
-              help='the folder path of data(seperate with whitespace)')
+# @click.command()
+# @click.option('--rootpath', prompt='the root path of data',
+#               help='the root path of data')
+# @click.option('--folderpath',
+#               prompt='the folder paths of data(seperate with whitespace)',
+#               help='the folder path of data(seperate with whitespace)')
 def main_word2vec(rootpath, folderpath):
     """Get main function for getWord2vec."""
     helper = Utility.Helper(rootpath)
