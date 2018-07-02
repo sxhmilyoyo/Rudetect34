@@ -205,7 +205,7 @@ class WorkFlow(object):
         # mergedCandidateClaims = claimExtractor.mergeSimilarSubjects(
         #     candidateClaims)
 
-    def getClusterClaims(self, query):
+    def getClusterClaims(self, query, eps):
         # claims = self.getClaims(query)
         filePath = os.path.join(self.folderpath, "final",
                                 "candidateClaimsMergedClause.json")
@@ -223,12 +223,12 @@ class WorkFlow(object):
             sent2vec_model)
         tweets_list = list(self.helper.getTweet(self.folderpath))
         cluster2claimsIndexes, cluster2coreSampleIndices = getSimilarity.getClusteredClaims(
-            claims, tweets_list)
+            claims, tweets_list, eps)
         return cluster2claimsIndexes, cluster2coreSampleIndices, claims
 
-    def getClusterRankClaims(self, query):
+    def getClusterRankClaims(self, query, eps):
         cluster2claimsIndexes, cluster2coreSampleIndices, claims = self.getClusterClaims(
-            query)
+            query, eps)
         getSimilarity = Claim.GetSimilarity(
             self.rootpath,
             self.folderpath)

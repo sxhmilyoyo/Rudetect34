@@ -196,7 +196,7 @@ class GetSimilarity(object):
     #         similarClaims)
     #     return similarClaimsComponents, sortedSimilarClaims
 
-    def getClusteredClaims(self, claims, tweets):
+    def getClusteredClaims(self, claims, tweets, eps):
         """Get clusters of the claims by DBSCAN.
 
         Arguments:
@@ -207,7 +207,7 @@ class GetSimilarity(object):
             tuple -- (cluster2claimsIndexes, cluster2coreSampleIndices)
         """
         cluster2claimsIndexes = defaultdict(list)
-        claimsContent = [claim[4] for claim in claims]
+        claimsContent = [claim[4].lower() for claim in claims]
         print("encoding claims...")
         encodedClaims = self.model.encodeSen(claimsContent)
         # encodedClaims = encodedClaims.astype(np.float64)
@@ -221,15 +221,15 @@ class GetSimilarity(object):
         # print("type ", type(scores[0][0]))
         # print("encoded Claims ", scores)
 
-        db = DBSCAN(eps=0.45, min_samples=2,
+        db = DBSCAN(eps=eps, min_samples=2,
                     metric="cosine").fit(encodedClaims)
         labels = db.labels_.tolist()
 
         for index, label in enumerate(labels):
             cluster2claimsIndexes[str(label)].append(index)
 
-        print("labels ", labels)
-        print("core_sample_indices ", db.core_sample_indices_.tolist())
+        # print("labels ", labels)
+        # print("core_sample_indices ", db.core_sample_indices_.tolist())
 
         # print(cluster2claimsIndexes)
         self.helper.dumpJson(

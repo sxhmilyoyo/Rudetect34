@@ -360,8 +360,8 @@ class ClaimExtractor(object):
                         parsedTweet, sentStart, start-1, parsedTweet[start], tweets, tweetID)
                     currentParsedList[1] = dependedOnCurrentParsedTerm[1] + \
                         " " + currentParsedList[1]
-            # handle pre noun of the wh- subject
-            elif currentNounID - int(parsedTweet[start][0]) == 1 and \
+            # handle pre noun of the wh- subject within 2 scopes
+            elif currentNounID - int(parsedTweet[start][0]) <= 2 and \
                     currentParsedList[1] in set(["where", "who", "what", "how", "when", "why"]) and \
                     parsedTweet[start][3] in set(["N", "^", "S", "A", "$", "O", "G"]):
                 dependedOnCurrentParsedTerm = self.__findDependencyNoun(
@@ -728,10 +728,10 @@ class ClaimExtractor(object):
                         if i == j:
                             continue
                         curr = info[j]
-                        if abs(pre[0] - curr[0]) == 1:
+                        if abs(pre[0] - curr[0]) <= 2:
                             middleClauseFlag = False
                             break
-                        elif pre[0] - curr[2] == 1 or curr[0] - pre[2] == 1:
+                        elif pre[0] - curr[2] <= 2 or curr[0] - pre[2] <= 2:
 
                             endClauseFlag = False
                             break
@@ -750,10 +750,10 @@ class ClaimExtractor(object):
                         info.pop(i)
                     # tweetID2Claims[tweetID] = info
                 if not endClauseFlag:
-                    if pre[0] - curr[2] == 1:
+                    if pre[0] - curr[2] <= 2:
                         curr[3] = curr[3] + " " + pre[3]
                         info.pop(i)
-                    elif curr[0] - pre[2] == 1:
+                    elif curr[0] - pre[2] <= 2:
                         pre[3] = pre[3] + " " + curr[3]
                         info.pop(j)
         candidateClaimsMergedClause = [

@@ -20,7 +20,7 @@ import os
 # @click.option("--query", "-q", help="the hashtags you want to search")
 # @click.option("--start", "-s", help="the start date of the event")
 # @click.option("--end", "-e", help="the end date of the event")
-def main(rootpath, folderpath, query, start, end):
+def main(rootpath, folderpath, query, start, end, eps):
     """Get the main function for the workflow.
 
     Parameters
@@ -64,7 +64,7 @@ def main(rootpath, folderpath, query, start, end):
     print('='*100)
     print('Getting subject ...')
     print('='*100)
-    workFlow.getClusterRankClaims(query)
+    workFlow.getClusterRankClaims(query, eps)
 
     """# get the topic model
     print('='*100)
@@ -115,13 +115,25 @@ def main(rootpath, folderpath, query, start, end):
 
 
 if __name__ == '__main__':
-    rootpath = "/home/1877/Data/Rudetect34_0.4"
+    rootpath = "/home/1877/Data/Rudetect34_fullClaims"
 
     folders = [folder for folder in os.listdir(
         rootpath) if os.path.isdir(rootpath+"/"+folder)]
     print("="*100)
     print(folders)
     print("="*100)
+
+    event2eps = {"BandyLee_0110_0115": 0.65,
+                 "Capriccio_0516_0523_new": 0.5,
+                 "Gabapentin_0628_0121": 0.35,
+                 "immigrants_0622_0624": 0.3,
+                 "Ingraham_0618_0624": 0.5,
+                 "ItsJustAJacket_0621_0624": 0.45,
+                 "JackBreuer_1228_0115": 0.6,
+                 "JetLi_0519_0523": 0.6,
+                 "SanctuaryCities_0516_0523": 0.3,
+                 "SouthwestKey_0620_0624": 0.45,
+                 "WhereAreTheChildren_0418_0527": 0.35}
 
     for folder in folders:
         # exclude some events
@@ -138,10 +150,11 @@ if __name__ == '__main__':
 
         print("Running code for {}".format(folder))
         args = ['python', 'main.py', '-r', rootpath,
-                '-f', folder, '-q', "#"+folder.split("_")[0], '-s', 'test', '-e', 'test']
+                '-f', folder, '-q', "#"+folder.split("_")[0], '-s', 'test', '-e', 'test', "-p", str(event2eps[folder])]
         # args = ['python', 'main.py']
         print("Command line is {}".format(" ".join(args)))
         # subprocess.call(args)
         # break
         # time.sleep(random.randint(1, 121))
-        main(rootpath, folder, "#"+folder.split("_")[0], 'test', 'test')
+        main(rootpath, folder, "#"+folder.split("_")
+             [0], 'test', 'test', eps=event2eps[folder])

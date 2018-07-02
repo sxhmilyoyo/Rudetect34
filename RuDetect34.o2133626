@@ -1,8 +1,0 @@
-
-[CGROUPS] Overriding vmem limit from 9223372036854775807 to none on GPU-containing node
-[CGROUPS] UD Grid Engine cgroup setup commencing
-[CGROUPS] Setting 34359738368 bytes (vmem none bytes) on g115 (master)
-[CGROUPS]   with 1 core = 
-[CGROUPS] done.
-
-Adding package `anaconda/5.0.1:python3` to your environment
