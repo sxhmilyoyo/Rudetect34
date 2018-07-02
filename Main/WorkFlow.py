@@ -197,38 +197,47 @@ class WorkFlow(object):
         #     os.path.join(self.folderpath, "final", "subject2tweetInfo.json"))
         # parsedTweets = self.helper.loadJson(
         #     os.path.join(self.folderpath, "final", "tweets_id2Info.json"))
-        candidateClaimsMergedClause = claimExtractor.getCandidateClaims(
-            tweets_list, mergedNoun, sortedSubject2Number, subject2tweetInfo,
-            parsedTweets, query[1:])
+        candidateClaimsMergedClause, \
+            candidateFullClaimsMergedClause = claimExtractor.getCandidateClaims(
+                tweets_list, mergedNoun, sortedSubject2Number, subject2tweetInfo,
+                parsedTweets, query[1:])
 
-        return candidateClaimsMergedClause
+        return candidateClaimsMergedClause, candidateFullClaimsMergedClause
         # mergedCandidateClaims = claimExtractor.mergeSimilarSubjects(
         #     candidateClaims)
 
-    def getClusterClaims(self, query):
-        claims = self.getClaims(query)
-        model = {"name": "skipthoughts",
-                 "modelPath": self.rootpath + "/.." +
-                 "/skip_thoughts/pretrained/skip_thoughts_uni_2017_02_02/exp_vocab",
-                 "checkpointPath": "model.ckpt-501424"}
+    def getClusterClaims(self, query, eps):
+        claims, fullClaims = self.getClaims(query)
+        # filePath = os.path.join(self.folderpath, "final",
+        #                         "candidateClaimsMergedClause.json")
+        # print("filePath ", filePath)
+        # claims = self.helper.loadJson(filePath)
+        skipthoughts_model = {"name": "skipthoughts",
+                              "modelPath": self.rootpath + "/.." +
+                              "/skip_thoughts/pretrained/skip_thoughts_uni_2017_02_02/exp_vocab",
+                              "checkpointPath": "model.ckpt-501424"}
+        sent2vec_model = {"name": "sent2vec",
+                          "modelPath": "/lustre/scratch/haoxu/twitter_bigrams.bin"}
+
         getSimilarity = Claim.GetSimilarity(
             self.rootpath,
             self.folderpath,
-            model)
+            skipthoughts_model)
         tweets_list = list(self.helper.getTweet(self.folderpath))
         cluster2claimsIndexes, cluster2coreSampleIndices = getSimilarity.getClusteredClaims(
-            claims, tweets_list)
-        return cluster2claimsIndexes, cluster2coreSampleIndices, claims
+            claims, tweets_list, eps)
+        return cluster2claimsIndexes, cluster2coreSampleIndices, claims, fullClaims
 
-    def getClusterRankClaims(self, query):
-        cluster2claimsIndexes, cluster2coreSampleIndices, claims = self.getClusterClaims(
-            query)
+    def getClusterRankClaims(self, query, eps):
+        cluster2claimsIndexes, cluster2coreSampleIndices, \
+            claims, fullClaims = self.getClusterClaims(
+                query, eps)
         getSimilarity = Claim.GetSimilarity(
             self.rootpath,
             self.folderpath)
         tweets_list = list(self.helper.getTweet(self.folderpath))
         rankedClusterClaims = getSimilarity.rankClusteredClaims(
-            cluster2claimsIndexes, cluster2coreSampleIndices, claims, tweets_list)
+            cluster2claimsIndexes, cluster2coreSampleIndices, claims, fullClaims, tweets_list)
         return rankedClusterClaims
 
         """similarClaimsComponents, sortedSimilarClaims = getSimilarity.getSimilarClaims(

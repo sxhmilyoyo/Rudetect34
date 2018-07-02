@@ -20,7 +20,9 @@ import os
 @click.option("--query", "-q", help="the hashtags you want to search")
 @click.option("--start", "-s", help="the start date of the event")
 @click.option("--end", "-e", help="the end date of the event")
-def main(rootpath, folderpath, query, start, end):
+@click.option("--eps", "-p", help="the eps for DBSCAN")
+
+def main(rootpath, folderpath, query, start, end, eps=0.5):
     """Get the main function for the workflow.
 
     Parameters
@@ -64,7 +66,7 @@ def main(rootpath, folderpath, query, start, end):
     print('='*100)
     print('Getting subject ...')
     print('='*100)
-    workFlow.getClusterRankClaims(query)
+    workFlow.getClusterRankClaims(query, float(eps))
 
     """# get the topic model
     print('='*100)
