@@ -265,6 +265,11 @@ class GetSimilarity(object):
         representativeClaim2ClaimsCluster = defaultdict(list)
         representativeClaim2FullClaimsCluster = defaultdict(list)
         representativeClaim2ClusterFeatures = defaultdict(float)
+        representativeClaim2Subject = defaultdict(int)
+
+        tweetID2Info = self.helper.loadJson(
+            self.fileFolderPath+"/tweets_id2Info.json")
+
         for label, claimIndexes in cluster2claimsIndexes.items():
             flag = False
             label = int(label)
@@ -279,12 +284,17 @@ class GetSimilarity(object):
                 cluster2coreSampleIndices[str(label)], claims, tweets)
             sortedCoreTweet2Number = Utility.PreprocessData.sortDict(
                 coreTweet2features)
-            self.__getRepresentativeClaim(
-                sortedCoreTweet2Number, claimIndexes, claims, fullClaims,
+            representativeClaim = sortedCoreTweet2Number[0][0]
+
+            self.__getClusterClaimsAndSubject(
+                representativeClaim, claimIndexes,
+                claims, fullClaims, tweetID2Info,
                 representativeClaim2ClaimsCluster,
-                representativeClaim2FullClaimsCluster, flag)
+                representativeClaim2FullClaimsCluster,
+                representativeClaim2Subject, flag)
             self.__getFeature4Cluster(
                 sortedTweet2Number,
+                representativeClaim,
                 representativeClaim2ClusterFeatures, flag)
 
         self.helper.dumpJson(
@@ -301,6 +311,12 @@ class GetSimilarity(object):
 
         self.helper.dumpJson(
             self.fileFolderPath,
+            "representative_claim_to_subject.json",
+            representativeClaim2Subject)
+        print("representative_claim_to_subject.json has been saved.")
+
+        self.helper.dumpJson(
+            self.fileFolderPath,
             "representative_claim_to_cluster_feature.json",
             representativeClaim2ClusterFeatures)
         print("representative_claim_to_cluster_feature.json has been saved.")
@@ -313,9 +329,11 @@ class GetSimilarity(object):
         print("ranked_cluster_claims.json has been saved.")
         return rankedClusterClaims
 
-    def __getRepresentativeClaim(self, sortedCoreTweet2Number, claimIndexes,
-                                 claims, fullClaims, representativeClaim2ClaimsCluster,
-                                 representativeClaim2FullClaimsCluster, flag):
+    def __getClusterClaimsAndSubject(self, representativeClaim, claimIndexes,
+                                     claims, fullClaims, tweetID2Info,
+                                     representativeClaim2ClaimsCluster,
+                                     representativeClaim2FullClaimsCluster,
+                                     representativeClaim2Subject, flag):
         """Get representative claim for each cluster.
 
         Arguments:
@@ -327,12 +345,15 @@ class GetSimilarity(object):
         """
         claimsContent = [claims[index][4] for index in claimIndexes]
         fullClaimsContent = [fullClaims[index][4] for index in claimIndexes]
-
+        for index in claimIndexes:
+            if claims[index][4] == representativeClaim:
+                tweetID = str(claims[index][0])
+                subjectIndex = int(claims[index][1]) - 1
+                subject = tweetID2Info[tweetID][subjectIndex][1]
+                representativeClaim2Subject[representativeClaim] = subject
         if not flag:
-            representativeClaim2ClaimsCluster[sortedCoreTweet2Number[0]
-                                              [0]] = claimsContent[:]
-            representativeClaim2FullClaimsCluster[sortedCoreTweet2Number[0]
-                                                  [0]] = fullClaimsContent[:]
+            representativeClaim2ClaimsCluster[representativeClaim] = claimsContent[:]
+            representativeClaim2FullClaimsCluster[representativeClaim] = fullClaimsContent[:]
         else:
             for cc in claimsContent:
                 representativeClaim2ClaimsCluster[cc] = cc
@@ -357,7 +378,7 @@ class GetSimilarity(object):
             tweet2features[text] += features
         return tweet2features
 
-    def __getFeature4Cluster(self, sortedTweet2Number,
+    def __getFeature4Cluster(self, sortedTweet2Number, representativeClaim,
                              representativeClaim2ClusterFeatures, flag):
         """Get feature for each cluster.
 
@@ -368,8 +389,27 @@ class GetSimilarity(object):
         """
         if not flag:
             clusterFeatures = [feature for text, feature in sortedTweet2Number]
-            representativeClaim2ClusterFeatures[sortedTweet2Number[0][0]] = sum(
+            representativeClaim2ClusterFeatures[representativeClaim] = sum(
                 clusterFeatures) / len(clusterFeatures)
         else:
             for text, feature in sortedTweet2Number:
                 representativeClaim2ClusterFeatures[text] = feature
+
+    def getSimilarNews(self, claim, news):
+        """Get similar news to the claim.
+
+        Arguments:
+            claim {str} -- representative claim for each cluster
+            news {list} -- a list of news got by NewsAPI
+
+        Returns:
+            str -- the most similar new
+        """
+        encodedClaim = self.model.encodeSen([claim])
+        encodedNews = self.model.encodeSen(news)
+        scores = sd.cdist(encodedClaim, encodedNews, "cosine")
+        print("scores ", scores)
+        similarNewID = np.asscalar(np.argmin(scores, axis=1))
+        print("similarNewID ", similarNewID)
+        similarNew = news[similarNewID]
+        return similarNew

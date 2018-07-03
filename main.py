@@ -21,7 +21,6 @@ import os
 @click.option("--start", "-s", help="the start date of the event")
 @click.option("--end", "-e", help="the end date of the event")
 @click.option("--eps", "-p", help="the eps for DBSCAN")
-
 def main(rootpath, folderpath, query, start, end, eps=0.5):
     """Get the main function for the workflow.
 
@@ -62,11 +61,17 @@ def main(rootpath, folderpath, query, start, end, eps=0.5):
     # print('='*100)
     # workFlow.getWord2Vec()
 
-    # get Claims
-    print('='*100)
-    print('Getting subject ...')
-    print('='*100)
-    workFlow.getClusterRankClaims(query, float(eps))
+    # # get Claims
+    # print('='*100)
+    # print('Getting subject ...')
+    # print('='*100)
+    # workFlow.getClusterRankClaims(query, float(eps))
+
+    # get similar news
+    print("="*100)
+    print('Getting News ...')
+    print("="*100)
+    workFlow.getNews(folderpath)
 
     """# get the topic model
     print('='*100)
@@ -92,12 +97,14 @@ def main(rootpath, folderpath, query, start, end, eps=0.5):
     print('-'*100)
     workFlow.run4cluster()
     print('='*100)
-    # get corpus for classification of the event
-    print('='*100)
-    print('Getting corpus for classification of the event ...')
-    print('-'*100)
-    workFlow.getCorpus4Classification(folderpath, 'event')
-    print('='*100)
+    """
+    # # get corpus for classification of the event
+    # print('='*100)
+    # print('Getting corpus for classification of the event ...')
+    # print('-'*100)
+    # workFlow.getCorpus4Classification(folderpath)
+    # print('='*100)
+    """
     # get similarity between statements of the event
     print('='*100)
     print('Getting similarity between statements ...')

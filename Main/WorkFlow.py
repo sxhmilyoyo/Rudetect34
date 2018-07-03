@@ -39,6 +39,7 @@ class WorkFlow(object):
         self.folderpath = folderpath
         self.helper = Utility.Helper(rootpath)
         self.preprocessData = Utility.PreprocessData(rootpath)
+        self.getSimilarity = None
 
     def getTweets(self, query, start, end):
         """Get the the final tweets.
@@ -212,6 +213,12 @@ class WorkFlow(object):
         #                         "candidateClaimsMergedClause.json")
         # print("filePath ", filePath)
         # claims = self.helper.loadJson(filePath)
+
+        # filePath = os.path.join(self.folderpath, "final",
+        #                         "candidateFullClaimsMergedClause.json")
+        # print("filePath ", filePath)
+        # fullClaims = self.helper.loadJson(filePath)
+
         skipthoughts_model = {"name": "skipthoughts",
                               "modelPath": self.rootpath + "/.." +
                               "/skip_thoughts/pretrained/skip_thoughts_uni_2017_02_02/exp_vocab",
@@ -219,12 +226,12 @@ class WorkFlow(object):
         sent2vec_model = {"name": "sent2vec",
                           "modelPath": "/lustre/scratch/haoxu/twitter_bigrams.bin"}
 
-        getSimilarity = Claim.GetSimilarity(
+        self.getSimilarity = Claim.GetSimilarity(
             self.rootpath,
             self.folderpath,
             skipthoughts_model)
         tweets_list = list(self.helper.getTweet(self.folderpath))
-        cluster2claimsIndexes, cluster2coreSampleIndices = getSimilarity.getClusteredClaims(
+        cluster2claimsIndexes, cluster2coreSampleIndices = self.getSimilarity.getClusteredClaims(
             claims, tweets_list, eps)
         return cluster2claimsIndexes, cluster2coreSampleIndices, claims, fullClaims
 
@@ -253,6 +260,63 @@ class WorkFlow(object):
 
         # claimExtractor.rankClaims(
         #     query[1:], tweets_list, similarClaimsComponents)
+
+    def getNews(self, folderpath, top=5):
+        event2timeScope = {
+            "Gabapentin_0628_0121": ["2017-06-28T00:00:00Z", "2018-01-21T00:00:00Z"],
+            "SanctuaryCities_0516_0523": ["2018-05-16T00:00:00Z", "2018-05-23T00:00:00Z"],
+            "WhereAreTheChildren_0418_0527": ["2018-04-18T00:00:00Z", "2018-05-27T00:00:00Z"],
+            "Ingraham_0618_0624": ["2018-06-18T00:00:00Z", "2018-06-24T00:00:00Z"],
+            "ItsJustAJacket_0621_0624": ["2018-06-21T00:00:00Z", "2018-06-24T00:00:00Z"],
+            "immigrants_0622_0624": ["2018-06-22T00:00:00Z", "2018-06-24T00:00:00Z"],
+            "JetLi_0519_0523": ["2018-05-19T00:00:00Z", "2018-05-23T00:00:00Z"],
+            "BandyLee_0110_0115": ["2018-01-10T00:00:00Z", "2018-01-15T00:00:00Z"],
+            "JackBreuer_1228_0115": ["2017-12-28T00:00:00Z", "2018-01-15T00:00:00Z"],
+            "SouthwestKey_0620_0624": ["2018-06-20T00:00:00Z", "2018-06-24T00:00:00Z"],
+            "Capriccio_0516_0523_new": ["2018-05-16T00:00:00Z", "2018-05-23T00:00:00Z"]
+        }
+        if not self.getSimilarity:
+            skipthoughts_model = {"name": "skipthoughts",
+                                  "modelPath": self.rootpath + "/.." +
+                                  "/skip_thoughts/pretrained/skip_thoughts_uni_2017_02_02/exp_vocab",
+                                  "checkpointPath": "model.ckpt-501424"}
+            sent2vec_model = {"name": "sent2vec",
+                              "modelPath": "/lustre/scratch/haoxu/twitter_bigrams.bin"}
+            self.getSimilarity = Claim.GetSimilarity(
+                self.rootpath,
+                self.folderpath,
+                skipthoughts_model)
+
+        folderPath = os.path.join(self.folderpath, "final")
+        rankedClusterClaims = self.helper.loadJson(
+            folderPath+"/ranked_cluster_claims.json")
+        sentiments = defaultdict(list)
+        count = 0
+        for index, info in enumerate(rankedClusterClaims):
+            if count >= top:
+                continue
+            query = info[0]
+            start = event2timeScope[folderpath][0]
+            end = event2timeScope[folderpath][1]
+
+            # find similar news
+            alylienNewsAPI = Information.AylienNewsAPI()
+            news = alylienNewsAPI.getNews(query, start, end, 10)
+            titles = alylienNewsAPI.getTitles(news)
+            # find final news based the most similar news
+            query = self.getSimilarity.getSimilarNews(query, titles)
+            finalNews = alylienNewsAPI.getNews(query, start, end, 20)
+            self.helper.dumpPickle(
+                folderPath+"/news", str(index)+"_news.pickle", finalNews)
+            finalNewsDict = [i.to_dict() for i in finalNews]
+            self.helper.dumpJson(folderPath+"/news",
+                                 str(index)+"_news.json", finalNewsDict)
+            print("{}th claim: news has been saved.".format(index))
+            sentiment = alylienNewsAPI.getSentiment(finalNews)
+            sentiments[index] = sentiment
+        self.helper.dumpJson(
+            folderPath, "representative_claims_to_news_sentiments.json", sentiments)
+        print("representative_claims_to_news_sentiments.json has been saved.")
 
     def getSimilarTweets4Claim(self):
         # get claims
@@ -397,7 +461,7 @@ class WorkFlow(object):
                                  'svos_opinion.json', result4svo)
             print("opinions for {} have been saved.".format(subjectFolderPath))
 
-    def getCorpus4Classification(self, folderpath, flag):
+    def getCorpus4Classification(self, folderpath, top=5):
         """Get corpus as .csv file for further classification.        
         Arguments:
             folderpath {str} -- the path to data folder
@@ -406,30 +470,25 @@ class WorkFlow(object):
         """
 
         folderPath = os.path.join(folderpath, 'final')
-        if flag == 'cluster':
-            s2vs = self.helper.loadJson(folderPath+"/subject2svoqueries.json")
-            subjects = []
-            for subject in s2vs:
-                if s2vs[subject]:
-                    subjects.append(subject)
-            self.helper.dumpJson(folderPath, 'target.json', subjects)
-            targets = ';'.join(subjects)
-            if os.path.exists(os.path.join(self.rootpath, self.folderpath, 'totalTargets.json')):
-                totalTargets = self.helper.loadJson(
-                    self.folderpath+'/totalTargets.json')
-                totalTargets.append(targets)
-                self.helper.dumpJson(
-                    self.folderpath, 'totalTargets.json', totalTargets)
-            else:
-                self.helper.dumpJson(
-                    self.folderpath, 'totalTargets.json', [targets])
-        elif flag == 'event':
-            totalTargets = self.helper.loadJson(
-                folderpath+'/totalTargets.json')
-            targets = ';'.join(totalTargets)
-        self.preprocessData.getCorpus4csv(folderPath, targets)
-        self.preprocessData.getCorpus4csvFromStatements(folderPath)
-        self.preprocessData.getCorpus4csvFromSnippets(folderPath)
+        rankedClusterClaims = self.helper.loadJson(
+            folderPath+"/ranked_cluster_claims.json")
+        representativeClaimToSubject = self.helper.loadJson(
+            folderPath+"/representative_claim_to_subject.json")
+        representativeClaimToFulClaimsCluster = self.helper.loadJson(
+            folderPath+"/representative_claim_to_full_claims_cluster.json")
+        count = 0
+        for index, info in enumerate(rankedClusterClaims):
+            if count >= top:
+                break
+            claim = info[0]
+            subject = representativeClaimToSubject[claim]
+            clusterClaims = representativeClaimToFulClaimsCluster[claim]
+            self.preprocessData.getCorpus4CsvFromRepresentativeClaims(
+                folderPath+"/corpus", index, subject, claim)
+            self.preprocessData.getCorpus4CsvFromClusterClaims(
+                folderPath+"/corpus", index, subject, clusterClaims)
+            count += 1
+            # self.preprocessData.getCorpus4csvFromSnippets(folderPath)
 
     def getSimilarity4Statements(self, folderpath):
         """Get similarity between candiadate statements and target statement."""

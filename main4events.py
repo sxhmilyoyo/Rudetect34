@@ -33,12 +33,12 @@ def main(rootpath):
         #     continue
 
         # specify an event
-        # if folder != "Capriccio_0516_0523_new":
-        #     continue
+        if folder != "BandyLee_0110_0115":
+            continue
 
         # run total events
-        if folder[0] == ".":
-            continue
+        # if folder[0] == ".":
+        #     continue
 
         print("=" * 100)
         print("Running code for {}".format(folder))
