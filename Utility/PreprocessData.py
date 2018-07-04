@@ -232,7 +232,7 @@ class PreprocessData(object):
         r = random.randint(0, 2)
         target = subject
         data.append([idx, target, content, s[r]])
-        self.helper.dumpCsv(folderPath, str(index)+"_corpus_representative_claims.csv", title, data)
+        self.helper.dumpCsv(folderPath, "corpus_representative_claims.csv", title, data)
         # with open(p, "wb") as fp:
         #     filewriter = csv.writer(fp, delimiter='\t')
         #     filewriter.writerow(['ID', 'Target', 'Tweet', 'Stance', 'Date'])
@@ -260,17 +260,17 @@ class PreprocessData(object):
         if claims is None or len(claims) == 0:
             return
 
-        title = ['ID', 'Target', 'Tweet', 'Stance']
+        title = ['ID', 'Target', 'Tweet', 'Stance', 'Date']
         s = ['NONE', 'AGAINST', 'FAVOR']
         data = []
         for i in range(len(claims)):
             if claims[i]:
-                content = claims[i]
+                content = claims[i][0]
                 idx = i + 1
                 r = random.randint(0, 2)
                 target = subject
-                data.append([idx, target, content, s[r]])
-        self.helper.dumpCsv(folderPath, str(index)+"_corpus_cluster_claims.csv", title, data)
+                data.append([idx, target, content, s[r], claims[i][1]])
+        self.helper.dumpCsv(folderPath, "corpus_cluster_claims.csv", title, data)
 
         # with open(p, "wb") as fp:
         #     filewriter = csv.writer(fp, delimiter='\t')

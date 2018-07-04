@@ -208,16 +208,16 @@ class WorkFlow(object):
         #     candidateClaims)
 
     def getClusterClaims(self, query, eps):
-        claims, fullClaims = self.getClaims(query)
-        # filePath = os.path.join(self.folderpath, "final",
-        #                         "candidateClaimsMergedClause.json")
-        # print("filePath ", filePath)
-        # claims = self.helper.loadJson(filePath)
+        # claims, fullClaims = self.getClaims(query)
+        filePath = os.path.join(self.folderpath, "final",
+                                "candidateClaimsMergedClause.json")
+        print("filePath ", filePath)
+        claims = self.helper.loadJson(filePath)
 
-        # filePath = os.path.join(self.folderpath, "final",
-        #                         "candidateFullClaimsMergedClause.json")
-        # print("filePath ", filePath)
-        # fullClaims = self.helper.loadJson(filePath)
+        filePath = os.path.join(self.folderpath, "final",
+                                "candidateFullClaimsMergedClause.json")
+        print("filePath ", filePath)
+        fullClaims = self.helper.loadJson(filePath)
 
         skipthoughts_model = {"name": "skipthoughts",
                               "modelPath": self.rootpath + "/.." +
@@ -290,7 +290,6 @@ class WorkFlow(object):
         folderPath = os.path.join(self.folderpath, "final")
         rankedClusterClaims = self.helper.loadJson(
             folderPath+"/ranked_cluster_claims.json")
-        sentiments = defaultdict(list)
         count = 0
         for index, info in enumerate(rankedClusterClaims):
             if count >= top:
@@ -302,21 +301,27 @@ class WorkFlow(object):
             # find similar news
             alylienNewsAPI = Information.AylienNewsAPI()
             news = alylienNewsAPI.getNews(query, start, end, 10)
+            if len(news) == 0:
+                print("no news.")
+                print("folder ", folder)
+                print("info ", info)
             titles = alylienNewsAPI.getTitles(news)
             # find final news based the most similar news
             query = self.getSimilarity.getSimilarNews(query, titles)
-            finalNews = alylienNewsAPI.getNews(query, start, end, 20)
+            finalNews = alylienNewsAPI.getNews(query, start, end, 10)
             self.helper.dumpPickle(
-                folderPath+"/news", str(index)+"_news.pickle", finalNews)
+                folderPath+"/news_bk", str(index)+"_news.pickle", finalNews)
             finalNewsDict = [i.to_dict() for i in finalNews]
             self.helper.dumpJson(folderPath+"/news",
                                  str(index)+"_news.json", finalNewsDict)
             print("{}th claim: news has been saved.".format(index))
-            sentiment = alylienNewsAPI.getSentiment(finalNews)
-            sentiments[index] = sentiment
-        self.helper.dumpJson(
-            folderPath, "representative_claims_to_news_sentiments.json", sentiments)
-        print("representative_claims_to_news_sentiments.json has been saved.")
+            # sentiment = alylienNewsAPI.getSentiment(finalNews)
+            # sentiments[index] = sentiment
+        # self.helper.dumpJson(
+        #     folderPath,
+        #     "representative_claims_to_news_sentiments.json",
+        #     sentiments)
+        # print("representative_claims_to_news_sentiments.json has been saved.")
 
     def getSimilarTweets4Claim(self):
         # get claims
@@ -484,9 +489,9 @@ class WorkFlow(object):
             subject = representativeClaimToSubject[claim]
             clusterClaims = representativeClaimToFulClaimsCluster[claim]
             self.preprocessData.getCorpus4CsvFromRepresentativeClaims(
-                folderPath+"/corpus", index, subject, claim)
+                folderPath+"/corpus/"+str(index), index, subject, claim)
             self.preprocessData.getCorpus4CsvFromClusterClaims(
-                folderPath+"/corpus", index, subject, clusterClaims)
+                folderPath+"/corpus/"+str(index), index, subject, clusterClaims)
             count += 1
             # self.preprocessData.getCorpus4csvFromSnippets(folderPath)
 

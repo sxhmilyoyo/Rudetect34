@@ -33,18 +33,20 @@ def main(rootpath):
         #     continue
 
         # specify an event
-        if folder != "BandyLee_0110_0115":
-            continue
+        # if folder != "BandyLee_0110_0115":
+        #     continue
 
         # run total events
-        # if folder[0] == ".":
-        #     continue
+        if folder[0] == ".":
+            continue
 
         print("=" * 100)
         print("Running code for {}".format(folder))
         args = ['python', 'main.py', '-r', rootpath,
                 '-f', folder, '-q', "#"+folder.split("_")[0], '-s', 'test', '-e', 'test', '-p', str(event2eps[folder])]
         print("Command line is {}".format(" ".join(args)))
+        with open("./output/"+folder+"_output.txt", "wb", 0) as out:
+            subprocess.run(args, stdout=out, check=True)
         subprocess.call(args)
         # break
         time.sleep(random.randint(1, 121))

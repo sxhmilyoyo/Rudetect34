@@ -38,7 +38,7 @@ class AylienNewsAPI(object):
                 x_ratelimit_limit = api_response[2]['X-RateLimit-Limit']
                 x_ratelimit_remaining = api_response[2]['X-RateLimit-Remaining']
                 x_ratelimit_reset = api_response[2]['X-RateLimit-Reset']
-                if int(x_ratelimit_remaining) == 0:
+                if int(x_ratelimit_remaining) == -1:
                     flag = True
                     print('API called successfully. Rate limit headers are as follows:')
                     print("X-RateLimit-Limit: %s" %
@@ -68,14 +68,14 @@ class AylienNewsAPI(object):
             titles.append(new.title)
         return titles
 
-    def getSentiment(self, news):
-        sentiments = []
-        for new in news:
-            sentiment = new.sentiment
-            titleSentiment = sentiment.title.polarity
-            bodySentiment = sentiment.body.polarity
-            if titleSentiment == bodySentiment:
-                sentiments.append("FAVOR")
-            elif titleSentiment != bodySentiment:
-                sentiments.append("AGAINST")
-        return sentiments
+    # def getSentiment(self, news):
+    #     sentiments = []
+    #     for new in news:
+    #         sentiment = new.sentiment
+    #         titleSentiment = sentiment.title.polarity
+    #         bodySentiment = sentiment.body.polarity
+    #         if titleSentiment == bodySentiment:
+    #             sentiments.append("FAVOR")
+    #         elif titleSentiment != bodySentiment:
+    #             sentiments.append("AGAINST")
+    #     return sentiments

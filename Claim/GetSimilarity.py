@@ -276,11 +276,11 @@ class GetSimilarity(object):
             if label == -1:
                 # flag = True
                 continue
-            tweet2features = self.__getFeature4Claims(
+            tweet2features, tweet2date = self.__getFeature4Claims(
                 claimIndexes, claims, tweets)
             sortedTweet2Number = Utility.PreprocessData.sortDict(
                 tweet2features)
-            coreTweet2features = self.__getFeature4Claims(
+            coreTweet2features, _ = self.__getFeature4Claims(
                 cluster2coreSampleIndices[str(label)], claims, tweets)
             sortedCoreTweet2Number = Utility.PreprocessData.sortDict(
                 coreTweet2features)
@@ -291,7 +291,8 @@ class GetSimilarity(object):
                 claims, fullClaims, tweetID2Info,
                 representativeClaim2ClaimsCluster,
                 representativeClaim2FullClaimsCluster,
-                representativeClaim2Subject, flag)
+                representativeClaim2Subject,
+                tweet2date, flag)
             self.__getFeature4Cluster(
                 sortedTweet2Number,
                 representativeClaim,
@@ -333,7 +334,8 @@ class GetSimilarity(object):
                                      claims, fullClaims, tweetID2Info,
                                      representativeClaim2ClaimsCluster,
                                      representativeClaim2FullClaimsCluster,
-                                     representativeClaim2Subject, flag):
+                                     representativeClaim2Subject,
+                                     tweet2date, flag):
         """Get representative claim for each cluster.
 
         Arguments:
@@ -343,8 +345,10 @@ class GetSimilarity(object):
             representativeClaim2ClaimsCluster {dict} -- {claim: [claim1, claim2, ...], ...}
             flag {boolean} -- flag for label: -1
         """
-        claimsContent = [claims[index][4] for index in claimIndexes]
-        fullClaimsContent = [fullClaims[index][4] for index in claimIndexes]
+        claimsContent = [(claims[index][4], tweet2date[claims[index][4]])
+                         for index in claimIndexes]
+        fullClaimsContent = [
+            (fullClaims[index][4], tweet2date[claims[index][4]]) for index in claimIndexes]
         for index in claimIndexes:
             if claims[index][4] == representativeClaim:
                 tweetID = str(claims[index][0])
@@ -369,6 +373,7 @@ class GetSimilarity(object):
             dict -- {tweet: feature, ...}
         """
         tweet2features = defaultdict(int)
+        tweet2date = defaultdict(str)
         for claimIndex in claimIndexes:
             tweetID = claims[claimIndex][0]
             text = claims[claimIndex][4]
@@ -376,7 +381,9 @@ class GetSimilarity(object):
                 tweets[tweetID].retweets + \
                 tweets[tweetID].favorites + 1
             tweet2features[text] += features
-        return tweet2features
+            tweet2date[text] = tweets[tweetID].date.strftime(
+                '%Y-%m-%d %H:%M:%S')
+        return tweet2features, tweet2date
 
     def __getFeature4Cluster(self, sortedTweet2Number, representativeClaim,
                              representativeClaim2ClusterFeatures, flag):
