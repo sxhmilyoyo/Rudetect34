@@ -1,0 +1,140 @@
+====================================================================================================
+Getting subject ...
+====================================================================================================
+filePath  Ingraham_0618_0624/final/candidateClaimsMergedClause.json
+filePath  Ingraham_0618_0624/final/candidateFullClaimsMergedClause.json
+eps for DBSCAN is  0.5
+cluster_to_claims_indexes.json has been saved.
+cluster_to_core_sample_indices.json has been saved.
+representative_claim_to_claims_cluster.json has been saved.
+representative_claim_to_full_claims_cluster.json has been saved.
+representative_claim_to_subject.json has been saved.
+representative_claim_to_cluster_feature.json has been saved.
+ranked_cluster_claims.json has been saved.
+====================================================================================================
+Getting News ...
+====================================================================================================
+API called successfully. Returned data: 
+============================================================
+Air signs and their love life
+Love Island star Malin Andersson demands Love Island be cancelled
+Little love for governor’s emissions order
+Love is in the air as drone captures couple's big day
+Love Island 'cancelled' after Sophie Gradon's death?
+Art of the Love Song: Air Supply to entertain at Four Winds Casino
+Tonight's Love Island will be dedicated to tragic Sophie Gradon
+A Secret 'Tunnel of Love'
+Love Island to air tribute to Sophie Gradon as she tragically dies aged 32
+Msengana on air – about sport, new SA
+scores  [[0.86953253 0.89868895 0.89871384 0.82018399 0.98276934 0.94262968
+  0.89502587 0.93621169 0.91761588 0.97554359]]
+similarNewID  3
+API called successfully. Returned data: 
+============================================================
+Love is in the air as drone captures couple's big day
+Review: DJI Mavic Air drone
+Save Over 60% And Capture Your Summer From High In The Sky With This Drone
+Get This HD Camera Drone For Over 50% Off
+Santa Barbara Drone Club Now Meeting
+The bigger picture: How a drone photographer is capturing inequality from the air
+The bigger picture: How a drone photographer is capturing inequality from the air
+DroneCatcher upgrade lets this net-gun security drone stay in the sky
+Everything you need to know about how Love Island is filmed...
+The U.S. is opening prime urban sky to commercial drones
+0th claim: news has been saved.
+API called successfully. Returned data: 
+============================================================
+Fox News' Laura Ingraham says immigrant child detention centers...
+Laura Ingraham Just Said Child Immigrant Detention Centers Are ‘Essentially Summer Camps’ (Video)
+Laura Ingraham Compared Child Detention Sites To "Summer Camps"
+Laura Ingraham calls immigration detention centers 'summer camps'
+Laura Ingraham suggests migrant child detention centers are 'essentially summer camps'
+Fox News' Laura Ingraham Says Child Detention Centers Are 'Essentially Summer Camps'
+Fox News Contributor: Black People Say Detention Centers Better Than ‘the Projects That I Grew up In’
+Laura Ingraham Says Cages Containing Separated Immigrant Children are 'Essentially Summer Camps' - WATCH
+Fox News’ Laura Ingraham says immigrant child detention centers are ‘essentially summer camps’
+Laura Ingraham calls child detention centers "essentially summer camps," slams "faux liberal outrage"
+scores  [[0.5516626  0.64341347 0.6905042  0.48995512 0.37785505 0.5730661
+  0.64477187 0.67514183 0.28647962 0.63656146]]
+similarNewID  8
+API called successfully. Returned data: 
+============================================================
+Laura Ingraham suggests migrant child detention centers are 'essentially summer camps'
+Laura Ingraham Just Said Child Immigrant Detention Centers Are ‘Essentially Summer Camps’ (Video)
+Fox News' Laura Ingraham Says Child Detention Centers Are 'Essentially Summer Camps'
+Laura Ingraham Compared Child Detention Sites To "Summer Camps"
+Fox News Contributor: Black People Say Detention Centers Better Than ‘the Projects That I Grew up In’
+Fox News’ Laura Ingraham says immigrant child detention centers are ‘essentially summer camps’
+Laura Ingraham Says Cages Containing Separated Immigrant Children are 'Essentially Summer Camps' - WATCH
+Fox News' Laura Ingraham says immigrant child detention centers...
+Fox News Stands by Laura Ingraham Amid Boycott Effort Over Immigration Policy Comments
+Laura Ingraham Calls Migrant Child Detention Centers 'Essentially Summer Camps'
+1th claim: news has been saved.
+API called successfully. Returned data: 
+============================================================
+What the Happiest Places Have in Common
+What the most successful people do, according to this meme
+What women and animals have in common
+What Do Justices Gorsuch and Justice Breyer Have in Common?
+'What did we do to deserve this?'
+White People Are Cowards
+What women and animals have in common
+Juneteeth draws a divided people together
+Trump is exactly what black people have been warning America about
+What do people do on the summer solstice?
+scores  [[0.7241278  0.79930939 0.31636635 0.81355766 0.94991408 0.81350007
+  0.31636635 0.80181106 0.80841796 0.76793371]]
+similarNewID  2
+API called successfully. Returned data: 
+============================================================
+What women and animals have in common
+What women and animals have in common
+80-plus pets have been adopted
+What Have We Become? What We Have Always Been
+Distressed animals die during animal rights protest
+Christian witness and animals
+Activists charged with animal cruelty after mass raid of NSW hen farm
+There is a good chance of curing the common cold in the next 10 years
+People Find Sex Almost As Disgusting As Infectious Wounds, According to a New Study
+Monash study reveals why older people have reduced immune responses to cancer therapy
+2th claim: news has been saved.
+API called successfully. Returned data: 
+============================================================
+Modern Family boss will quit Fox over Trump support
+Modern Family showrunner reportedly leaves Fox Studio over Fox News' coverage of the child separation policy
+‘Modern Family’ Creator Steve Levitan Joins Seth MacFarlane in Being ‘Disgusted’ to Work at Fox
+‘Westworld’ Actor Jonathan Tucker Says He’ll Donate Residuals From Fox Projects to RAICES
+‘Modern Family’ co-creator hints at leaving Fox, slams Fox News' coverage of border practices
+Steve Levitan Says He’ll Leave Fox After ‘Modern Family’ Ends
+Seth MacFarlane Gives NPR, KPCC $2.5M After Criticizing Fox News
+'Modern Family' Co-Creator Will Leave Studio Because of Fox News
+Hollywood creators and stars criticise Fox News over family separation coverage
+'Modern Family' Co-Creator Steve Levitan Threatens to Leave 20th Century Fox Over Fox News' Immigration Coverage
+scores  [[0.80054148 0.87106159 0.78682826 0.82037578 0.8644575  0.7930817
+  0.72481312 0.77165001 0.83857903 0.79437501]]
+similarNewID  6
+API called successfully. Returned data: 
+============================================================
+Seth MacFarlane Gives NPR, KPCC $2.5M After Criticizing Fox News
+Seth MacFarlane Donates $2.5M to NPR After Criticizing Tucker Carlson's Comment
+Seth MacFarlane Donates $2.5M to NPR in Wake of Tucker Carlson’s Fox News Comments
+Seth MacFarlane donates $2.5M to NPR in response to Tucker Carlson attacks on media
+‘Family Guy’ Creator Seth MacFarlane Donates $2.5M to NPR, KPCC After Slamming Fox News
+Seth MacFarlane Donates Money to NPR, KPCC After Slamming Fox News
+Seth MacFarlane Donates $2.5 Million to NPR After Fox Slam
+Seth MacFarlane Donates $2.5 Million to NPR After Fox Slam
+Seth MacFarlane Donates Millions To Public Radio After Fox News Feud
+Seth MacFarlane Donates $2.5 Million To NPR & Its LA Station KPCC After Tweet
+3th claim: news has been saved.
+====================================================================================================
+Getting corpus for classification of the event ...
+----------------------------------------------------------------------------------------------------
+corpus_representative_claims.csv has been saved in /home/hao/Workplace/HaoXu/Data/Rudetect34_fullClaims/Ingraham_0618_0624/final/corpus/0/corpus_representative_claims.csv
+corpus_cluster_claims.csv has been saved in /home/hao/Workplace/HaoXu/Data/Rudetect34_fullClaims/Ingraham_0618_0624/final/corpus/0/corpus_cluster_claims.csv
+corpus_representative_claims.csv has been saved in /home/hao/Workplace/HaoXu/Data/Rudetect34_fullClaims/Ingraham_0618_0624/final/corpus/1/corpus_representative_claims.csv
+corpus_cluster_claims.csv has been saved in /home/hao/Workplace/HaoXu/Data/Rudetect34_fullClaims/Ingraham_0618_0624/final/corpus/1/corpus_cluster_claims.csv
+corpus_representative_claims.csv has been saved in /home/hao/Workplace/HaoXu/Data/Rudetect34_fullClaims/Ingraham_0618_0624/final/corpus/2/corpus_representative_claims.csv
+corpus_cluster_claims.csv has been saved in /home/hao/Workplace/HaoXu/Data/Rudetect34_fullClaims/Ingraham_0618_0624/final/corpus/2/corpus_cluster_claims.csv
+corpus_representative_claims.csv has been saved in /home/hao/Workplace/HaoXu/Data/Rudetect34_fullClaims/Ingraham_0618_0624/final/corpus/3/corpus_representative_claims.csv
+corpus_cluster_claims.csv has been saved in /home/hao/Workplace/HaoXu/Data/Rudetect34_fullClaims/Ingraham_0618_0624/final/corpus/3/corpus_cluster_claims.csv
+====================================================================================================

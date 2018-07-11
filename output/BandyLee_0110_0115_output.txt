@@ -1,0 +1,21 @@
+====================================================================================================
+Getting subject ...
+====================================================================================================
+filePath  BandyLee_0110_0115/final/candidateClaimsMergedClause.json
+filePath  BandyLee_0110_0115/final/candidateFullClaimsMergedClause.json
+eps for DBSCAN is  0.65
+cluster_to_claims_indexes.json has been saved.
+cluster_to_core_sample_indices.json has been saved.
+representative_claim_to_claims_cluster.json has been saved.
+representative_claim_to_full_claims_cluster.json has been saved.
+representative_claim_to_subject.json has been saved.
+representative_claim_to_cluster_feature.json has been saved.
+ranked_cluster_claims.json has been saved.
+====================================================================================================
+Getting corpus for classification of the event ...
+----------------------------------------------------------------------------------------------------
+corpus_representative_claims.csv has been saved in /home/hao/Workplace/HaoXu/Data/Rudetect34_fullClaims/BandyLee_0110_0115/final/corpus/0/corpus_representative_claims.csv
+corpus_cluster_claims.csv has been saved in /home/hao/Workplace/HaoXu/Data/Rudetect34_fullClaims/BandyLee_0110_0115/final/corpus/0/corpus_cluster_claims.csv
+corpus_representative_claims.csv has been saved in /home/hao/Workplace/HaoXu/Data/Rudetect34_fullClaims/BandyLee_0110_0115/final/corpus/1/corpus_representative_claims.csv
+corpus_cluster_claims.csv has been saved in /home/hao/Workplace/HaoXu/Data/Rudetect34_fullClaims/BandyLee_0110_0115/final/corpus/1/corpus_cluster_claims.csv
+====================================================================================================

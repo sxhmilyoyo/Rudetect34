@@ -1,0 +1,168 @@
+====================================================================================================
+Getting subject ...
+====================================================================================================
+filePath  Gabapentin_0628_0121/final/candidateClaimsMergedClause.json
+filePath  Gabapentin_0628_0121/final/candidateFullClaimsMergedClause.json
+eps for DBSCAN is  0.35
+cluster_to_claims_indexes.json has been saved.
+cluster_to_core_sample_indices.json has been saved.
+representative_claim_to_claims_cluster.json has been saved.
+representative_claim_to_full_claims_cluster.json has been saved.
+representative_claim_to_subject.json has been saved.
+representative_claim_to_cluster_feature.json has been saved.
+ranked_cluster_claims.json has been saved.
+====================================================================================================
+Getting News ...
+====================================================================================================
+API called successfully. Returned data: 
+============================================================
+New pain reliever may help combat opioid abuse
+New pain reliever may help combat opioid abuse | NEWS.am Medicine - All about health and medicine
+The new oxy? There's another popular prescription drug to watch
+Drug May Help Surgical Patients Stop Opioids Sooner
+Drug may help surgical patients stop opioids sooner
+Drug may reduce amount of opioids surgical patients require
+Drug May Help Surgical Patients Stop Opioids Sooner: MedlinePlus Health News
+Opioid Addicts Are Turning To This Nerve Drug To Get High
+Drug may help surgical patients stop opioids sooner
+Doc: Non-narcotic painkillers add to epidemic
+scores  [[0.3222873  0.57879268 0.66920795 0.62086413 0.59247981 0.55240412
+  0.65338507 0.67429244 0.59247981 0.74639655]]
+similarNewID  0
+API called successfully. Returned data: 
+============================================================
+New pain reliever may help combat opioid abuse
+New pain reliever may help combat opioid abuse | NEWS.am Medicine - All about health and medicine
+Incentivizing change to combat opioid abuse
+Is pain-reliever discovery key to curbing opioid epidemic?
+Strategies to combat the opioid epidemic
+Anti-opioid vaccine could offer bridge to overcoming addiction | FierceBiotech
+New standards may help curb opioid abuse
+Opioids: FDA Issues New Guidance to Drug Makers
+Boston Scientists Find New Way To Fight Pain | US Financial News Today
+New vaccine technology shows promise as a tool to combat the opioid crisis
+0th claim: news has been saved.
+API called successfully. Returned data: 
+============================================================
+Bone adaptation to mechanical loading in a mouse model of reduced peripheral sensory nerve function
+Placebo Effect in PCI; Spice Cuts Taste for Salt; PCSK9 Prescriptions
+Dysfunctional GPR40/FFAR1 signaling exacerbates pain behavior in mice
+Static magnetic field enhances the anticancer efficacy of capsaicin on HepG2 cells via capsaicin receptor TRPV1
+The pain threshold of high-threshold mechanosensitive receptors subsequent to maximal eccentric exercise is a potential marker in the prediction of DOMS associated impairment
+Susceptibility of different mouse strains to oxaliplatin peripheral neurotoxicity: Phenotypic and genotypic insights
+Hail Intensity Breakthrough - Patent Granted to Weather Forensics Innovator Dynamic Weather Solutions
+Intensity Modulated Radiation Therapy (IMRT)
+How to Get Rid of Back Spasms
+Forest thinning project to begin in area north of Flagstaff
+scores  [[0.60147907 0.61376168 0.62441904 0.38519946 0.46536883 0.5877013
+  0.6588912  0.69969387 0.66547923 0.66148768]]
+similarNewID  3
+API called successfully. Returned data: 
+============================================================
+Static magnetic field enhances the anticancer efficacy of capsaicin on HepG2 cells via capsaicin receptor TRPV1
+Adrenergic receptors inhibit TRPV1 activity in the dorsal root ganglion neurons of rats
+Distinct and common expression of receptors for inflammatory mediators in vagal nodose versus jugular capsaicin-sensitive/TRPV1-positive neurons detected by low input RNA sequencing
+What happens to your brain and body when you eat a hot pepper
+Centrexion To Present Clinical Data From Pipeline Of Chronic Pain Treatments At The 11th Annual Pain And Migraine Therapeutics Summit
+Centrexion Therapeutics : to Present Clinical Data from Pipeline of Chronic Pain Treatments at the 11th Annual Pain and Migraine Therapeutics Summit
+Can Eating The World's Hottest Pepper Kill You? How Spicy Foods Affect The Body
+Centrexion Therapeutics : to Present 6-Month Efficacy Data on CNTX-4975 for the Treatment of Chronic Pain Associated with Knee Osteoarthritis at PAINWeek 2017
+Why Chili Peppers and Spicy Foods Trigger Hiccups
+Centrexion Therapeutics to Present Clinical Data from Pipeline of Chronic Pain Treatments at the 11th Annual Pain and Migraine Therapeutics Summit
+1th claim: news has been saved.
+API called successfully. Returned data: 
+============================================================
+Challenges in minimizing post-surgical opioid use
+Medication helps decrease opioid use following surgery
+A retrospective analysis on the relationship between intraoperative hypothermia and postoperative ileus after laparoscopic colorectal surgery
+Opioid-free anesthesia reduces postoperative nausea, study finds
+Research finds decrease in opioid use among patients recovering from hip and knee replacement
+Postsurgical prescriptions for opioid naive patients and association with overdose and misuse: retrospective cohort study
+Research finds decrease in opioid use among patients recovering from hip and knee replacement
+Heron Therapeutics To Take Flight In 2018
+The Case For Confronting Long-Term Opioid Use As A Hospital-Acquired Condition
+How Surgery Helped Fuel the Opioid Epidemic
+scores  [[0.57845278 0.40642666 0.40619649 0.58488978 0.44961615 0.50111559
+  0.44961615 0.6099587  0.45806267 0.68901148]]
+similarNewID  2
+API called successfully. Returned data: 
+============================================================
+A retrospective analysis on the relationship between intraoperative hypothermia and postoperative ileus after laparoscopic colorectal surgery
+The dose of hydroxyethyl starch 6% 130/0.4 for fluid therapy and the incidence of acute kidney injury after cardiac surgery: A retrospective matched study
+Skin perfusion pressure as an indicator of tissue perfusion in valvular heart surgery: Preliminary results from a prospective, observational study
+Immediate therapeutic hypothermia and hyperbaric oxygen therapy could reverse spinal ischemia injury.
+Clinical Study Shows Effectiveness of Attune Medical’s EnsoETM Esophageal Temperature Management Device for Warming and Cooling
+Trauma care: Finding a better way
+Anesthetic effects and body weight changes associated with ketamine-xylazine-lidocaine administered to CD-1 mice
+IκK-16 decreases miRNA-155 expression and attenuates the human monocyte inflammatory response
+2th claim: news has been saved.
+API called successfully. Returned data: 
+============================================================
+Deaths from drug poisoning reach record high
+Medication alert for low back pain
+'Be more cautious' in prescribing off-label drugs for chronic back pain, review says
+Prescription painkiller gabapentin linked to more than 150 drug deaths
+Doc: Non-narcotic painkillers add to epidemic
+Fibromyalgia treatment: Is Neurontin effective?
+Prescription painkiller gabapentin linked to more than 150 drug deaths
+Scotland's leading pain expert warns gabapentin crackdown 'disastrous' for patients
+Evidence does not support the use of gabapentinoids for chronic low back pain
+Doctors May Be Over-Prescribing Seizure Drugs to Treat Pain
+scores  [[0.66582454 0.78054259 0.75873446 0.61980493 0.77051561 0.72753073
+  0.61980493 0.56955143 0.57458047 0.55026718]]
+similarNewID  9
+API called successfully. Returned data: 
+============================================================
+Doctors may be over-prescribing seizure drugs to treat pain
+Doctors May Be Over-Prescribing Seizure Drugs to Treat Pain
+Doctors May Be Over-Prescribing Seizure Drugs to Treat Pain: MedlinePlus Health News
+A drug company schemed to push opioids designed to treat cancer on cancer-free patients
+GP reprimanded for prescribing opioids to 'doctor shoppers'
+Meet Portland's top opioid prescriber
+The new oxy? There's another popular prescription drug to watch
+Three Simple Ways to Treat Opioid Addictions
+Fibromyalgia treatment: Is Neurontin effective?
+This insurance company cut opioid prescriptions by 30% among injured workers
+3th claim: news has been saved.
+API called successfully. Returned data: 
+============================================================
+Pregabalin: Doctors call for 'new Valium' to be restricted amid sharp rise in abuse
+Doctors call for 'new Valium' to be restricted amid rise in abuse
+Pregabalin, known as 'new valium', to be made class C drug after deaths
+Today in History for July 17th
+Painkiller prescription rates vary widely
+No relief in sight for those suffering from sciatica
+Prescription painkiller gabapentin linked to more than 150 drug deaths
+Evidence does not support the use of gabapentinoids for chronic low back pain
+Prescription painkiller gabapentin linked to more than 150 drug deaths
+Doc: Non-narcotic painkillers add to epidemic
+scores  [[0.70679334 0.67569308 0.75856647 0.63182031 0.70976037 0.78044481
+  0.70362494 0.63341027 0.70362494 0.77248573]]
+similarNewID  3
+API called successfully. Returned data: 
+============================================================
+Today in History for July 17th
+Today in History
+Today in History
+Today in History
+Today in History
+Today in History
+Today in History for January 17th
+Today in History for August 17th
+Today in History: July 31
+Today in History for July 9th
+4th claim: news has been saved.
+====================================================================================================
+Getting corpus for classification of the event ...
+----------------------------------------------------------------------------------------------------
+corpus_representative_claims.csv has been saved in /home/hao/Workplace/HaoXu/Data/Rudetect34_fullClaims/Gabapentin_0628_0121/final/corpus/0/corpus_representative_claims.csv
+corpus_cluster_claims.csv has been saved in /home/hao/Workplace/HaoXu/Data/Rudetect34_fullClaims/Gabapentin_0628_0121/final/corpus/0/corpus_cluster_claims.csv
+corpus_representative_claims.csv has been saved in /home/hao/Workplace/HaoXu/Data/Rudetect34_fullClaims/Gabapentin_0628_0121/final/corpus/1/corpus_representative_claims.csv
+corpus_cluster_claims.csv has been saved in /home/hao/Workplace/HaoXu/Data/Rudetect34_fullClaims/Gabapentin_0628_0121/final/corpus/1/corpus_cluster_claims.csv
+corpus_representative_claims.csv has been saved in /home/hao/Workplace/HaoXu/Data/Rudetect34_fullClaims/Gabapentin_0628_0121/final/corpus/2/corpus_representative_claims.csv
+corpus_cluster_claims.csv has been saved in /home/hao/Workplace/HaoXu/Data/Rudetect34_fullClaims/Gabapentin_0628_0121/final/corpus/2/corpus_cluster_claims.csv
+corpus_representative_claims.csv has been saved in /home/hao/Workplace/HaoXu/Data/Rudetect34_fullClaims/Gabapentin_0628_0121/final/corpus/3/corpus_representative_claims.csv
+corpus_cluster_claims.csv has been saved in /home/hao/Workplace/HaoXu/Data/Rudetect34_fullClaims/Gabapentin_0628_0121/final/corpus/3/corpus_cluster_claims.csv
+corpus_representative_claims.csv has been saved in /home/hao/Workplace/HaoXu/Data/Rudetect34_fullClaims/Gabapentin_0628_0121/final/corpus/4/corpus_representative_claims.csv
+corpus_cluster_claims.csv has been saved in /home/hao/Workplace/HaoXu/Data/Rudetect34_fullClaims/Gabapentin_0628_0121/final/corpus/4/corpus_cluster_claims.csv
+====================================================================================================

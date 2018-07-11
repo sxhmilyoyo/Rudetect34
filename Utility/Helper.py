@@ -14,6 +14,7 @@ sys.path.append('/usa/haoxu/Workplace/InfoLab/RuDetect27/GetOldTweets-python')
 import got3
 import Twitter
 import Utility
+from collections import defaultdict
 
 
 class Helper(object):
@@ -36,6 +37,7 @@ class Helper(object):
     def loadPickle(self, filePath):
         """Load .pkl."""
         # with codecs.open(os.path.join(self.rootPath, filePath), "rb",encoding='utf-8', errors='ignore') as fp:
+        print("path ", filePath)
         if not os.path.exists(os.path.join(self.rootPath, filePath)):
             return None
         with open(os.path.join(self.rootPath, filePath), 'rb') as fp:
@@ -54,7 +56,7 @@ class Helper(object):
         """Load .json."""
         if not os.path.exists(os.path.join(self.rootPath, filePath)):
             return None
-        with open(os.path.join(self.rootPath, filePath)) as fp:
+        with open(os.path.join(self.rootPath, filePath), 'rb') as fp:
             data = json.load(fp)
         return data
 
@@ -86,7 +88,9 @@ class Helper(object):
             Description of returned object.
 
         """
-        with open(os.path.join(self.rootPath, folderPath, filename), "wb") as fp:
+        if not os.path.exists(os.path.join(self.rootPath, folderPath)):
+            os.makedirs(os.path.join(self.rootPath, folderPath))
+        with open(os.path.join(self.rootPath, folderPath, filename), "w") as fp:
             filewriter = csv.writer(fp, delimiter='\t')
             filewriter.writerow(title)
             for d in data:
@@ -98,7 +102,7 @@ class Helper(object):
         details = []
         if not os.path.exists(os.path.join(self.rootPath, folderPath, filename)):
             return None
-        with open(os.path.join(self.rootPath, folderPath, filename)) as fp:
+        with open(os.path.join(self.rootPath, folderPath, filename), 'rb') as fp:
             reader = csv.reader(fp, delimiter='\t')
             next(reader)
             for r in reader:
@@ -112,13 +116,13 @@ class Helper(object):
         Parameters Example:
                 self.rootPath/folderPath/final/rawData
         """
-        filenames = os.listdir(os.path.join(self.rootPath, folderPath,
-                                            'final', 'rawData'))
-        for filename in filenames:
-            tweets = self.loadPickle(os.path.join(folderPath, 'final',
-                                                  'rawData', filename))
-            for tweet in tweets:
-                yield tweet
+        # filename = os.path.join(self.rootPath, folderPath,
+        #                         'final', 'rawData', 'tweets.pkl')
+        # for filename in filenames:
+        tweets = self.loadPickle(os.path.join(folderPath, 'final',
+                                              'rawData', 'tweets.pkl'))
+        for tweet in tweets:
+            yield tweet
 
     def getClaim(self, folderPath, filename):
         """Get claim content from subject2rankedClaims.json.
@@ -325,3 +329,76 @@ class Helper(object):
         """
         G = cls.to_graph(groupNodes)
         return list(connected_components(G))
+
+    def buildDict4Tweets(self, foldername):
+        """Build dictionary for tweets got from PHEME dataset.
+
+        The raw_data.json will be generated in each event folder.
+
+        Arguments:
+            foldername {str} -- folder name of an event
+        """
+        resultDict = defaultdict(dict)
+        resultPickle = []
+        folderpath = os.path.join(self.rootPath, foldername)
+        if not os.path.exists(folderpath):
+            print("the path {} does not exist.".format(folderpath))
+            return
+        rnrsName = [rnr for rnr in os.listdir(folderpath)
+                    if os.path.isdir(os.path.join(folderpath, rnr))]
+        for rnrName in rnrsName:
+            rnrPath = os.path.join(folderpath, rnrName)
+            # print("rnrPath ", rnrPath)
+            rumorsName = [rumor for rumor in os.listdir(
+                rnrPath) if os.path.isdir(os.path.join(rnrPath, rumor))]
+            for rumorName in rumorsName:
+                rumorPath = os.path.join(rnrPath, rumorName)
+                # print("rumorPath ", rumorPath)
+                reactionPath = os.path.join(rumorPath, "reactions")
+                # print("reactionPath ", reactionPath)
+                sourceTweetsPath = os.path.join(rumorPath, "source-tweets")
+                # print("sourceTweetsPath ", sourceTweetsPath)
+
+                reactions = [reaction for reaction in os.listdir(
+                    reactionPath) if os.path.isfile(os.path.join(reactionPath,
+                                                                 reaction))]
+                numReaction = len(reactions)
+
+                for sourceTweet in os.listdir(sourceTweetsPath):
+                    sourceTweetPath = os.path.join(
+                        sourceTweetsPath, sourceTweet)
+                    # print("sourceTweetPath ", sourceTweetPath)
+                    # avoid .DS_store
+                    if os.path.isfile(sourceTweetPath) and sourceTweet[0] != ".":
+                        # print("sourceTweetPath ", sourceTweetPath)
+                        data = self.loadJson(sourceTweetPath)
+                        idx = data['id_str']
+                        hashtags = ['#'+hashtag['text'] for hashtag in data['entities']['hashtags']]
+                        rumor = True if rnrName == 'rumours' else False
+                        date = data['created_at']
+
+                        resultDict[idx]['text'] = data['text']
+                        resultDict[idx]['favorite_count'] = data['favorite_count']
+                        resultDict[idx]['retweet_count'] = data['retweet_count']
+                        resultDict[idx]['hashtags'] = hashtags
+                        resultDict[idx]['comment'] = numReaction
+                        resultDict[idx]['rumor'] = rumor
+                        resultDict[idx]['date'] = date
+
+                        tweet = Twitter.Tweet()
+                        tweet.id = idx
+                        tweet.text = data['text']
+                        tweet.favorites = data['favorite_count']
+                        tweet.retweets = data['retweet_count']
+                        tweet.reply = numReaction
+                        tweet.rumor = rumor
+                        tweet.setHashtags(hashtags)
+                        tweet.setDate(date)
+
+                        resultPickle.append(tweet)
+        self.dumpJson(folderpath + "/../../pheme_dataset/" + foldername +
+                      "/final/rawData", "raw_data.json", resultDict)
+        print("raw_data.json has been saved.")
+        self.dumpPickle(folderpath + "/../../pheme_dataset/" + foldername +
+                        "/final/rawData", "tweets.pkl", resultPickle)
+        print("tweets.pkl has been saved.")

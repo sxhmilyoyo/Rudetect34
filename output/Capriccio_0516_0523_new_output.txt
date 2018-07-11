@@ -1,0 +1,170 @@
+====================================================================================================
+Getting subject ...
+====================================================================================================
+filePath  Capriccio_0516_0523_new/final/candidateClaimsMergedClause.json
+filePath  Capriccio_0516_0523_new/final/candidateFullClaimsMergedClause.json
+eps for DBSCAN is  0.5
+cluster_to_claims_indexes.json has been saved.
+cluster_to_core_sample_indices.json has been saved.
+representative_claim_to_claims_cluster.json has been saved.
+representative_claim_to_full_claims_cluster.json has been saved.
+representative_claim_to_subject.json has been saved.
+representative_claim_to_cluster_feature.json has been saved.
+ranked_cluster_claims.json has been saved.
+====================================================================================================
+Getting News ...
+====================================================================================================
+API called successfully. Returned data: 
+============================================================
+Bubbly sangria or satan's sip? The drink that people are warning you about
+A sangria so potent, it reminds drinkers of Four Loko
+Capriccio Bubbly bottled sangria is so potent it reminds drinkers of Four Loko
+Despite the warnings — or because of them — this alcoholic drink is getting big buzz
+Capriccio bubbly sangria has been dubbed the new four loko
+Warning! Be Careful Drinking Capriccio Sangria
+The new 'Four Loko'? Capriccio Bubbly Sangria causes social media buzz
+The new 'Four Loko'? Capriccio Bubbly Sangria causes social media buzz
+The new 'Four Loko'? Capriccio Bubbly Sangria causes social media buzz
+What Is Capriccio Bubbly Sangria? Nutritional Information And Where To Buy It
+scores  [[0.77000893 0.62335698 0.537952   0.70622298 0.57026523 0.66079537
+  0.59609466 0.59609466 0.59609466 0.72826641]]
+similarNewID  2
+API called successfully. Returned data: 
+============================================================
+Capriccio Bubbly bottled sangria is so potent it reminds drinkers of Four Loko
+A sangria so potent, it reminds drinkers of Four Loko
+Capriccio bubbly sangria has been dubbed the new four loko
+Bubbly sangria or satan's sip? The drink that people are warning you about
+Despite the warnings — or because of them — this alcoholic drink is getting big buzz
+The new 'Four Loko'? Capriccio Bubbly Sangria causes social media buzz
+The new 'Four Loko'? Capriccio Bubbly Sangria causes social media buzz
+Warning! Be Careful Drinking Capriccio Sangria
+The new 'Four Loko'? Capriccio Bubbly Sangria causes social media buzz
+What Is Capriccio Bubbly Sangria? Nutritional Information And Where To Buy It
+0th claim: news has been saved.
+API called successfully. Returned data: 
+============================================================
+Bubbly sangria or satan's sip? The drink that people are warning you about
+Despite the warnings — or because of them — this alcoholic drink is getting big buzz
+Capriccio bubbly sangria has been dubbed the new four loko
+Capriccio Bubbly bottled sangria is so potent it reminds drinkers of Four Loko
+A sangria so potent, it reminds drinkers of Four Loko
+The new 'Four Loko'? Capriccio Bubbly Sangria causes social media buzz
+The new 'Four Loko'? Capriccio Bubbly Sangria causes social media buzz
+The new 'Four Loko'? Capriccio Bubbly Sangria causes social media buzz
+Warning! Be Careful Drinking Capriccio Sangria
+What Is Capriccio Bubbly Sangria? Nutritional Information And Where To Buy It
+scores  [[0.78355646 0.83543982 0.5852778  0.5563345  0.61178203 0.59576553
+  0.59576553 0.59576553 0.65409127 0.6767734 ]]
+similarNewID  3
+API called successfully. Returned data: 
+============================================================
+Capriccio Bubbly bottled sangria is so potent it reminds drinkers of Four Loko
+A sangria so potent, it reminds drinkers of Four Loko
+Capriccio bubbly sangria has been dubbed the new four loko
+Bubbly sangria or satan's sip? The drink that people are warning you about
+Despite the warnings — or because of them — this alcoholic drink is getting big buzz
+The new 'Four Loko'? Capriccio Bubbly Sangria causes social media buzz
+The new 'Four Loko'? Capriccio Bubbly Sangria causes social media buzz
+Warning! Be Careful Drinking Capriccio Sangria
+The new 'Four Loko'? Capriccio Bubbly Sangria causes social media buzz
+What Is Capriccio Bubbly Sangria? Nutritional Information And Where To Buy It
+1th claim: news has been saved.
+API called successfully. Returned data: 
+============================================================
+Capriccio Bubbly bottled sangria is so potent it reminds drinkers of Four Loko
+A sangria so potent, it reminds drinkers of Four Loko
+Bubbly sangria or satan's sip? The drink that people are warning you about
+Despite the warnings — or because of them — this alcoholic drink is getting big buzz
+Warning! Be Careful Drinking Capriccio Sangria
+The new 'Four Loko'? Capriccio Bubbly Sangria causes social media buzz
+The new 'Four Loko'? Capriccio Bubbly Sangria causes social media buzz
+The new 'Four Loko'? Capriccio Bubbly Sangria causes social media buzz
+Capriccio bubbly sangria has been dubbed the new four loko
+What Is Capriccio Bubbly Sangria? Nutritional Information And Where To Buy It
+scores  [[0.69462122 0.72653432 0.86117299 0.81783661 0.7222129  0.65863004
+  0.65863004 0.65863004 0.69569161 0.69215015]]
+similarNewID  5
+API called successfully. Returned data: 
+============================================================
+The new 'Four Loko'? Capriccio Bubbly Sangria causes social media buzz
+The new 'Four Loko'? Capriccio Bubbly Sangria causes social media buzz
+The new 'Four Loko'? Capriccio Bubbly Sangria causes social media buzz
+Despite the warnings — or because of them — this alcoholic drink is getting big buzz
+Capriccio Bubbly bottled sangria is so potent it reminds drinkers of Four Loko
+A sangria so potent, it reminds drinkers of Four Loko
+Bubbly sangria or satan's sip? The drink that people are warning you about
+What Is Capriccio Bubbly Sangria? Nutritional Information And Where To Buy It
+Capriccio bubbly sangria has been dubbed the new four loko
+Warning! Be Careful Drinking Capriccio Sangria
+2th claim: news has been saved.
+API called successfully. Returned data: 
+============================================================
+Market analyst says Yopa is spending over £500,000 to acquire each new listing
+The Blockchain – powered ATLANT (ATL) increased by 3.80% for a day
+Brit reseller Aria PC mounts appeal against £750k taxman VAT fiddle ruling
+Laggard returns filers to miss tax concession
+Open justice FTW! El Reg fought the law – and El Reg won
+Stream Lil Baby's "Harder Than Ever" Project
+Lil Baby Teams Up With Young Thug For New Song "Right Now"
+Transit pig in a poke
+Ralo Denied Bond Once Again
+ATLANT Price Reaches $0.12 (ATL)
+scores  [[0.87617801 0.76345127 0.70597439 0.840755   0.74313062 0.73988009
+  0.74458895 0.83320974 0.80075289 0.79244486]]
+similarNewID  2
+API called successfully. Returned data: 
+============================================================
+Brit reseller Aria PC mounts appeal against £750k taxman VAT fiddle ruling
+Open justice FTW! El Reg fought the law – and El Reg won
+Jodi Arias wants judge to hold murder appeal in secret
+Reseller fined by Microsoft over copyright PC Tek calls in administrators
+Brit IT contractor wins appeal against HMRC to pay £26k in back taxes
+Jodi Arias asks judge for secrecy in appeal of murder conviction
+Shell firms: Income Tax department to file pleas in NCLT to extract tax due | Kaplan Herald
+Fed. Circ. Affirms Ax Of Solar Panel Roof Mounting Patents - Law360
+Arias lawyers continue push to keep her appeal from public
+Arias lawyers continue push to keep her appeal from public
+3th claim: news has been saved.
+API called successfully. Returned data: 
+============================================================
+Bubbly sangria or satan's sip? The drink that people are warning you about
+Despite the warnings — or because of them — this alcoholic drink is getting big buzz
+Warning! Be Careful Drinking Capriccio Sangria
+Capriccio Bubbly bottled sangria is so potent it reminds drinkers of Four Loko
+A sangria so potent, it reminds drinkers of Four Loko
+The new 'Four Loko'? Capriccio Bubbly Sangria causes social media buzz
+What Is Capriccio Bubbly Sangria? Nutritional Information And Where To Buy It
+The new 'Four Loko'? Capriccio Bubbly Sangria causes social media buzz
+The new 'Four Loko'? Capriccio Bubbly Sangria causes social media buzz
+Capriccio bubbly sangria has been dubbed the new four loko
+scores  [[0.86152314 0.83434545 0.67295382 0.65711852 0.73119265 0.69534863
+  0.75366092 0.69534863 0.69534863 0.65212115]]
+similarNewID  9
+API called successfully. Returned data: 
+============================================================
+Capriccio bubbly sangria has been dubbed the new four loko
+Capriccio Bubbly bottled sangria is so potent it reminds drinkers of Four Loko
+A sangria so potent, it reminds drinkers of Four Loko
+The new 'Four Loko'? Capriccio Bubbly Sangria causes social media buzz
+The new 'Four Loko'? Capriccio Bubbly Sangria causes social media buzz
+The new 'Four Loko'? Capriccio Bubbly Sangria causes social media buzz
+Warning! Be Careful Drinking Capriccio Sangria
+Bubbly sangria or satan's sip? The drink that people are warning you about
+What Is Capriccio Bubbly Sangria? Nutritional Information And Where To Buy It
+Despite the warnings — or because of them — this alcoholic drink is getting big buzz
+4th claim: news has been saved.
+====================================================================================================
+Getting corpus for classification of the event ...
+----------------------------------------------------------------------------------------------------
+corpus_representative_claims.csv has been saved in /home/hao/Workplace/HaoXu/Data/Rudetect34_fullClaims/Capriccio_0516_0523_new/final/corpus/0/corpus_representative_claims.csv
+corpus_cluster_claims.csv has been saved in /home/hao/Workplace/HaoXu/Data/Rudetect34_fullClaims/Capriccio_0516_0523_new/final/corpus/0/corpus_cluster_claims.csv
+corpus_representative_claims.csv has been saved in /home/hao/Workplace/HaoXu/Data/Rudetect34_fullClaims/Capriccio_0516_0523_new/final/corpus/1/corpus_representative_claims.csv
+corpus_cluster_claims.csv has been saved in /home/hao/Workplace/HaoXu/Data/Rudetect34_fullClaims/Capriccio_0516_0523_new/final/corpus/1/corpus_cluster_claims.csv
+corpus_representative_claims.csv has been saved in /home/hao/Workplace/HaoXu/Data/Rudetect34_fullClaims/Capriccio_0516_0523_new/final/corpus/2/corpus_representative_claims.csv
+corpus_cluster_claims.csv has been saved in /home/hao/Workplace/HaoXu/Data/Rudetect34_fullClaims/Capriccio_0516_0523_new/final/corpus/2/corpus_cluster_claims.csv
+corpus_representative_claims.csv has been saved in /home/hao/Workplace/HaoXu/Data/Rudetect34_fullClaims/Capriccio_0516_0523_new/final/corpus/3/corpus_representative_claims.csv
+corpus_cluster_claims.csv has been saved in /home/hao/Workplace/HaoXu/Data/Rudetect34_fullClaims/Capriccio_0516_0523_new/final/corpus/3/corpus_cluster_claims.csv
+corpus_representative_claims.csv has been saved in /home/hao/Workplace/HaoXu/Data/Rudetect34_fullClaims/Capriccio_0516_0523_new/final/corpus/4/corpus_representative_claims.csv
+corpus_cluster_claims.csv has been saved in /home/hao/Workplace/HaoXu/Data/Rudetect34_fullClaims/Capriccio_0516_0523_new/final/corpus/4/corpus_cluster_claims.csv
+====================================================================================================

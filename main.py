@@ -25,7 +25,7 @@ def main(rootpath, folderpath, query, start, end, eps):
 
     Parameters
     ----------
-    rootpath : str
+    rootpath : str 
         the root path of the data
     folderpath : str
         the folder path of the event
@@ -52,7 +52,8 @@ def main(rootpath, folderpath, query, start, end, eps):
     # print('='*100)
     # print('Getting tweets ...')
     # print('='*100)
-    # workFlow.getTweets(query, start, end)
+    # workFlow.getTweetsFromPheme()
+    # # workFlow.getTweets(query, start, end)
 
     # # get word2vec
     # print('='*100)
@@ -64,7 +65,14 @@ def main(rootpath, folderpath, query, start, end, eps):
     print('='*100)
     print('Getting subject ...')
     print('='*100)
-    workFlow.getClusterRankClaims(query, eps)
+    # workFlow.getClusterRankClaims(query, float(eps))
+    workFlow.getClaims(query)
+
+    # # get similar news
+    # print("="*100)
+    # print('Getting News ...')
+    # print("="*100)
+    # workFlow.getNews(folderpath)
 
     """# get the topic model
     print('='*100)
@@ -77,11 +85,11 @@ def main(rootpath, folderpath, query, start, end, eps):
     numTopic = helper.getTopicNum(dist)
     """
 
-    # # get cluster
+    """# # get cluster
     # print('='*100)
     # print('Getting clusters ...')
     # print('-'*100)
-    # workFlow.getSimilarTweets4Claim()
+    # workFlow.getSimilarTweets4Claim()"""
 
     """
     # get topic model and SVO for each cluster
@@ -90,12 +98,16 @@ def main(rootpath, folderpath, query, start, end, eps):
     print('-'*100)
     workFlow.run4cluster()
     print('='*100)
-    # get corpus for classification of the event
-    print('='*100)
-    print('Getting corpus for classification of the event ...')
-    print('-'*100)
-    workFlow.getCorpus4Classification(folderpath, 'event')
-    print('='*100)
+    """
+
+    # # get corpus for classification of the event
+    # print('='*100)
+    # print('Getting corpus for classification of the event ...')
+    # print('-'*100)
+    # workFlow.getCorpus4Classification(folderpath)
+    # print('='*100)
+
+    """
     # get similarity between statements of the event
     print('='*100)
     print('Getting similarity between statements ...')

@@ -210,7 +210,7 @@ class PreprocessData(object):
         # print(res)
         return res
 
-    def getCorpus4csv(self, folderPath, target):
+    def getCorpus4CsvFromRepresentativeClaims(self, folderPath, index, subject, claim):
         """Get corpus that divided by tab.
 
         Parameters
@@ -224,21 +224,15 @@ class PreprocessData(object):
             save the corpus into .csv file
 
         """
-        tweets = self.helper.getTweet(folderPath)
-        # p = os.path.join(self.rootPath, folderPath, "corpus.csv")
-        title = ['ID', 'Target', 'Tweet', 'Stance', 'Date', 'Origin']
+        title = ['ID', 'Target', 'Tweet', 'Stance']
         s = ['NONE', 'AGAINST', 'FAVOR']
         data = []
-        for tweet in tweets:
-            origin = tweet.text
-            c1 = self.cleanTweet4Word2Vec(origin)
-            content = c1
-            idx = tweet.id
-            r = random.randint(0, 2)
-            date = tweet.date
-            data.append([idx, target, content, s[r], date, origin])
-
-        self.helper.dumpCsv(folderPath, "corpus.csv", title, data)
+        content = claim
+        idx = 1
+        r = random.randint(0, 2)
+        target = subject
+        data.append([idx, target, content, s[r]])
+        self.helper.dumpCsv(folderPath, "corpus_representative_claims.csv", title, data)
         # with open(p, "wb") as fp:
         #     filewriter = csv.writer(fp, delimiter='\t')
         #     filewriter.writerow(['ID', 'Target', 'Tweet', 'Stance', 'Date'])
@@ -249,8 +243,8 @@ class PreprocessData(object):
         #         date = tweet.date
         #         filewriter.writerow([idx, target, content, s[r], date])
 
-    def getCorpus4csvFromStatements(self, folderPath):
-        """Get corpus from statements that divided by tab.
+    def getCorpus4CsvFromClusterClaims(self, folderPath, index, subject, claims):
+        """Get corpus from claims that divided by tab.
 
         Parameters
         ----------
@@ -263,28 +257,20 @@ class PreprocessData(object):
             save the corpus into .csv file
 
         """
-        # tweets = self.helper.getTweet(folderPath)
-        # with open(os.path.join(self.rootPath, folderPath, "candidate_statements.txt")) as fp:
-        # statements = fp.readlines()
-        statements = self.helper.loadCsv(
-            folderPath, "candidate_statements.csv")
-        if statements is None or len(statements) == 0:
+        if claims is None or len(claims) == 0:
             return
-        # p = os.path.join(self.rootPath, folderPath, "corpus_statements.csv")
 
-        title = ['ID', 'Target', 'Tweet', 'Stance', 'Origin']
+        title = ['ID', 'Target', 'Tweet', 'Stance', 'Date']
         s = ['NONE', 'AGAINST', 'FAVOR']
         data = []
-        for i in range(len(statements)):
-            if statements[i]:
-                origin = statements[i][1].strip("\n")
-                c1 = self.cleanTweet4Word2Vec(origin)
-                content = c1
+        for i in range(len(claims)):
+            if claims[i]:
+                content = claims[i][0]
                 idx = i + 1
                 r = random.randint(0, 2)
-                target = statements[i][0]
-                data.append([idx, target, content, s[r], origin])
-        self.helper.dumpCsv(folderPath, "corpus_statements.csv", title, data)
+                target = subject
+                data.append([idx, target, content, s[r], claims[i][1]])
+        self.helper.dumpCsv(folderPath, "corpus_cluster_claims.csv", title, data)
 
         # with open(p, "wb") as fp:
         #     filewriter = csv.writer(fp, delimiter='\t')
@@ -444,7 +430,7 @@ class PreprocessData(object):
             folderPath {str} -- the path to folder
         """
         tweets = self.helper.getTweet(folderPath)
-        with open(os.path.join(self.rootPath, folderPath, "final", "tweets_lines.txt"), "w") as fp:
+        with open(os.path.join(self.rootPath, folderPath, "tweets_lines.txt"), "w") as fp:
             for tweet in tweets:
                 # print (type(tweet.text.encode('utf8')))
                 c1 = self.cleanTweet(tweet.text)

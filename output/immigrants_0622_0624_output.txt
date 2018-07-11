@@ -1,0 +1,175 @@
+====================================================================================================
+Getting subject ...
+====================================================================================================
+filePath  immigrants_0622_0624/final/candidateClaimsMergedClause.json
+filePath  immigrants_0622_0624/final/candidateFullClaimsMergedClause.json
+eps for DBSCAN is  0.3
+cluster_to_claims_indexes.json has been saved.
+cluster_to_core_sample_indices.json has been saved.
+representative_claim_to_claims_cluster.json has been saved.
+representative_claim_to_full_claims_cluster.json has been saved.
+representative_claim_to_subject.json has been saved.
+representative_claim_to_cluster_feature.json has been saved.
+ranked_cluster_claims.json has been saved.
+====================================================================================================
+Getting News ...
+====================================================================================================
+API called successfully. Returned data: 
+============================================================
+Donald Trump on immigration legislation: Democrats ‘RESIST!’ Republicans ‘PRODUCE’
+Trump: GOP should 'stop wasting their time' on passing immigration reform until after midterms
+Frustrated Trump tells Republicans to STOP wasting their time on immigration…
+Artists and illustrators respond to Trump’s immigration policies
+Trump Says GOP Should ‘stop wasting their time on immigration’ Until After Midterms
+Trump Predicts Red Wave: Democratic Motto Is "Resist," Ours Is "Produce"
+'PRODUCE!': Trump Bashes 'Obstructionist' Dems on Immigration, Calls for 'Red Wave' in Midterms
+Trump says GOP should 'stop wasting their time on immigration' until after midterms
+Trump Tweets Republicans Should ‘Stop Wasting Their Time on Immigration’ Until After Midterm Elections
+Trump tells Republicans to 'stop wasting their time' on immigration
+scores  [[0.37204946 0.73457349 0.72548154 0.52663283 0.63089776 0.66913981
+  0.66681117 0.73568286 0.4335149  0.73833739]]
+similarNewID  0
+API called successfully. Returned data: 
+============================================================
+Donald Trump on immigration legislation: Democrats ‘RESIST!’ Republicans ‘PRODUCE’
+'PRODUCE!': Trump Bashes 'Obstructionist' Dems on Immigration, Calls for 'Red Wave' in Midterms
+Trump: GOP should 'stop wasting their time' on passing immigration reform until after midterms
+Trump Predicts Red Wave: Democratic Motto Is "Resist," Ours Is "Produce"
+Trump: 'Republicans Should Stop Wasting Their Time On Immigration'
+Trump says GOP should wait to pass immigration bills after 'Red Wave' in November
+President Trump says Republicans should 'stop wasting their time on immigration' until after midterms
+Trump Says GOP Should ‘stop wasting their time on immigration’ Until After Midterms
+President Trump says Republicans should 'stop wasting their time on immigration' until after midterms
+President Trump says Republicans should 'stop wasting their time on immigration' until after midterms
+0th claim: news has been saved.
+API called successfully. Returned data: 
+============================================================
+2 Koreas discuss holding new reunions of war-split families
+Newborns separated from parents are in Miami-area shelters, congresswoman says
+US judge says may rule next week on reuniting migrant children
+2 Koreas discuss holding new reunions of war-split families
+Nothing stops Messi fan from rooting for star in Russia
+NATO head: No guarantee trans-Atlantic alliance will survive
+Official: Polish leader's ill health not sparking infighting
+East Libya forces say regain control over oil ports
+California parents accused of shackling kids to face trial
+Trump's immigration order sparks confusion, deep concern
+scores  [[0.56489942 0.72916087 0.54619541 0.56489942 0.77615503 0.86160495
+  0.75255984 0.59983301 0.54415001 0.74516011]]
+similarNewID  8
+API called successfully. Returned data: 
+============================================================
+California parents accused of shackling kids to face trial
+California parents accused of shackling kids to face trial
+California parents accused of shackling kids to face trial
+The Latest: Hearing for parents accused of shackling kids
+911 call reveals alleged "house of horrors" abuse
+The Latest: Malnourished California girl had arms of infant
+Parents in California torture case ordered to stand trial
+Parents in California torture case ordered to stand trial
+Yemeni forces claim progress in battle for Hodeida's airport
+Trump's immigration order sparks confusion, deep concern
+1th claim: news has been saved.
+API called successfully. Returned data: 
+============================================================
+Which 2 year olds would Jesus lock up?
+White House Releases National Near-Earth Object Preparedness Plan
+Latest Immigration Controversy Points to Possible Political Shift Among Evangelicals
+COLUMN: Rooting out the cause of our evils
+Guess Who’s Coming to Church: Multiracial Congregations Triple Among Protestants
+Which states have the most psychopaths?
+New Study Shows Alarming Trend Of Suicide Rates Rising In Every State In The U.S. Except One
+Stop taking Evangelical support for granted
+America is changing. Bigoted slurs, immigration bans and racist rallies can't change that
+Study finds racial disparity in impact from police slayings
+scores  [[0.8615891  0.55302489 0.5156102  0.85528515 0.53501365 0.77575346
+  0.67563105 0.76063518 0.63782084 0.50438594]]
+similarNewID  9
+API called successfully. Returned data: 
+============================================================
+Study finds racial disparity in impact from police slayings
+"Is There Evidence of Racial Disparity in Police Use of Deadly
+The Lancet: Police killings of unarmed black Americans impact mental health of wider black American population | Science Codex
+Racial disparity low for stops in Randolph County
+Experts: Half of evidence vanished from 1983 racial slaying
+Police killings are damaging black America's mental health, study says
+Experts: Half of evidence vanished from 1983 racial slaying
+Experts: Half of evidence vanished from 1983 racial slaying
+FL Prosecutor Race Bias Examined by Newspapers
+Experts: Half of evidence vanished from 1983 racial slaying
+2th claim: news has been saved.
+API called successfully. Returned data: 
+============================================================
+no news.
+folder  immigrants_0622_0624
+info  ['democrats kamalaharris remember picture because this is this who you have chosen to ignore and you imbrace and ms13 maga donaldtrump angelfamilies endcatchandrelease foxnews usa', 36.0]
+API called successfully. Returned data: 
+============================================================
+Reviving churches
+Myron B. Pitts: Separating families started with dehumanizing families
+Rubio: Not Wise For Trump to Cast Immigrants as Criminals --- 'Vast Majority' Want a Better Life
+Fewer Canberrans added to sex offender register
+Mother Shares Story of Being Separated From Baby
+FBI raid reveals how little Michael Cohen works as a lawyer
+Leonard Bernstein at the Skirball: 10 objects from the life of a genius
+100 million metric tons of plastic will soon have nowhere to go
+'Australia should be doing more': Climate Change Authority splits
+Flawed logic on chanding doctrinal attitudes
+scores  [[0.72418659 0.69402158 0.70585579 0.7778728  0.75501597 0.63649819
+  0.79218842 0.72806922 0.73958411 0.83638695]]
+similarNewID  5
+API called successfully. Returned data: 
+============================================================
+FBI raid reveals how little Michael Cohen works as a lawyer
+Lawyer reviewing Cohen documents submits $338,000 bill
+A judge outlined exactly what qualifies as privileged in the Michael Cohen case — and almost nothing involves Cohen's work for his clients
+Judge: Majority of Cohen’s seized documents will be handed over to feds
+Judge Oks small number of privileged items in Cohen case
+Judge Oks small number of privileged items in Cohen case
+Judge Oks small number of privileged items in Cohen case
+Michael Cohen Denies Tom Arnold's Claim of Teaming Up to 'Take Down Trump'
+Judge Oks small number of privileged items in Cohen case
+Tom Arnold Games Nicolle Wallace, Poppy Harlow While Plugging Michael Cohen Meeting For Donald Trump Tapes Show
+4th claim: news has been saved.
+API called successfully. Returned data: 
+============================================================
+The Darren Gough column: Why I’m a fan of VAR at the World Cup
+Cardin: Trump can end 'massive confusion' at border with stroke of a pen
+Protests, facility visits planned amid immigration confusion
+Tony Vagneur: A solution for county confusion
+Flu Foreasting with Smart Thermometers
+Confusion swirls on border after Trump reversal on families
+DJ Khaled Is Suing The Hell Out Of Someone Who Tried To Take Advantage Of His Son
+Confusion swirls on border after Trump reversal on families
+Airbus Brexit threat 'simply not credible' says local MP
+Changes to Farrow Road Causing Confusion
+scores  [[0.94817171 0.86002372 0.70727078 0.7164421  0.92615501 0.82573919
+  0.90250681 0.82573919 0.81225725 0.80882358]]
+similarNewID  2
+API called successfully. Returned data: 
+============================================================
+Protests, facility visits planned amid immigration confusion
+Protests, facility visits planned amid immigration confusion
+Protests, facility visits planned amid immigration confusion
+Protests, facility visits planned amid immigration confusion
+Protests, facility visits planned amid immigration confusion
+Protests, facility visits planned amid immigration confusion
+Protests, facility visits planned amid immigration confusion
+Protests, facility visits planned amid immigration confusion
+Protests, facility visits planned amid immigration confusion
+Protests, facility visits planned amid immigration confusion
+5th claim: news has been saved.
+====================================================================================================
+Getting corpus for classification of the event ...
+----------------------------------------------------------------------------------------------------
+corpus_representative_claims.csv has been saved in /home/hao/Workplace/HaoXu/Data/Rudetect34_fullClaims/immigrants_0622_0624/final/corpus/0/corpus_representative_claims.csv
+corpus_cluster_claims.csv has been saved in /home/hao/Workplace/HaoXu/Data/Rudetect34_fullClaims/immigrants_0622_0624/final/corpus/0/corpus_cluster_claims.csv
+corpus_representative_claims.csv has been saved in /home/hao/Workplace/HaoXu/Data/Rudetect34_fullClaims/immigrants_0622_0624/final/corpus/1/corpus_representative_claims.csv
+corpus_cluster_claims.csv has been saved in /home/hao/Workplace/HaoXu/Data/Rudetect34_fullClaims/immigrants_0622_0624/final/corpus/1/corpus_cluster_claims.csv
+corpus_representative_claims.csv has been saved in /home/hao/Workplace/HaoXu/Data/Rudetect34_fullClaims/immigrants_0622_0624/final/corpus/2/corpus_representative_claims.csv
+corpus_cluster_claims.csv has been saved in /home/hao/Workplace/HaoXu/Data/Rudetect34_fullClaims/immigrants_0622_0624/final/corpus/2/corpus_cluster_claims.csv
+corpus_representative_claims.csv has been saved in /home/hao/Workplace/HaoXu/Data/Rudetect34_fullClaims/immigrants_0622_0624/final/corpus/3/corpus_representative_claims.csv
+corpus_cluster_claims.csv has been saved in /home/hao/Workplace/HaoXu/Data/Rudetect34_fullClaims/immigrants_0622_0624/final/corpus/3/corpus_cluster_claims.csv
+corpus_representative_claims.csv has been saved in /home/hao/Workplace/HaoXu/Data/Rudetect34_fullClaims/immigrants_0622_0624/final/corpus/4/corpus_representative_claims.csv
+corpus_cluster_claims.csv has been saved in /home/hao/Workplace/HaoXu/Data/Rudetect34_fullClaims/immigrants_0622_0624/final/corpus/4/corpus_cluster_claims.csv
+====================================================================================================

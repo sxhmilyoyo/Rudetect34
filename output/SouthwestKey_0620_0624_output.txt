@@ -1,0 +1,170 @@
+====================================================================================================
+Getting subject ...
+====================================================================================================
+filePath  SouthwestKey_0620_0624/final/candidateClaimsMergedClause.json
+filePath  SouthwestKey_0620_0624/final/candidateFullClaimsMergedClause.json
+eps for DBSCAN is  0.45
+cluster_to_claims_indexes.json has been saved.
+cluster_to_core_sample_indices.json has been saved.
+representative_claim_to_claims_cluster.json has been saved.
+representative_claim_to_full_claims_cluster.json has been saved.
+representative_claim_to_subject.json has been saved.
+representative_claim_to_cluster_feature.json has been saved.
+ranked_cluster_claims.json has been saved.
+====================================================================================================
+Getting News ...
+====================================================================================================
+API called successfully. Returned data: 
+============================================================
+Southwest Key: A look at one of the companies sheltering migrant children
+Texas company earns half-billion federal dollars this year to operate shelters for immigrant children
+Migrant care is billion-dollar business in the U.S.
+The Billion-Dollar, Secretive Business of Operating Shelters for Migrant Children
+Immigrant Children Are Being Sent to Shelters With Histories of Abuse
+Texas nonprofit has received $1.5 billion in federal money to run shelters for immigrant children
+The billion-dollar, secretive business of operating shelters for migrant children - bdnews24.com
+The billion-dollar secretive business of operating shelters for migrant children
+Where are the migrant child facilities? Scattered across America
+Migrant Kids Go to Facilities with Serious Lapses
+scores  [[0.53961458 0.12430315 0.74808245 0.4063839  0.53599065 0.11285811
+  0.63656416 0.32576924 0.67341719 0.62806137]]
+similarNewID  5
+API called successfully. Returned data: 
+============================================================
+Texas nonprofit has received $1.5 billion in federal money to run shelters for immigrant children
+Southwest Key: A look at one of the companies sheltering migrant children
+Migrant care is billion-dollar business in the U.S.
+Migrant Shelter in Phoenix Run by Southwest Key Cited for Restraining Child
+The billion-dollar, secretive business of operating shelters for migrant children - bdnews24.com
+The billion-dollar secretive business of operating shelters for migrant children
+The Billion-Dollar, Secretive Business of Operating Shelters for Migrant Children
+FACT CHECK: Is the Trump Administration Paying Southwest Key $458 Million to Run Immigrant Child Detention Centers?
+Nonprofit To Get $458 Million For Migrant Housing Centers
+Migrant Kids Go to Facilities with Serious Lapses
+0th claim: news has been saved.
+API called successfully. Returned data: 
+============================================================
+Child detention center hired Border Patrol agent after child pornography arrest
+Southwest Key Hired Child Case Manager Previously Arrested for Child Pornography
+US Immigrant Detention Center Hired Ex-Border Guard Arrested for Child Porn
+Immigrant child detention center hired ex-Border Patrol agent busted for child porn
+Border Agent Arrested For Massive Cache of Child Porn, Hired By Immigrant Shelter To Work With Kids
+Nonprofit To Get $458 Million For Migrant Housing Centers
+Southwest Key denounces family separations after Trump signs order
+Austin nonprofit to receive $458 million for sheltering children illegally entering U.S.
+Southwest Key considered giving up contracts over family separations
+A Latino Nonprofit Is Holding Separated Kids. Is That Care Or Complicity Or Both?
+scores  [[0.57009231 0.51648239 0.55382512 0.57497834 0.56367851 0.57516781
+  0.59420075 0.75404359 0.68463206 0.78904424]]
+similarNewID  1
+API called successfully. Returned data: 
+============================================================
+Southwest Key Hired Child Case Manager Previously Arrested for Child Pornography
+Child detention center hired Border Patrol agent after child pornography arrest
+Immigrant child detention center hired ex-Border Patrol agent busted for child porn
+Border Agent Arrested For Massive Cache of Child Porn, Hired By Immigrant Shelter To Work With Kids
+US Immigrant Detention Center Hired Ex-Border Guard Arrested for Child Porn
+Previously Convicted Sex Offender from Albuquerque Facing New Federal Child Pornography Charges
+MIL-OSI Security: Previously Convicted Sex Offender from Albuquerque Facing New Federal Child Pornography Charges – ForeignAffairs.co.nz
+DeRidder man arrested for child pornography
+Spain Arrests 12 in Pornographic Network Exploiting Moroccan Children
+MIL-OSI USA: Missouri man pleads guilty to producing child pornography by sexually exploiting a child – ForeignAffairs.co.nz
+1th claim: news has been saved.
+API called successfully. Returned data: 
+============================================================
+Here are the businesses that have made millions off Trump’s child separation policy
+Private businesses have made millions off Trump's child separation policy
+Businesses have made millions off Trump's child separation policy
+Five businesses are making millions off the child separation policy
+Bay Area couple's fundraiser to help reunite separated migrant families tops $9 million
+Children have been separated from their families for generations – why Trump's policy was different
+[ANALYSIS] Why Trump’s policy on separating families was different
+US airlines denounce Trump’s child separation policy
+Sen. Brown offers help after Salem immigration raid
+'Going to Make Changes': Trump Vows to Alter US Immigration Policy
+scores  [[0.29735628 0.17871825 0.13304927 0.14672305 0.6950861  0.62474559
+  0.7295882  0.30004165 0.67047789 0.71643798]]
+similarNewID  2
+API called successfully. Returned data: 
+============================================================
+Here are the businesses that have made millions off Trump’s child separation policy
+Private businesses have made millions off Trump's child separation policy
+Businesses have made millions off Trump's child separation policy
+Five businesses are making millions off the child separation policy
+Bay Area couple's fundraiser to help reunite separated migrant families tops $9 million
+US airlines denounce Trump’s child separation policy
+Children have been separated from their families for generations – why Trump's policy was different
+'Going to Make Changes': Trump Vows to Alter US Immigration Policy
+[ANALYSIS] Why Trump’s policy on separating families was different
+Trump looks down at crying migrant child on new cover of Time
+2th claim: news has been saved.
+API called successfully. Returned data: 
+============================================================
+Who owns the woman’s money in marriage?
+BMO earmarks $3 billion in capital for women who own their own business
+The Man Who Created His Own Katrina
+Who Owns What? - Rich leaders of poor people
+Bitcoin, Ripple and… Akoin? Guess who’s just launched his own cryptocurrency
+Aberdeen council begin demolishing city wall - despite not knowing who owns it
+Who owns what? - Imran, Zardari and Maryam declare assets
+Firefighters who made their own porn film 'inside station' could be sacked
+A mystery: Italy seizing migrant rescue ships, but who owns them?
+Why I Won't Marry Couples Who Write Their Own Wedding Vows
+scores  [[0.77375611 0.74324484 0.71688513 0.80323788 0.84613304 0.82308329
+  0.7492663  0.8379958  0.84608586 0.79919159]]
+similarNewID  2
+API called successfully. Returned data: 
+============================================================
+The Man Who Created His Own Katrina
+Who owns the woman’s money in marriage?
+'Worse than Katrina': CNN panel explains how family separation is Trump's most horrific scandal yet
+Rachel Maddow Calls Family Separation Crisis A Trump-Created Version Of Hurricane Katrina
+Salman Khan, Jacqueline Fernandez, Katrina Kaif light up Dabangg tour. See videos
+Coroner IDs man found shot, killed in empty Upper 9th Ward home
+Trial Finally Set For White Man Accused Of Shooting At 3 Black Men Following Hurricane Katrina
+Washington Pastor Who Shot Gunman in Carjacking Spree Tells His Story
+Akon is creating his own cryptocurrency called Akoin
+Akon is creating his own cryptocurrency called Akoin
+3th claim: news has been saved.
+API called successfully. Returned data: 
+============================================================
+4 Campaigns Where Healthcare Embraced Humor
+Ireland spends €20 billion per year on healthcare, here's where the money goes
+Ireland spends €20 billion per year on healthcare, here's where the money goes
+Precision medicine: Where we are and where we’re going
+Fears for future of Boots/DHL warehouse where 100 people work
+Where it takes 69 weeks to find a job
+Where's the outrage?
+Here’s Where The Biggest Med Device Players Are Investing & Acquiring To Strengthen Their Portfolios
+Where's the outrage?
+Volunteers help where needed
+scores  [[0.78459399 0.81210842 0.81210842 0.87541024 0.83193257 0.7308063
+  0.80854091 0.78806704 0.8085409  0.87643745]]
+similarNewID  5
+API called successfully. Returned data: 
+============================================================
+Where it takes 69 weeks to find a job
+Where the Jobs Are
+Struggling to get to social gatherings a key issue for older people, report finds
+Volunteers help where needed
+Toledo takes Champions lead; home star Stricker drops back
+These jobs require employees to take longer weekends every week
+Where to Find the Heart of Texas Barbecue
+Artificial Intelligence Takes on Talent Acquisition
+Money isn't everything: Situations where it pays to accept a lower salary
+Inside the prison hospice where no inmate dies alone
+4th claim: news has been saved.
+====================================================================================================
+Getting corpus for classification of the event ...
+----------------------------------------------------------------------------------------------------
+corpus_representative_claims.csv has been saved in /home/hao/Workplace/HaoXu/Data/Rudetect34_fullClaims/SouthwestKey_0620_0624/final/corpus/0/corpus_representative_claims.csv
+corpus_cluster_claims.csv has been saved in /home/hao/Workplace/HaoXu/Data/Rudetect34_fullClaims/SouthwestKey_0620_0624/final/corpus/0/corpus_cluster_claims.csv
+corpus_representative_claims.csv has been saved in /home/hao/Workplace/HaoXu/Data/Rudetect34_fullClaims/SouthwestKey_0620_0624/final/corpus/1/corpus_representative_claims.csv
+corpus_cluster_claims.csv has been saved in /home/hao/Workplace/HaoXu/Data/Rudetect34_fullClaims/SouthwestKey_0620_0624/final/corpus/1/corpus_cluster_claims.csv
+corpus_representative_claims.csv has been saved in /home/hao/Workplace/HaoXu/Data/Rudetect34_fullClaims/SouthwestKey_0620_0624/final/corpus/2/corpus_representative_claims.csv
+corpus_cluster_claims.csv has been saved in /home/hao/Workplace/HaoXu/Data/Rudetect34_fullClaims/SouthwestKey_0620_0624/final/corpus/2/corpus_cluster_claims.csv
+corpus_representative_claims.csv has been saved in /home/hao/Workplace/HaoXu/Data/Rudetect34_fullClaims/SouthwestKey_0620_0624/final/corpus/3/corpus_representative_claims.csv
+corpus_cluster_claims.csv has been saved in /home/hao/Workplace/HaoXu/Data/Rudetect34_fullClaims/SouthwestKey_0620_0624/final/corpus/3/corpus_cluster_claims.csv
+corpus_representative_claims.csv has been saved in /home/hao/Workplace/HaoXu/Data/Rudetect34_fullClaims/SouthwestKey_0620_0624/final/corpus/4/corpus_representative_claims.csv
+corpus_cluster_claims.csv has been saved in /home/hao/Workplace/HaoXu/Data/Rudetect34_fullClaims/SouthwestKey_0620_0624/final/corpus/4/corpus_cluster_claims.csv
+====================================================================================================

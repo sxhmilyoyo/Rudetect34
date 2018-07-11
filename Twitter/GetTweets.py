@@ -37,7 +37,7 @@ class GetTweets(object):
         self.folderpath = folderpath
         self.start = start
         self.end = end
-        self.filename = "tweets.json"
+        self.filename = "tweets.pkl"
         self.originhashtag = originhashtag
         self.helper = Utility.Helper(rootpath)
         self.addressTweet = Twitter.AddressTweet(rootpath)
@@ -68,15 +68,15 @@ class GetTweets(object):
         self.addressTweet.getUserName(folderPath)
 
         top5HashTags = self.helper.loadJson(os.path.join(folderPath,
-                                                            "top5HashTags.json"
-                                                            ))
+                                                         "top5HashTags.json"
+                                                         ))
         self.addressTweet.getPlot(top5HashTags, folderPath,
                                   "top5HashTags.png", True)
         print("top5HashTags.png has been saved...")
 
         top5UserName = self.helper.loadJson(os.path.join(folderPath,
-                                                            "top5UserName.json"
-                                                            ))
+                                                         "top5UserName.json"
+                                                         ))
         self.addressTweet.getPlot(top5UserName, folderPath,
                                   "top5UserName.png", False)
         print("top5UserName.png has been saved...")
@@ -221,8 +221,8 @@ class GetTweets(object):
 
         # update queries use the top5 hashtags
         top5HashTags = self.helper.loadJson(os.path.join(folderPath,
-                                                            'top5HashTags.json'
-                                                            ))
+                                                         'top5HashTags.json'
+                                                         ))
         print(top5HashTags)
         top5ht = list(top5HashTags.keys())[:]
         print("original top5 hashtags {}".format(top5ht))
