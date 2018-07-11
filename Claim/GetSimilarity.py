@@ -291,10 +291,11 @@ class GetSimilarity(object):
                 representativeClaim2ClaimsCluster, flag)
             self.__getFeature4Cluster(
                 sortedTweet2Number,
+                sortedCoreTweet2Number,
                 representativeClaim2ClusterFeatures, flag)
         self.helper.dumpJson(
             self.fileFolderPath,
-            "representative_claim_to_claims_cluster_test.json",
+            "representative_claim_to_claims_cluster.json",
             representativeClaim2ClaimsCluster)
         print("representative_claim_to_claims_cluster.json has been saved.")
         self.helper.dumpJson(
@@ -349,7 +350,7 @@ class GetSimilarity(object):
             tweet2features[text] += features
         return tweet2features
 
-    def __getFeature4Cluster(self, sortedTweet2Number,
+    def __getFeature4Cluster(self, sortedTweet2Number, sortedCoreTweet2Number,
                              representativeClaim2ClusterFeatures, flag):
         """Get feature for each cluster.
 
@@ -360,7 +361,7 @@ class GetSimilarity(object):
         """
         if not flag:
             clusterFeatures = [feature for text, feature in sortedTweet2Number]
-            representativeClaim2ClusterFeatures[sortedTweet2Number[0][0]] = sum(
+            representativeClaim2ClusterFeatures[sortedCoreTweet2Number[0][0]] = sum(
                 clusterFeatures) / len(clusterFeatures)
         else:
             for text, feature in sortedTweet2Number:
