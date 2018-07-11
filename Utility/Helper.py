@@ -125,7 +125,7 @@ class Helper(object):
 
     def getTweetFromPheme(self, folderPath):
         """Get tweet info from pheme data dictionary
-        
+
         Arguments:
             folderPath {str} -- the paht to the event
         """
@@ -348,6 +348,7 @@ class Helper(object):
             foldername {str} -- folder name of an event
         """
         resultDict = defaultdict(dict)
+        resultPickle = []
         folderpath = os.path.join(self.rootPath, foldername)
         if not os.path.exists(folderpath):
             print("the path {} does not exist.".format(folderpath))
@@ -385,6 +386,18 @@ class Helper(object):
                         resultDict[idx]['favorite_count'] = data['favorite_count']
                         resultDict[idx]['retweet_count'] = data['retweet_count']
                         resultDict[idx]['comment'] = numReaction
-                        resultDict[idx]['rumor'] = True if rnrName == 'rumours' else False
-        self.dumpJson(folderpath, "raw_data.json", resultDict)
+                        rumor = True if rnrName == 'rumours' else False
+                        resultDict[idx]['rumor'] = rumor
+
+                        tweet = Twitter.Tweet(idx, data['text'],
+                                              data['favorite_count'],
+                                              data['retweet_count'],
+                                              numReaction,
+                                              rumor)
+                        resultPickle.append(tweet)
+        self.dumpJson(folderpath + "/../dataset/" + foldername +
+                      "/final/rawData", "raw_data.json", resultDict)
         print("raw_data.json has been saved.")
+        self.dumpPickle(folderpath + "/../dataset/" + foldername +
+                        "/final/rawData", "tweets.pkl", resultPickle)
+        print("tweets.pkl has been saved.")

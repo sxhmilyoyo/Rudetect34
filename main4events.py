@@ -29,7 +29,7 @@ def main(rootpath):
 
     for folder in folders:
         # exclude some events
-        if folder not in ["germanwings-crash-all-rnr-threads", "sydneysiege-all-rnr-threads"]:
+        if folder not in ["germanwings-crash-all-rnr-threads"]:
             continue
 
         # specify an event
@@ -51,7 +51,7 @@ def main(rootpath):
             subprocess.run(args, stdout=out, check=True)
         subprocess.call(args)
         # break
-        time.sleep(random.randint(1, 121))
+        # time.sleep(random.randint(1, 121))
 
 
 if __name__ == '__main__':
