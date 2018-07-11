@@ -29,21 +29,23 @@ def main(rootpath):
 
     for folder in folders:
         # exclude some events
-        # if folder not in ["SouthwestKey_0620_0624", "WhereAreTheChildren_0418_0527"]:
-        #     continue
+        if folder not in ["germanwings-crash-all-rnr-threads", "sydneysiege-all-rnr-threads"]:
+            continue
 
         # specify an event
-        # if folder != "BandyLee_0110_0115":
+        # if folder != "immigrants_0622_0624":
         #     continue
 
         # run total events
-        if folder[0] == ".":
-            continue
+        # if folder[0] == "." or folder in ["BandyLee_0110_0115", "Gabapentin_0628_0121", "Ingraham_0618_0624", "ItsJustAJacket_0621_0624", "SanctuaryCities_0516_0523", "WhereAreTheChildren_0418_0527"]:
+        #     continue
 
         print("=" * 100)
         print("Running code for {}".format(folder))
         args = ['python', 'main.py', '-r', rootpath,
-                '-f', folder, '-q', "#"+folder.split("_")[0], '-s', 'test', '-e', 'test', '-p', str(event2eps[folder])]
+                '-f', folder, '-q', "#"+folder.split("_")[0],
+                '-s', 'test', '-e', 'test', '-p',
+                str(event2eps.get(folder, 'test'))]
         print("Command line is {}".format(" ".join(args)))
         with open("./output/"+folder+"_output.txt", "wb", 0) as out:
             subprocess.run(args, stdout=out, check=True)

@@ -1,0 +1,80 @@
+====================================================================================================
+Getting subject ...
+====================================================================================================
+filePath  JackBreuer_1228_0115/final/candidateClaimsMergedClause.json
+filePath  JackBreuer_1228_0115/final/candidateFullClaimsMergedClause.json
+eps for DBSCAN is  0.6
+cluster_to_claims_indexes.json has been saved.
+cluster_to_core_sample_indices.json has been saved.
+representative_claim_to_claims_cluster.json has been saved.
+representative_claim_to_full_claims_cluster.json has been saved.
+representative_claim_to_subject.json has been saved.
+representative_claim_to_cluster_feature.json has been saved.
+ranked_cluster_claims.json has been saved.
+====================================================================================================
+Getting News ...
+====================================================================================================
+API called successfully. Returned data: 
+============================================================
+White House intern denies making white power sign in photo with Trump
+White House Intern Accused Of White Nationalism Clears The Air
+Former White House Intern, Jack Breuer Allegedly Flashes ‘White Power’ Sign In Photo-Op With President Trump
+No, That White House Intern's ‘OK’ Hand Gesture Isn’t A White Power Symbol
+White House intern denies white power symbol story
+White House intern denies using white power sign in photo with Trump
+People think a former White House intern was flashing a hand sign linked to the alt-right in this photo
+Trump Intern Brings Attention To White Power Symbol
+'White Power' In the White House
+White House Intern Denies Making White Power Hand Sign in Group Photo
+scores  [[0.18071021 0.49131613 0.29903012 0.42069215 0.44329996 0.16563534
+  0.61088238 0.52488826 0.6273477  0.40170922]]
+similarNewID  5
+API called successfully. Returned data: 
+============================================================
+White House intern denies using white power sign in photo with Trump
+White House intern denies making white power sign in photo with Trump
+'White Power' In the White House
+White House intern denies making white power hand sign
+White House Intern Denies Making White Power Hand Sign in Group Photo
+White House Intern Accused Of White Nationalism Clears The Air
+White House intern denies white power symbol story
+White House intern appeared to use white power sign in photo with Trump: report
+No, That White House Intern's ‘OK’ Hand Gesture Isn’t A White Power Symbol
+White House intern appears to flash 'white power' gesture in Trump photo
+0th claim: news has been saved.
+API called successfully. Returned data: 
+============================================================
+EFCC arrests varsity staff over alleged misappropriation of N300m
+Wow, CNN Legal Analyst agrees with Pres Trump on FBI and DOJ (to the surprise of the CNN anchor). "OFF THE RAILS" NEEDS PURGE!"
+EastEnders spoilers: Peter Beale to make shock return after Lauren Branning's death?
+BRIEF-PG&E Says California Needs
+BRIEF-RCI Hospitality Holdings Sees Q4 Revenue $39.2 Mln
+EastEnders spoilers: Max in trouble as ANOTHER character returns for Abi and Lauren twist
+Your Dreams: Lauren Lawrence analyzes Daily News readers’ dreams
+Peter Beale for EastEnders RETURN as Lauren Branning dies in hospital twist?
+Fast-food Chains Ramp Up Their Social Media Game
+BRIEF-Zynerba Pharmaceuticals Inc ‍Plans To Initiate Phase 2 Developme
+scores  [[0.65327914 0.65717073 0.77184211 0.68639131 0.5483222  0.67387117
+  0.70267879 0.69058309 0.58706707 0.48491717]]
+similarNewID  9
+API called successfully. Returned data: 
+============================================================
+BRIEF-Zynerba Pharmaceuticals Inc ‍Plans To Initiate Phase 2 Developme
+Zynerba Pharmaceuticals Provides 2018 Clinical and Corporate Update
+Zynerba Pharmaceuticals Provides 2018 Clinical and Corporate Update | 4-Traders
+Zynerba narrows is focus to rare and near-rare neurlogical disorders
+APHB Is A Good Shot, ASND Keeps Inching Along, SKLN Soars, INSM To File ALIS NDA
+BRIEF-Agios Outlines Key 2018 Priorities Expanding Clinical And Resear
+BRIEF-Acceleron plans to initiate part 2 of ACE-083 FSHD phase 2 trial
+BRIEF-Deciphera Pharma Initiates Late Stage Study In Gastrointestinal
+BRIEF-Rigel to Provide Business Review and Updated Phase 2 Results for
+BRIEF-Catalyst Biosciences Initiates Phase 2/3 Trial Of Marzeptacog Al
+1th claim: news has been saved.
+====================================================================================================
+Getting corpus for classification of the event ...
+----------------------------------------------------------------------------------------------------
+corpus_representative_claims.csv has been saved in /home/hao/Workplace/HaoXu/Data/Rudetect34_fullClaims/JackBreuer_1228_0115/final/corpus/0/corpus_representative_claims.csv
+corpus_cluster_claims.csv has been saved in /home/hao/Workplace/HaoXu/Data/Rudetect34_fullClaims/JackBreuer_1228_0115/final/corpus/0/corpus_cluster_claims.csv
+corpus_representative_claims.csv has been saved in /home/hao/Workplace/HaoXu/Data/Rudetect34_fullClaims/JackBreuer_1228_0115/final/corpus/1/corpus_representative_claims.csv
+corpus_cluster_claims.csv has been saved in /home/hao/Workplace/HaoXu/Data/Rudetect34_fullClaims/JackBreuer_1228_0115/final/corpus/1/corpus_cluster_claims.csv
+====================================================================================================

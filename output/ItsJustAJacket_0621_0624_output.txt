@@ -1,0 +1,170 @@
+====================================================================================================
+Getting subject ...
+====================================================================================================
+filePath  ItsJustAJacket_0621_0624/final/candidateClaimsMergedClause.json
+filePath  ItsJustAJacket_0621_0624/final/candidateFullClaimsMergedClause.json
+eps for DBSCAN is  0.45
+cluster_to_claims_indexes.json has been saved.
+cluster_to_core_sample_indices.json has been saved.
+representative_claim_to_claims_cluster.json has been saved.
+representative_claim_to_full_claims_cluster.json has been saved.
+representative_claim_to_subject.json has been saved.
+representative_claim_to_cluster_feature.json has been saved.
+ranked_cluster_claims.json has been saved.
+====================================================================================================
+Getting News ...
+====================================================================================================
+API called successfully. Returned data: 
+============================================================
+Melania Trump wears jacket saying 'I really don't care' to meet immigrant children
+Melania Trump wears `I don´t care´ jacket to visit separated...
+Melania Trump wears jacket saying 'I really don't care' before visit with migrant kids
+Melania Trump wears a jacket saying ‘I really don’t care’ on her visit to detained immigrant children shelter
+Melania Trump wears jacket saying 'I really don't care' before visit with migrant kids
+Melania Trump wears jacket saying 'I really don't care' before visit with migrant kids
+First lady wears jacket to visit border that reads 'I REALLY DON'T CARE, DO U?'
+President Trump explains Melania's 'I Really Don't Care, Do U?' jacket
+Melania Trump wears jacket saying 'I really don't care' to meet immigrant children
+Melania Trump wears jacket saying 'I really don't care' for visit to migrant children separated from parents
+scores  [[0.5136068  0.79577486 0.54602423 0.64521686 0.54602423 0.54602423
+  0.85568981 0.80843229 0.51360679 0.61647407]]
+similarNewID  8
+API called successfully. Returned data: 
+============================================================
+US First Lady Melania Trump criticized for wearing ‘I don’t care’ jacket in border visit
+Melania Trump’s I Really Don’t Care jacket - is it on sale in the UK?
+Melania Trump’s I Really Don’t Care jacket - is it on sale in the UK?
+Melania Trump wears jacket saying 'I really don't care' to meet immigrant children
+Melania Trump wears jacket saying 'I really don't care' to meet immigrant children
+Trump backs Melania for her 'I really don't care, do u?' jacket, slams media
+Donald Trump explains Melania’s ‘I really don’t care’ jacket
+US: First lady stirs outrage with 'I don't care' jacket
+Melania Trump wears jacket saying 'I really don't care' to meet immigrant children
+She Doesn't Really Care
+0th claim: news has been saved.
+API called successfully. Returned data: 
+============================================================
+Does She or Doesn't She? Melania Trump Speaks Out After 'I Really Don't Care' Jacket Scandal
+US First Lady Melania Trump criticized for wearing ‘I don’t care’ jacket in border visit
+The Message On Melania Trump's Jacket Was Reportedly Meant For Donald
+The Message On Melania Trump's Jacket Was Reportedly Meant For Donald
+Melania Trump wears ‘I don’t care’ jacket on way to child detention centre
+Donald Trump Tells Press Who Melania’s Mean Jacket Message Targeted: Them
+Melania Trump: Why She Wore ‘I Don’t Care’ Jacket – It Was Her ‘Rebellion’ Against ‘Donald’
+Melania Trump Visits Texas Shelter For Undocumented Children
+First Lady urged husband to end border separation policy
+Melania Trump Wore A Callous Jacket Claiming She Doesn't 'Really Care' on Her Trip to Meet Immigrant Children — And Her Defense is Pathetic
+scores  [[0.62171284 0.65038596 0.72432019 0.72432019 0.62802414 0.63982481
+  0.65395487 0.43769155 0.70406413 0.63691132]]
+similarNewID  7
+API called successfully. Returned data: 
+============================================================
+Melania Trump Visits Texas Shelter For Undocumented Children
+Melania Trump Visits Texas Shelter For Undocumented Children
+Melania Trump Wears Jacket With ‘I Really Don’t Care’ On It To Visit Immigrant Children
+Melania Trump Wears Jacket With ‘I Really Don’t Care’ On It To Visit Immigrant Children
+First lady visits immigrant shelter
+Melania Trump wears a 'I don't care' coat to visit migrant kids in Texas
+Melania Trump’s jacket mixes message during visit to detained immigrant children
+Melania Trump's jacket mixes message during visit to detained immigrant children
+Melania Trump receives fresh criticism after 'distasteful' jacket is left out of video
+Melania Trump Visits Border Children in Texas in Stan Smiths
+1th claim: news has been saved.
+API called successfully. Returned data: 
+============================================================
+Clothes Talk. And Melania Trump's 'I Really Don't Care' Jacket Spoke Volumes
+Melania Trump wears jacket reading 'I really don't care, do u?' before visiting migrant kids
+Melania Trump sends a questionable message en route to the border
+Colbert on Melania's jacket: 'one message she didn't steal from Michelle Obama'
+Melania Trump wears 'I really don't care' jacket before visiting migrant kids
+Stephen Colbert Rips Into Melania Trump for That Jacket
+Colbert on Melania's jacket: 'one message she didn't steal from Michelle Obama'
+Stephen Colbert Fires Back at Melania Trump’s ‘I Really Don’t Care’ Jacket: ‘We Do’
+Stephen Colbert Rips Into Melania Trump for 'I Really Don't Care' Jacket
+Gabby Logan hilariously trolls Melania Trump's coat at World Cup
+scores  [[0.78865366 0.93842574 0.94533722 0.98744997 0.88762983 0.82870646
+  0.98744997 0.88615813 0.883129   0.85649966]]
+similarNewID  0
+API called successfully. Returned data: 
+============================================================
+Clothes Talk. And Melania Trump's 'I Really Don't Care' Jacket Spoke Volumes
+Melania wears 'I don't really care' coat
+"I REALLY DON'T CARE. DO U?"
+Melania dons 'I really don't care' jacket
+US First Lady Melania Trump criticized for wearing ‘I don’t care’ jacket in border visit
+Late Night Comics Decipher Melania Trump's 'I DON'T CARE' Jacket
+Melania Trump dons 'I really don't care, do u?' jacket
+Melania Trump dons 'I really don't care, do u?' jacket
+Melania Trump dons 'I really don't care, do u?' jacket
+Melania wears 'I REALLY DON'T CARE' jacket to visit immigrants
+2th claim: news has been saved.
+API called successfully. Returned data: 
+============================================================
+Paul Ryan has been living in a cave
+Letter: We need more peaceful and civilized republic
+For The Left, The Wrong Kind of Politics Has Long Been A Sign of Mental Illness
+Paul Ryan has been living in a cave
+Milbank: House Speaker Paul Ryan has been living in a cave
+Tobacco a bigger killer than guns: Letters
+Ignatius: Trump hurls a wrecking ball toward the trans-Atlantic alliance
+Opinion | Trump hurls a wrecking ball at the transatlantic alliance
+Opinion | The Tragedy That Changed Mexico Forever
+Trans-Atlantic alliance must survive Trump
+scores  [[0.80306273 0.75501567 0.66450787 0.80306273 0.73453903 0.77077542
+  0.79387408 0.76544391 0.65343449 0.70563924]]
+similarNewID  8
+API called successfully. Returned data: 
+============================================================
+Opinion | The Tragedy That Changed Mexico Forever
+Op-Ed: Aurora shooting victims will not be forgotten
+Download killing lincoln the shocking assassination that changed amer…
+Triangular Tragedy
+Opinion | Subway tragedies must be prevented
+Dreamworld still has no emergency training following deadly tragedy
+Questions - Guest Comment - Opinions - June 21, 2018
+The Supreme Court Just Changed E-Commerce Forever
+Opinion | Trump Wasn’t First to Separate Families, but Policy Was Still Evil
+Opinion | Goodbye, John Filion
+3th claim: news has been saved.
+API called successfully. Returned data: 
+============================================================
+First lady's jacket overshadows trip to visit immigrant children
+Donald Trump speaks out over Melania's 'I really don't care' jacket
+First lady's jacket overshadows trip to visit immigration children
+Melania Trump Blasted For Wearing Jacket With Words ‘I Really Don’t Care’ On Trip To Visit Immigrant Children
+Melania Trump wore an 'I really don't care' jacket to meet migrant children
+Geraldo Rivera: Melania's chief of staff should be fired over 'I really don't care' jacket
+First lady's jacket overshadows trip to visit immigration children
+First lady’s ‘I don’t care’ jacket causes a stir
+First lady Melania Trump’s ‘I don’t care’ jacket causes a stir
+First lady’s ‘I don’t care’ jacket causes a stir
+scores  [[0.71791409 0.73343941 0.7182059  0.75252124 0.68591287 0.73399922
+  0.7182059  0.73302586 0.70339639 0.73302587]]
+similarNewID  4
+API called successfully. Returned data: 
+============================================================
+Melania Trump wore an 'I really don't care' jacket to meet migrant children
+Melania Trump’s I Really Don’t Care jacket - is it on sale in the UK?
+Melania Trump’s I Really Don’t Care jacket - is it on sale in the UK?
+Melania 'deliberatelty' wore 'I don't care' jacket to meet child migrants
+Trump backs Melania for her 'I really don't care, do u?' jacket, slams media
+'I Really Don't Care': Melania Trump Jacket Stuns on Migrant Visit​
+Melania Trump dons 'I really don't care, do u?' jacket
+Melania Trump dons 'I really don't care, do u?' jacket
+Melania Trump wears 'I really don't care' jacket on trip to meet migrant kids
+Donald Trump speaks out over Melania's 'I really don't care' jacket
+4th claim: news has been saved.
+====================================================================================================
+Getting corpus for classification of the event ...
+----------------------------------------------------------------------------------------------------
+corpus_representative_claims.csv has been saved in /home/hao/Workplace/HaoXu/Data/Rudetect34_fullClaims/ItsJustAJacket_0621_0624/final/corpus/0/corpus_representative_claims.csv
+corpus_cluster_claims.csv has been saved in /home/hao/Workplace/HaoXu/Data/Rudetect34_fullClaims/ItsJustAJacket_0621_0624/final/corpus/0/corpus_cluster_claims.csv
+corpus_representative_claims.csv has been saved in /home/hao/Workplace/HaoXu/Data/Rudetect34_fullClaims/ItsJustAJacket_0621_0624/final/corpus/1/corpus_representative_claims.csv
+corpus_cluster_claims.csv has been saved in /home/hao/Workplace/HaoXu/Data/Rudetect34_fullClaims/ItsJustAJacket_0621_0624/final/corpus/1/corpus_cluster_claims.csv
+corpus_representative_claims.csv has been saved in /home/hao/Workplace/HaoXu/Data/Rudetect34_fullClaims/ItsJustAJacket_0621_0624/final/corpus/2/corpus_representative_claims.csv
+corpus_cluster_claims.csv has been saved in /home/hao/Workplace/HaoXu/Data/Rudetect34_fullClaims/ItsJustAJacket_0621_0624/final/corpus/2/corpus_cluster_claims.csv
+corpus_representative_claims.csv has been saved in /home/hao/Workplace/HaoXu/Data/Rudetect34_fullClaims/ItsJustAJacket_0621_0624/final/corpus/3/corpus_representative_claims.csv
+corpus_cluster_claims.csv has been saved in /home/hao/Workplace/HaoXu/Data/Rudetect34_fullClaims/ItsJustAJacket_0621_0624/final/corpus/3/corpus_cluster_claims.csv
+corpus_representative_claims.csv has been saved in /home/hao/Workplace/HaoXu/Data/Rudetect34_fullClaims/ItsJustAJacket_0621_0624/final/corpus/4/corpus_representative_claims.csv
+corpus_cluster_claims.csv has been saved in /home/hao/Workplace/HaoXu/Data/Rudetect34_fullClaims/ItsJustAJacket_0621_0624/final/corpus/4/corpus_cluster_claims.csv
+====================================================================================================

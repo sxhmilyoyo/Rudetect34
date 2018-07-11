@@ -14,6 +14,7 @@ sys.path.append('/usa/haoxu/Workplace/InfoLab/RuDetect27/GetOldTweets-python')
 import got3
 import Twitter
 import Utility
+from collections import defaultdict
 
 
 class Helper(object):
@@ -54,7 +55,7 @@ class Helper(object):
         """Load .json."""
         if not os.path.exists(os.path.join(self.rootPath, filePath)):
             return None
-        with open(os.path.join(self.rootPath, filePath)) as fp:
+        with open(os.path.join(self.rootPath, filePath), 'rb') as fp:
             data = json.load(fp)
         return data
 
@@ -100,7 +101,7 @@ class Helper(object):
         details = []
         if not os.path.exists(os.path.join(self.rootPath, folderPath, filename)):
             return None
-        with open(os.path.join(self.rootPath, folderPath, filename)) as fp:
+        with open(os.path.join(self.rootPath, folderPath, filename), 'rb') as fp:
             reader = csv.reader(fp, delimiter='\t')
             next(reader)
             for r in reader:
@@ -121,6 +122,16 @@ class Helper(object):
                                                   'rawData', filename))
             for tweet in tweets:
                 yield tweet
+
+    def getTweetFromPheme(self, folderPath):
+        """Get tweet info from pheme data dictionary
+        
+        Arguments:
+            folderPath {str} -- the paht to the event
+        """
+        resultDict = self.loadJson(os.path.join(folderPath, 'raw_data.json'))
+        for _, tweetInfo in resultDict.items():
+            yield tweetInfo
 
     def getClaim(self, folderPath, filename):
         """Get claim content from subject2rankedClaims.json.
@@ -327,3 +338,53 @@ class Helper(object):
         """
         G = cls.to_graph(groupNodes)
         return list(connected_components(G))
+
+    def buildDict4Tweets(self, foldername):
+        """Build dictionary for tweets got from PHEME dataset.
+
+        The raw_data.json will be generated in each event folder.
+
+        Arguments:
+            foldername {str} -- folder name of an event
+        """
+        resultDict = defaultdict(dict)
+        folderpath = os.path.join(self.rootPath, foldername)
+        if not os.path.exists(folderpath):
+            print("the path {} does not exist.".format(folderpath))
+            return
+        rnrsName = [rnr for rnr in os.listdir(folderpath)
+                    if os.path.isdir(os.path.join(folderpath, rnr))]
+        for rnrName in rnrsName:
+            rnrPath = os.path.join(folderpath, rnrName)
+            # print("rnrPath ", rnrPath)
+            rumorsName = [rumor for rumor in os.listdir(
+                rnrPath) if os.path.isdir(os.path.join(rnrPath, rumor))]
+            for rumorName in rumorsName:
+                rumorPath = os.path.join(rnrPath, rumorName)
+                # print("rumorPath ", rumorPath)
+                reactionPath = os.path.join(rumorPath, "reactions")
+                # print("reactionPath ", reactionPath)
+                sourceTweetsPath = os.path.join(rumorPath, "source-tweets")
+                # print("sourceTweetsPath ", sourceTweetsPath)
+
+                reactions = [reaction for reaction in os.listdir(
+                    reactionPath) if os.path.isfile(os.path.join(reactionPath,
+                                                                 reaction))]
+                numReaction = len(reactions)
+
+                for sourceTweet in os.listdir(sourceTweetsPath):
+                    sourceTweetPath = os.path.join(
+                        sourceTweetsPath, sourceTweet)
+                    # print("sourceTweetPath ", sourceTweetPath)
+                    # avoid .DS_store
+                    if os.path.isfile(sourceTweetPath) and sourceTweet[0] != ".":
+                        # print("sourceTweetPath ", sourceTweetPath)
+                        data = self.loadJson(sourceTweetPath)
+                        idx = data['id_str']
+                        resultDict[idx]['text'] = data['text']
+                        resultDict[idx]['favorite_count'] = data['favorite_count']
+                        resultDict[idx]['retweet_count'] = data['retweet_count']
+                        resultDict[idx]['comment'] = numReaction
+                        resultDict[idx]['rumor'] = True if rnrName == 'rumours' else False
+        self.dumpJson(folderpath, "raw_data.json", resultDict)
+        print("raw_data.json has been saved.")

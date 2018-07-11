@@ -1,0 +1,50 @@
+====================================================================================================
+Getting subject ...
+====================================================================================================
+filePath  JetLi_0519_0523/final/candidateClaimsMergedClause.json
+filePath  JetLi_0519_0523/final/candidateFullClaimsMergedClause.json
+eps for DBSCAN is  0.6
+cluster_to_claims_indexes.json has been saved.
+cluster_to_core_sample_indices.json has been saved.
+representative_claim_to_claims_cluster.json has been saved.
+representative_claim_to_full_claims_cluster.json has been saved.
+representative_claim_to_subject.json has been saved.
+representative_claim_to_cluster_feature.json has been saved.
+ranked_cluster_claims.json has been saved.
+====================================================================================================
+Getting News ...
+====================================================================================================
+API called successfully. Returned data: 
+============================================================
+Jet Li fans concerned after seeing 'frail' pic of him
+Chronicle AM: House Dems Want Action on Naloxone Pricing, German Decrim Hint, More... (5/21/18) | StoptheDrugWar.org
+Prisoners should not have amenities
+Waukee reaches 2nd settlement over officials' actions
+Gay couple forced out of Lyft ride after driver saw them kissing, according to new report
+Jet Li's Frail Appearance Will Shock You, Battling Hyperthyroidism
+'Gintama' Live-Action Sequel Confirms Returning Cast
+Action hero Jet Li now unrecognisable
+Police take action on slavery and trafficking
+Health fears forced mum into abortion in Liverpool
+scores  [[0.80010674 0.70466717 0.67385556 0.66643271 0.73299536 0.77167431
+  0.89029763 0.76933125 0.62701578 0.63040484]]
+similarNewID  8
+API called successfully. Returned data: 
+============================================================
+Police take action on slavery and trafficking
+Thousands of companies to take action under Australia's anti-slavery law
+Gavin Shuker: Organised sexual exploitation is a national scandal. It must be stopped
+Sex trafficking is taking place on an 'industrial scale' in England and Wales as government strategy fails, MPs warn
+Sex trafficking taking place on an 'industrial scale' as government strategy 'failing', MPs warn
+Women sex-trafficked in UK on an ‘industrial scale’
+Women sex trafficked in UK pop-up brothels on an 'industrial scale'
+Women sex trafficked in UK pop-up brothels on an 'industrial scale'
+Africa: When People Are Free to Succeed, Business Succeeds
+Surge in 'pop-up' brothels prompts MPs to call for ban on buying sex
+0th claim: news has been saved.
+====================================================================================================
+Getting corpus for classification of the event ...
+----------------------------------------------------------------------------------------------------
+corpus_representative_claims.csv has been saved in /home/hao/Workplace/HaoXu/Data/Rudetect34_fullClaims/JetLi_0519_0523/final/corpus/0/corpus_representative_claims.csv
+corpus_cluster_claims.csv has been saved in /home/hao/Workplace/HaoXu/Data/Rudetect34_fullClaims/JetLi_0519_0523/final/corpus/0/corpus_cluster_claims.csv
+====================================================================================================

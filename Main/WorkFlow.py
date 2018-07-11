@@ -53,6 +53,11 @@ class WorkFlow(object):
                                       start, end, query)
         gettweets.start_getTweets()
 
+    def getTweetsFromPheme(self):
+        """Get tweets from pheme datasetself.
+        """
+        self.helper.buildDict4Tweets(self.folderpath)
+    
     def getWord2Vec(self):
         """Get the word2vec model from all the corpus.
 
@@ -183,10 +188,10 @@ class WorkFlow(object):
 
         claimExtractor = Claim.ClaimExtractor(self.rootpath, self.folderpath)
 
-        tweets_list = list(self.helper.getTweet(self.folderpath))
+        tweets_list = list(self.helper.getTweetFromPheme(self.folderpath))
         cleanedTweets = []
         for tweet in tweets_list:
-            c1 = self.preprocessData.cleanTweet(tweet.text)
+            c1 = self.preprocessData.cleanTweet(tweet['text'])
             cleanedTweets.append(c1)
         print("Parsing...")
         mergedNoun, sortedSubject2Number, \
@@ -294,6 +299,7 @@ class WorkFlow(object):
         for index, info in enumerate(rankedClusterClaims):
             if count >= top:
                 continue
+            count += 1
             query = info[0]
             start = event2timeScope[folderpath][0]
             end = event2timeScope[folderpath][1]
@@ -303,8 +309,9 @@ class WorkFlow(object):
             news = alylienNewsAPI.getNews(query, start, end, 10)
             if len(news) == 0:
                 print("no news.")
-                print("folder ", folder)
+                print("folder ", folderpath)
                 print("info ", info)
+                continue
             titles = alylienNewsAPI.getTitles(news)
             # find final news based the most similar news
             query = self.getSimilarity.getSimilarNews(query, titles)
@@ -315,6 +322,7 @@ class WorkFlow(object):
             self.helper.dumpJson(folderPath+"/news",
                                  str(index)+"_news.json", finalNewsDict)
             print("{}th claim: news has been saved.".format(index))
+            
             # sentiment = alylienNewsAPI.getSentiment(finalNews)
             # sentiments[index] = sentiment
         # self.helper.dumpJson(

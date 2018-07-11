@@ -1,0 +1,171 @@
+====================================================================================================
+Getting subject ...
+====================================================================================================
+filePath  SanctuaryCities_0516_0523/final/candidateClaimsMergedClause.json
+filePath  SanctuaryCities_0516_0523/final/candidateFullClaimsMergedClause.json
+eps for DBSCAN is  0.3
+cluster_to_claims_indexes.json has been saved.
+cluster_to_core_sample_indices.json has been saved.
+representative_claim_to_claims_cluster.json has been saved.
+representative_claim_to_full_claims_cluster.json has been saved.
+representative_claim_to_subject.json has been saved.
+representative_claim_to_cluster_feature.json has been saved.
+ranked_cluster_claims.json has been saved.
+====================================================================================================
+Getting News ...
+====================================================================================================
+API called successfully. Returned data: 
+============================================================
+Carlson Exposes Guest Who Holds Murderers To Different Standards Based On Race
+Opinion | Trump, MS-13, and Fake News
+Trump's MS-13 Comments Violate Zeroth Amendment
+Media, President Double Down on MS-13 Remarks
+No Democrats allowed: Republicans invited to see documents on U.S. election probe
+How anti-abortion forces learned to love Trump
+Reuters tracking poll: GOP now in the lead in our congressional ballot tracking poll
+DHS Official: 'In One Week, Democrats Chose to Defend' Hamas and MS-13
+Donald Trump stands by calling MS-13 ‘animals’
+MS-13 gang member nicknamed ‘Animal’ sentenced to 40 years
+scores  [[0.69496757 0.71453665 0.6084088  0.57064982 0.65336068 0.70268266
+  0.77600237 0.5459718  0.55993115 0.78630467]]
+similarNewID  7
+API called successfully. Returned data: 
+============================================================
+DHS Official: 'In One Week, Democrats Chose to Defend' Hamas and MS-13
+Chuck Schumer spends the day defending MS-13 from Trump’s ‘animal’ comments
+The Media's Week of Lies Reinforces Every Criticism They Receive
+The Media's Hatred For Trump Has Forced Them To Defend Some Unsavory Characters -- The List Is Pretty Shocking
+Calling MS-13 "Animals" Is Putting It Lightly, and the Media's Disgusting Defense of Them Is Just Evil
+Trump derangement syndrome in the MSM has Glenn wearing a new hat and predicting THIS for 2020
+Swedish town that banned church bells has approved a mosque’s call to prayer
+Dana Loesch Slams Media for Defending Hamas and MS-13, While NRA Is Being Called 'Terrorists'
+Irony: Abortion Leaders Condemn Trump for Not Recognizing MS-13 As People
+Allen West: The Left Will Embrace Anyone as Long as It Supports Their Hate Trump Agenda
+0th claim: news has been saved.
+API called successfully. Returned data: 
+============================================================
+Oklahoma City councilman resigns following embezzlement charges
+Simms launches bid for 140th District with stand against gentrification
+City of Galva meeting information
+Oklahoma City councilman facing felony charges resigns
+Oklahoma City councilman facing felony charges resigns
+Norco won’t switch to district voting for now, despite threat of lawsuit
+Del Mar stands firm against 'planned retreat'
+Fireworks Back On: Restaino & Rulli Lead Charge in Saving Hyde Park Fireworks
+Oklahoma City councilman facing felony charges resigns
+Oklahoma City councilman facing felony charges resigns
+scores  [[0.57505884 0.50341942 0.75581567 0.58508018 0.58508018 0.68606936
+  0.62506328 0.63980355 0.58508017 0.58508017]]
+similarNewID  1
+API called successfully. Returned data: 
+============================================================
+Simms launches bid for 140th District with stand against gentrification
+The Marshmallowist launches ‘World’s first’ Bloody Mary marshmallow
+Hochelaga-Maisonneuve residents rally against gentrification
+Skoufis Officially Launches Senate Bid
+Lubbock woman pleads guilty to 2015 death of 4-year-old
+Vulnerable residents forced out by the gentrification of West Auckland
+Mum's agony as daughter's killer to be freed from prison on day release despite refusing to reveal where he hid her body
+How to turn a side hustle into full-time income
+Chris Simms makes a belated confession
+Editorial: Women stand up to take their place in government
+1th claim: news has been saved.
+API called successfully. Returned data: 
+============================================================
+Steve King Introduces Act to Imprison Politicians Who Help Illegal Aliens Evade Deportation
+Steve King Introduces Bill That Could Jail Sanctuary Officials
+MIL-OSI USA: King to Sanctuary Politicians: “Obstruct ICE? End up in the cooler.” – ForeignAffairs.co.nz
+Congressman’s ‘Mayor Libby Schaaf Act’ could imprison sanctuary officials
+Oakland Mayor Claims Steve King’s ‘Libby Schaaf Act’ ‘Illegal’
+Republican congressman introduces ‘Libby Schaaf Act’ to criminalize immigration raid warnings
+Republican congressman introduces ‘Libby Schaaf Act’ to criminalize immigration raid warnings
+Republican congressman introduces ‘Libby Schaaf Act’ to criminalize immigration raid warnings
+The "Mayor Libby Schaaf Act" proposal seeks to put officials who warn constituents of ICE raids behind bars
+‘Mayor Libby Schaaf Act’ would imprison gov’t officials who warn about ICE raids
+scores  [[5.80646642e-14 4.70833002e-01 5.43292535e-01 4.66173020e-01
+  3.46189847e-01 4.40498068e-01 4.40498068e-01 4.40498068e-01
+  5.48515458e-01 4.11270154e-01]]
+similarNewID  0
+API called successfully. Returned data: 
+============================================================
+Steve King Introduces Act to Imprison Politicians Who Help Illegal Aliens Evade Deportation
+Steve King Introduces Bill That Could Jail Sanctuary Officials
+MIL-OSI USA: King to Sanctuary Politicians: “Obstruct ICE? End up in the cooler.” – ForeignAffairs.co.nz
+Congressman’s ‘Mayor Libby Schaaf Act’ could imprison sanctuary officials
+Oakland Mayor Claims Steve King’s ‘Libby Schaaf Act’ ‘Illegal’
+Republican congressman introduces ‘Libby Schaaf Act’ to criminalize immigration raid warnings
+Republican congressman introduces ‘Libby Schaaf Act’ to criminalize immigration raid warnings
+Republican congressman introduces ‘Libby Schaaf Act’ to criminalize immigration raid warnings
+The "Mayor Libby Schaaf Act" proposal seeks to put officials who warn constituents of ICE raids behind bars
+‘Mayor Libby Schaaf Act’ would imprison gov’t officials who warn about ICE raids
+2th claim: news has been saved.
+API called successfully. Returned data: 
+============================================================
+Citizens group wants Piedmont to become sanctuary city
+The sanctuary cities strike back
+Georgia gubernatorial candidate's 'deportation bus' breaks down
+Group of Palm Desert residents don't want 'criminal' immigrants in their city
+How Safe are ‘Sanctuary Cities’?
+MIL-OSI USA: King to Sanctuary Politicians: “Obstruct ICE? End up in the cooler.” – ForeignAffairs.co.nz
+Safe in sanctuary, but no end in sight
+Donald Trump Endorses California Candidate John Cox in Battle for Governor's Seat
+Hundreds protest as clock ticks on anti-sanctuary city bill
+Trump: California’s Sanctuary Law ‘Sparked a Rebellion by Patriotic Citizens Who Want Their Families Protected’
+scores  [[0.43769135 0.7430943  0.76268718 0.58312323 0.78244267 0.68630323
+  0.88343349 0.69897322 0.7183936  0.5638221 ]]
+similarNewID  0
+API called successfully. Returned data: 
+============================================================
+Citizens group wants Piedmont to become sanctuary city
+Gov. Haslam will not sign sanctuary cities bill, allowing it to become law
+Sanctuary Cities and Their Citizens Are Here to Stay
+Group of Palm Desert residents don't want 'criminal' immigrants in their city
+Trump: California’s Sanctuary Law ‘Sparked a Rebellion by Patriotic Citizens Who Want Their Families Protected’
+Trump hails 'rebellion' by local California lawmakers against state's 'sanctuary' laws
+Sanctuary Cities bill on Governor Haslam's desk
+How Safe are ‘Sanctuary Cities’?
+'Deadly and unconstitutional': Trump attacks California sanctuary cities
+Sanctuary cities can go too many ways
+3th claim: news has been saved.
+API called successfully. Returned data: 
+============================================================
+GNC opposes Citizenship Amendment Bill
+Our military is working just fine. It’s immigration policy that is broken.
+Our military is working just fine. It’s immigration policy that is broken.
+Demerits of Citizenship (Amendment) Bill scrutinized
+When citizenship becomes a threat
+MIL-OSI USA: Rush Signs Bipartisan Discharge Petition to Protect Dreamers – ForeignAffairs.co.nz
+Americans must remember the Holocaust
+Editorial: New Americans must know more than many of us
+Ex-Arunachal Guv urges Centre to withdraw Bill
+NV-Sen.: Heller, facing tough race, asks Trump not to force shutdown over border wall
+scores  [[0.48140749 0.69979332 0.69979332 0.81462257 0.68162153 0.68937152
+  0.50620721 0.76766683 0.76147798 0.77358215]]
+similarNewID  0
+API called successfully. Returned data: 
+============================================================
+GNC opposes Citizenship Amendment Bill
+Mizoram, Manipur join protest against Citizenship bill
+Retired teachers' body opposes Citizenship Bill
+MZP warns of ‘uprising’ if Centre continues to ‘neglect’ Mizoram
+Cong will approach SC if Citizenship Bill is passed: APCC
+Human chain organised in protest against Citizenship Bill
+AICC tries to put APCC house in order following differences on Citizenship Bill
+Demerits of Citizenship (Amendment) Bill scrutinized
+MPP decries Citizenship (Amendment) Bill
+Poroshenko withdraws bill on stripping of Ukrainian citizenship for voting in Russian-occupied Crimea
+4th claim: news has been saved.
+====================================================================================================
+Getting corpus for classification of the event ...
+----------------------------------------------------------------------------------------------------
+corpus_representative_claims.csv has been saved in /home/hao/Workplace/HaoXu/Data/Rudetect34_fullClaims/SanctuaryCities_0516_0523/final/corpus/0/corpus_representative_claims.csv
+corpus_cluster_claims.csv has been saved in /home/hao/Workplace/HaoXu/Data/Rudetect34_fullClaims/SanctuaryCities_0516_0523/final/corpus/0/corpus_cluster_claims.csv
+corpus_representative_claims.csv has been saved in /home/hao/Workplace/HaoXu/Data/Rudetect34_fullClaims/SanctuaryCities_0516_0523/final/corpus/1/corpus_representative_claims.csv
+corpus_cluster_claims.csv has been saved in /home/hao/Workplace/HaoXu/Data/Rudetect34_fullClaims/SanctuaryCities_0516_0523/final/corpus/1/corpus_cluster_claims.csv
+corpus_representative_claims.csv has been saved in /home/hao/Workplace/HaoXu/Data/Rudetect34_fullClaims/SanctuaryCities_0516_0523/final/corpus/2/corpus_representative_claims.csv
+corpus_cluster_claims.csv has been saved in /home/hao/Workplace/HaoXu/Data/Rudetect34_fullClaims/SanctuaryCities_0516_0523/final/corpus/2/corpus_cluster_claims.csv
+corpus_representative_claims.csv has been saved in /home/hao/Workplace/HaoXu/Data/Rudetect34_fullClaims/SanctuaryCities_0516_0523/final/corpus/3/corpus_representative_claims.csv
+corpus_cluster_claims.csv has been saved in /home/hao/Workplace/HaoXu/Data/Rudetect34_fullClaims/SanctuaryCities_0516_0523/final/corpus/3/corpus_cluster_claims.csv
+corpus_representative_claims.csv has been saved in /home/hao/Workplace/HaoXu/Data/Rudetect34_fullClaims/SanctuaryCities_0516_0523/final/corpus/4/corpus_representative_claims.csv
+corpus_cluster_claims.csv has been saved in /home/hao/Workplace/HaoXu/Data/Rudetect34_fullClaims/SanctuaryCities_0516_0523/final/corpus/4/corpus_cluster_claims.csv
+====================================================================================================

@@ -26,7 +26,7 @@ def main(rootpath, folderpath, query, start, end, eps=0.5):
 
     Parameters
     ----------
-    rootpath : str
+    rootpath : str 
         the root path of the data
     folderpath : str
         the folder path of the event
@@ -49,10 +49,11 @@ def main(rootpath, folderpath, query, start, end, eps=0.5):
     # helper = Utility.Helper(rootpath)
     workFlow = Main.WorkFlow(rootpath, folderpath)
 
-    # # get tweets
-    # print('='*100)
-    # print('Getting tweets ...')
-    # print('='*100)
+    # get tweets
+    print('='*100)
+    print('Getting tweets ...')
+    print('='*100)
+    workFlow.getTweetsFromPheme()
     # workFlow.getTweets(query, start, end)
 
     # # get word2vec
@@ -61,11 +62,11 @@ def main(rootpath, folderpath, query, start, end, eps=0.5):
     # print('='*100)
     # workFlow.getWord2Vec()
 
-    # get Claims
-    print('='*100)
-    print('Getting subject ...')
-    print('='*100)
-    workFlow.getClusterRankClaims(query, float(eps))
+    # # get Claims
+    # print('='*100)
+    # print('Getting subject ...')
+    # print('='*100)
+    # workFlow.getClusterRankClaims(query, float(eps))
 
     # # get similar news
     # print("="*100)
@@ -98,12 +99,14 @@ def main(rootpath, folderpath, query, start, end, eps=0.5):
     workFlow.run4cluster()
     print('='*100)
     """
-    # get corpus for classification of the event
-    print('='*100)
-    print('Getting corpus for classification of the event ...')
-    print('-'*100)
-    workFlow.getCorpus4Classification(folderpath)
-    print('='*100)
+
+    # # get corpus for classification of the event
+    # print('='*100)
+    # print('Getting corpus for classification of the event ...')
+    # print('-'*100)
+    # workFlow.getCorpus4Classification(folderpath)
+    # print('='*100)
+
     """
     # get similarity between statements of the event
     print('='*100)

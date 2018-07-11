@@ -1,0 +1,170 @@
+====================================================================================================
+Getting subject ...
+====================================================================================================
+filePath  WhereAreTheChildren_0418_0527/final/candidateClaimsMergedClause.json
+filePath  WhereAreTheChildren_0418_0527/final/candidateFullClaimsMergedClause.json
+eps for DBSCAN is  0.35
+cluster_to_claims_indexes.json has been saved.
+cluster_to_core_sample_indices.json has been saved.
+representative_claim_to_claims_cluster.json has been saved.
+representative_claim_to_full_claims_cluster.json has been saved.
+representative_claim_to_subject.json has been saved.
+representative_claim_to_cluster_feature.json has been saved.
+ranked_cluster_claims.json has been saved.
+====================================================================================================
+Getting News ...
+====================================================================================================
+API called successfully. Returned data: 
+============================================================
+Headline about state trooper was in poor taste
+COMMENTARY: Breaking a shameful silence on AIDS
+Opinion | Barbara Bush, a baby and breaking a shameful silence on AIDS
+John McCain is dying. Do his critics have no shame? | Christine Flowers
+Losing faith in your faith
+Joe Biden Fiercely Defends Friend John McCain Against White House 'Trail of Disrespect'
+COMMENTARY: Region filled with positive energy
+Kankanhalli | On Religious Warfare
+HCDE: Prioritize fiscal needs, wants and more letters to the editors
+UPDATE: What made Barbara Bush remarkable
+scores  [[0.86343663 0.77864538 0.67852686 0.54936113 0.79723881 0.69092652
+  0.95130476 0.7257823  0.71670096 0.81940516]]
+similarNewID  3
+API called successfully. Returned data: 
+============================================================
+John McCain is dying. Do his critics have no shame? | Christine Flowers
+McCain’s daughter hits back at his critics
+Meghan McCain Blasts White House Adviser for Joke About Her Dying Dad: How Does She ‘Still Have a Job’?
+Meghan McCain says father's critics will "have to live with" caustic comments
+John McCain's daughter slams White House aide's 'he's dying' comments
+Video: 'We have to be the leadership we don't have now:' Meghan McCain
+Ana Navarro: ‘White House is irritated John McCain is not dying of cancer’
+John McCain hullabaloo a hissy-fit of epic proportions
+CNN’s Navarro: WH Must Be Peeved McCain Is ‘Living With Cancer,’ Not Dying From It
+White House official mocked ‘dying’ Senator McCain: media
+0th claim: news has been saved.
+API called successfully. Returned data: 
+============================================================
+Did the Feds Lose 1,475 Migrant Children?
+The federal government did not 1,475 migrant children.
+Montini: The feds lost – yes, lost – 1,475 migrant children
+Feds lose track of nearly 1,500 migrant children
+Feds admit they lost track of 1,475 migrant children
+The feds lost — yes, lost — 1,475 migrant children
+Federal agencies lose track of migrant kids
+Federal agency says it lost track of 1,475 migrant children
+Federal agency says it lost track of 1,475 migrant children ::
+The Federal Government Lost 1,475 Immigrant Children
+scores  [[0.82179151 0.70802537 0.60787002 0.45914499 0.39627289 0.47049525
+  0.46620758 0.38780194 0.77161757 0.57249006]]
+similarNewID  7
+API called successfully. Returned data: 
+============================================================
+Federal agency says it lost track of 1,475 migrant children
+Federal agency says it lost track of 1,475 migrant children
+Federal agency says it lost track of 1,475 migrant children
+Federal agency says it lost track of 1,475 migrant children
+Federal agency says it lost track of 1,475 migrant children
+Federal agency says it lost track of 1,475 migrant children
+Federal agency says it lost track of 1,475 migrant children
+Federal agency says it lost track of 1,475 migrant children ::
+Feds admit they lost track of 1,475 migrant children
+Federal agency says it lost track of 1,475 migrant children
+1th claim: news has been saved.
+API called successfully. Returned data: 
+============================================================
+We've become normalized to Trump's tweets. Not this one.
+Denver police warn about kidnapping scam
+18 things you should never do on an airplane
+May Day baskets show love
+Jonathon McComb's fishing tournament donates $15K to Christus Spohn Hospital Shoreline
+Woman Sexually Harassed by Fellow Women Asks for a Kanye Album Tip
+Are these the worst employees EVER?
+Bogus caller ID lists Freeport Fire EMS
+Ice cream man launches foul-mouthed tirade on rival in front of kids
+Telling the Truth about Motherhood
+scores  [[0.90091885 0.68352518 0.8600265  0.86210979 0.72195528 0.77998301
+  0.88160223 0.76486847 0.66256184 0.72056856]]
+similarNewID  8
+API called successfully. Returned data: 
+============================================================
+Ice cream man launches foul-mouthed tirade on rival in front of kids
+Shocking moment red-face ranter abuses rival in ice cream van 'TURF WAR'
+Ice cream man hurls abuse at rival trader in front of shocked kids and parents
+Woman wielding a hammer threatens to smash it over a young mum's head
+Ice cream van owner leaves children TERRIFIED after hurling abuse at rival in ‘turf war’
+Ice cream van owner leaves children TERRIFIED after hurling abuse at rival in ‘turf war’
+Coward punch, baseball bat weapons of choice in neighbour disputes
+Noel Gallagher launches foul-mouthed rant about Nottingham Forest at gig
+Man who abused ice cream van worker used to work for feared crime family
+Barcelona star Lionel Messi unleashed foul-mouthed tirade at ‘s***’ Clasico referee
+2th claim: news has been saved.
+API called successfully. Returned data: 
+============================================================
+Operation against terror inmates ends after 36 hours - ANTARA News
+Five police, one inmate killed in Indonesia prison hostage taking: officials
+Taking Children from Their Parents Is a Form of State Terror
+Five police, one inmate killed in Indonesia prison hostage taking:...
+Five police, one inmate killed in Indonesia prison hostage taking: officials
+'Sino'ng kalaban? Lumot?': Netizens react to Boracay threat simulations
+WATCH: Gov't simulates terror attack, hostage-taking in Boracay
+Tearing kids from parents, an 'instrument of totalitarian terror,' is now official U.S. policy
+Nigerian Army Rescues Over 1,000 Boko Haram Captives - Statement
+Terror convicts still control Brimob detention center - ANTARA News
+scores  [[0.88396063 0.86345715 0.74887452 0.92172096 0.86345715 0.79297236
+  0.85985205 0.83614782 0.91189623 0.8643088 ]]
+similarNewID  2
+API called successfully. Returned data: 
+============================================================
+Taking Children from Their Parents Is a Form of State Terror
+Special Attention Project Forms Self-Help Groups
+Helicopter Children - That Could Be Interpreted as Form of Elder Abuse
+Tearing kids from parents, an 'instrument of totalitarian terror,' is now official U.S. policy
+Why is ICE taking children from mothers?
+What Are Night Terrors? Symptoms in Children & Toddlers
+Pupils from top Bristol school caught snorting drugs at luxury hotel prom
+Innocent infants
+Parents visited by social services and police for taking kids on holiday
+Data show taking US immigrant kids from their parents is ridiculous
+3th claim: news has been saved.
+API called successfully. Returned data: 
+============================================================
+Where are the 1,500 immigrant children misplaced by federal agencies?
+Federal agencies can’t confirm the whereabouts of nearly 1,500 unaccompanied migrant children
+Federal Agency Loses Track of 1,474 Migrant Children
+The Federal Government Lost 1,475 Immigrant Children
+US Lost 1,500 Immigrant Children, But Says It’s Not ‘Legally Responsible’
+ICE Reports They Have Lost Track Of 1500 Children They've Taken From Parents
+Feds: We Just Lost Nearly 1,500 Children
+US lost track of 1,500 immigrant children, but says it’s not ‘legally responsible’
+Federal Agencies Lost Track of Nearly 1,500 Migrant Children Placed With Sponsors
+Feds lost track of nearly 1,500 illegal immigrant children placed with "sponsors"
+scores  [[0.46961013 0.44325025 0.66163065 0.57539279 0.58028122 0.56864933
+  0.59503343 0.51430408 0.61356363 0.64671511]]
+similarNewID  1
+API called successfully. Returned data: 
+============================================================
+Federal agencies can’t confirm the whereabouts of nearly 1,500 unaccompanied migrant children
+Federal Agencies Lost Track of Nearly 1,500 Migrant Children Placed With Sponsors
+Feds lose track of nearly 1,500 migrant children
+Federal agency says it lost track of 1,475 migrant children
+Feds: We Just Lost Nearly 1,500 Children
+HHS officials say they can't find 1,500 migrant kids they placed with U.S. sponsors
+Feds admit they lost track of 1,475 migrant children
+Federal agencies lose track of migrant kids
+The Latest: Fed agency says it lost track of migrant kids
+The Latest: Fed agency says it lost track of migrant kids
+4th claim: news has been saved.
+====================================================================================================
+Getting corpus for classification of the event ...
+----------------------------------------------------------------------------------------------------
+corpus_representative_claims.csv has been saved in /home/hao/Workplace/HaoXu/Data/Rudetect34_fullClaims/WhereAreTheChildren_0418_0527/final/corpus/0/corpus_representative_claims.csv
+corpus_cluster_claims.csv has been saved in /home/hao/Workplace/HaoXu/Data/Rudetect34_fullClaims/WhereAreTheChildren_0418_0527/final/corpus/0/corpus_cluster_claims.csv
+corpus_representative_claims.csv has been saved in /home/hao/Workplace/HaoXu/Data/Rudetect34_fullClaims/WhereAreTheChildren_0418_0527/final/corpus/1/corpus_representative_claims.csv
+corpus_cluster_claims.csv has been saved in /home/hao/Workplace/HaoXu/Data/Rudetect34_fullClaims/WhereAreTheChildren_0418_0527/final/corpus/1/corpus_cluster_claims.csv
+corpus_representative_claims.csv has been saved in /home/hao/Workplace/HaoXu/Data/Rudetect34_fullClaims/WhereAreTheChildren_0418_0527/final/corpus/2/corpus_representative_claims.csv
+corpus_cluster_claims.csv has been saved in /home/hao/Workplace/HaoXu/Data/Rudetect34_fullClaims/WhereAreTheChildren_0418_0527/final/corpus/2/corpus_cluster_claims.csv
+corpus_representative_claims.csv has been saved in /home/hao/Workplace/HaoXu/Data/Rudetect34_fullClaims/WhereAreTheChildren_0418_0527/final/corpus/3/corpus_representative_claims.csv
+corpus_cluster_claims.csv has been saved in /home/hao/Workplace/HaoXu/Data/Rudetect34_fullClaims/WhereAreTheChildren_0418_0527/final/corpus/3/corpus_cluster_claims.csv
+corpus_representative_claims.csv has been saved in /home/hao/Workplace/HaoXu/Data/Rudetect34_fullClaims/WhereAreTheChildren_0418_0527/final/corpus/4/corpus_representative_claims.csv
+corpus_cluster_claims.csv has been saved in /home/hao/Workplace/HaoXu/Data/Rudetect34_fullClaims/WhereAreTheChildren_0418_0527/final/corpus/4/corpus_cluster_claims.csv
+====================================================================================================
