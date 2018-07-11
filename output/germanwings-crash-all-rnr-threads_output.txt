@@ -1,5 +1,15 @@
 ====================================================================================================
-Getting tweets ...
+Getting subject ...
 ====================================================================================================
-raw_data.json has been saved.
-tweets.pkl has been saved.
+filePath  germanwings-crash-all-rnr-threads/final/candidateClaimsMergedClause.json
+filePath  germanwings-crash-all-rnr-threads/final/candidateFullClaimsMergedClause.json
+path  germanwings-crash-all-rnr-threads/final/rawData/tweets.pkl
+eps for DBSCAN is  0.45
+cluster_to_claims_indexes.json has been saved.
+cluster_to_core_sample_indices.json has been saved.
+path  germanwings-crash-all-rnr-threads/final/rawData/tweets.pkl
+representative_claim_to_claims_cluster.json has been saved.
+representative_claim_to_full_claims_cluster.json has been saved.
+representative_claim_to_subject.json has been saved.
+representative_claim_to_cluster_feature.json has been saved.
+ranked_cluster_claims.json has been saved.

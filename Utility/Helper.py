@@ -37,6 +37,7 @@ class Helper(object):
     def loadPickle(self, filePath):
         """Load .pkl."""
         # with codecs.open(os.path.join(self.rootPath, filePath), "rb",encoding='utf-8', errors='ignore') as fp:
+        print("path ", filePath)
         if not os.path.exists(os.path.join(self.rootPath, filePath)):
             return None
         with open(os.path.join(self.rootPath, filePath), 'rb') as fp:
@@ -115,23 +116,13 @@ class Helper(object):
         Parameters Example:
                 self.rootPath/folderPath/final/rawData
         """
-        filenames = os.listdir(os.path.join(self.rootPath, folderPath,
-                                            'final', 'rawData'))
-        for filename in filenames:
-            tweets = self.loadPickle(os.path.join(folderPath, 'final',
-                                                  'rawData', filename))
-            for tweet in tweets:
-                yield tweet
-
-    def getTweetFromPheme(self, folderPath):
-        """Get tweet info from pheme data dictionary
-
-        Arguments:
-            folderPath {str} -- the paht to the event
-        """
-        resultDict = self.loadJson(os.path.join(folderPath, 'raw_data.json'))
-        for _, tweetInfo in resultDict.items():
-            yield tweetInfo
+        # filename = os.path.join(self.rootPath, folderPath,
+        #                         'final', 'rawData', 'tweets.pkl')
+        # for filename in filenames:
+        tweets = self.loadPickle(os.path.join(folderPath, 'final',
+                                              'rawData', 'tweets.pkl'))
+        for tweet in tweets:
+            yield tweet
 
     def getClaim(self, folderPath, filename):
         """Get claim content from subject2rankedClaims.json.
@@ -382,22 +373,32 @@ class Helper(object):
                         # print("sourceTweetPath ", sourceTweetPath)
                         data = self.loadJson(sourceTweetPath)
                         idx = data['id_str']
+                        hashtags = ['#'+hashtag['text'] for hashtag in data['entities']['hashtags']]
+                        rumor = True if rnrName == 'rumours' else False
+                        date = data['created_at']
+
                         resultDict[idx]['text'] = data['text']
                         resultDict[idx]['favorite_count'] = data['favorite_count']
                         resultDict[idx]['retweet_count'] = data['retweet_count']
+                        resultDict[idx]['hashtags'] = hashtags
                         resultDict[idx]['comment'] = numReaction
-                        rumor = True if rnrName == 'rumours' else False
                         resultDict[idx]['rumor'] = rumor
+                        resultDict[idx]['date'] = date
 
-                        tweet = Twitter.Tweet(idx, data['text'],
-                                              data['favorite_count'],
-                                              data['retweet_count'],
-                                              numReaction,
-                                              rumor)
+                        tweet = Twitter.Tweet()
+                        tweet.id = idx
+                        tweet.text = data['text']
+                        tweet.favorites = data['favorite_count']
+                        tweet.retweets = data['retweet_count']
+                        tweet.reply = numReaction
+                        tweet.rumor = rumor
+                        tweet.setHashtags(hashtags)
+                        tweet.setDate(date)
+
                         resultPickle.append(tweet)
-        self.dumpJson(folderpath + "/../dataset/" + foldername +
+        self.dumpJson(folderpath + "/../../pheme_dataset/" + foldername +
                       "/final/rawData", "raw_data.json", resultDict)
         print("raw_data.json has been saved.")
-        self.dumpPickle(folderpath + "/../dataset/" + foldername +
+        self.dumpPickle(folderpath + "/../../pheme_dataset/" + foldername +
                         "/final/rawData", "tweets.pkl", resultPickle)
         print("tweets.pkl has been saved.")

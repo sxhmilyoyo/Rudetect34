@@ -54,7 +54,7 @@ class WorkFlow(object):
         gettweets.start_getTweets()
 
     def getTweetsFromPheme(self):
-        """Get tweets from pheme datasetself.
+        """Generate tweets objects from pheme dataset.
         """
         self.helper.buildDict4Tweets(self.folderpath)
     
@@ -188,10 +188,10 @@ class WorkFlow(object):
 
         claimExtractor = Claim.ClaimExtractor(self.rootpath, self.folderpath)
 
-        tweets_list = list(self.helper.getTweetFromPheme(self.folderpath))
+        tweets_list = list(self.helper.getTweet(self.folderpath))
         cleanedTweets = []
         for tweet in tweets_list:
-            c1 = self.preprocessData.cleanTweet(tweet['text'])
+            c1 = self.preprocessData.cleanTweet(tweet.text)
             cleanedTweets.append(c1)
         print("Parsing...")
         mergedNoun, sortedSubject2Number, \
@@ -213,16 +213,16 @@ class WorkFlow(object):
         #     candidateClaims)
 
     def getClusterClaims(self, query, eps):
-        # claims, fullClaims = self.getClaims(query)
-        filePath = os.path.join(self.folderpath, "final",
-                                "candidateClaimsMergedClause.json")
-        print("filePath ", filePath)
-        claims = self.helper.loadJson(filePath)
+        claims, fullClaims = self.getClaims(query)
+        # filePath = os.path.join(self.folderpath, "final",
+        #                         "candidateClaimsMergedClause.json")
+        # print("filePath ", filePath)
+        # claims = self.helper.loadJson(filePath)
 
-        filePath = os.path.join(self.folderpath, "final",
-                                "candidateFullClaimsMergedClause.json")
-        print("filePath ", filePath)
-        fullClaims = self.helper.loadJson(filePath)
+        # filePath = os.path.join(self.folderpath, "final",
+        #                         "candidateFullClaimsMergedClause.json")
+        # print("filePath ", filePath)
+        # fullClaims = self.helper.loadJson(filePath)
 
         skipthoughts_model = {"name": "skipthoughts",
                               "modelPath": self.rootpath + "/.." +

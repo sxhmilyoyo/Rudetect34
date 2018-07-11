@@ -49,12 +49,12 @@ def main(rootpath, folderpath, query, start, end, eps=0.5):
     # helper = Utility.Helper(rootpath)
     workFlow = Main.WorkFlow(rootpath, folderpath)
 
-    # get tweets
-    print('='*100)
-    print('Getting tweets ...')
-    print('='*100)
-    workFlow.getTweetsFromPheme()
-    # workFlow.getTweets(query, start, end)
+    # # get tweets
+    # print('='*100)
+    # print('Getting tweets ...')
+    # print('='*100)
+    # workFlow.getTweetsFromPheme()
+    # # workFlow.getTweets(query, start, end)
 
     # # get word2vec
     # print('='*100)
@@ -62,11 +62,12 @@ def main(rootpath, folderpath, query, start, end, eps=0.5):
     # print('='*100)
     # workFlow.getWord2Vec()
 
-    # # get Claims
-    # print('='*100)
-    # print('Getting subject ...')
-    # print('='*100)
+    # get Claims
+    print('='*100)
+    print('Getting subject ...')
+    print('='*100)
     # workFlow.getClusterRankClaims(query, float(eps))
+    workFlow.getClaims(query)
 
     # # get similar news
     # print("="*100)
@@ -85,11 +86,11 @@ def main(rootpath, folderpath, query, start, end, eps=0.5):
     numTopic = helper.getTopicNum(dist)
     """
 
-    # # get cluster
+    """# # get cluster
     # print('='*100)
     # print('Getting clusters ...')
     # print('-'*100)
-    # workFlow.getSimilarTweets4Claim()
+    # workFlow.getSimilarTweets4Claim()"""
 
     """
     # get topic model and SVO for each cluster

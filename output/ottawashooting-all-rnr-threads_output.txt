@@ -2,3 +2,4 @@
 Getting tweets ...
 ====================================================================================================
 raw_data.json has been saved.
+tweets.pkl has been saved.

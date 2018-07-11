@@ -29,8 +29,8 @@ def main(rootpath):
 
     for folder in folders:
         # exclude some events
-        if folder not in ["germanwings-crash-all-rnr-threads"]:
-            continue
+        # if folder not in ["germanwings-crash-all-rnr-threads"]:
+        #     continue
 
         # specify an event
         # if folder != "immigrants_0622_0624":
@@ -45,7 +45,7 @@ def main(rootpath):
         args = ['python', 'main.py', '-r', rootpath,
                 '-f', folder, '-q', "#"+folder.split("_")[0],
                 '-s', 'test', '-e', 'test', '-p',
-                str(event2eps.get(folder, 'test'))]
+                str(event2eps.get(folder, 0.45))]
         print("Command line is {}".format(" ".join(args)))
         with open("./output/"+folder+"_output.txt", "wb", 0) as out:
             subprocess.run(args, stdout=out, check=True)

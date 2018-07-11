@@ -429,11 +429,11 @@ class PreprocessData(object):
         Arguments:
             folderPath {str} -- the path to folder
         """
-        tweets = self.helper.getTweetFromPheme(folderPath)
+        tweets = self.helper.getTweet(folderPath)
         with open(os.path.join(self.rootPath, folderPath, "tweets_lines.txt"), "w") as fp:
             for tweet in tweets:
                 # print (type(tweet.text.encode('utf8')))
-                c1 = self.cleanTweet(tweet['text'])
+                c1 = self.cleanTweet(tweet.text)
                 # c2 = preprocessData.cleanTweet4Word2Vec(c1)
                 fp.write(c1 + '\n')
         print("tweets_lines.txt has been saved.")
