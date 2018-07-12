@@ -1,5 +1,17 @@
 ====================================================================================================
-Getting tweets ...
+Getting subject ...
 ====================================================================================================
-raw_data.json has been saved.
-tweets.pkl has been saved.
+path  charliehebdo-all-rnr-threads/final/rawData/tweets.pkl
+tweets_lines.txt has been saved.
+path  charliehebdo-all-rnr-threads/final/rawData/tweets.pkl
+Parsing...
+tweets_id2Info.json has been saved.
+71  [(8, '9'), (22, '23')]
+merged_noun_as_subject.json has been saved.
+subject2number.json has been saved.
+sorted_subject2number.json has been saved.
+subject2tweetInfo.json has been saved.
+candidateClaims.json has been saved.
+candidateFullClaims.json has been saved.
+candidateClaimsMergedClause.json has been saved.
+candidateFullClaimsMergedClause.json has been saved.

@@ -1,0 +1,17 @@
+====================================================================================================
+Getting subject ...
+====================================================================================================
+path  ferguson-all-rnr-threads/final/rawData/tweets.pkl
+tweets_lines.txt has been saved.
+path  ferguson-all-rnr-threads/final/rawData/tweets.pkl
+Parsing...
+tweets_id2Info.json has been saved.
+71  [(7, '8'), (15, '16')]
+merged_noun_as_subject.json has been saved.
+subject2number.json has been saved.
+sorted_subject2number.json has been saved.
+subject2tweetInfo.json has been saved.
+candidateClaims.json has been saved.
+candidateFullClaims.json has been saved.
+candidateClaimsMergedClause.json has been saved.
+candidateFullClaimsMergedClause.json has been saved.
