@@ -9,7 +9,7 @@ import sys
 class GoogleSnippets(object):
     """Get google search snippets."""
 
-    def __init__(self, folderpath, topic, query_id, query):
+    def __init__(self, folderpath, query_id, query):
         """Initialize the parameters.
 
         Parameters
@@ -27,7 +27,6 @@ class GoogleSnippets(object):
 
         """
         self.folderpath = folderpath
-        self.topic = topic
         self.query_id = query_id
         self.query = query
         self.results_limit = 20
@@ -37,10 +36,8 @@ class GoogleSnippets(object):
         self.parameters = {}
         self.url_list = []
         self.results = []
-        self.output_root = os.path.join(self.folderpath, 'final', 'snippets',
-                                        topic)
-        self.googletest = os.path.join(self.folderpath, 'final', 'googletest',
-                                       topic)
+        self.output_root = os.path.join(self.folderpath, 'snippets')
+        self.googletest = os.path.join(self.folderpath, 'googletest')
         if not os.path.exists(self.output_root):
             os.makedirs(self.output_root)
         if not os.path.exists(self.googletest):
@@ -124,8 +121,7 @@ class GoogleSnippets(object):
                                             str(self.crawl_idx),
                                             'url': url,
                                             'title': title,
-                                            'snippets': snippets,
-                                            'topic': self.topic
+                                            'snippets': snippets
                                         }
                                     )
 
@@ -182,7 +178,7 @@ class GoogleSnippets(object):
         final_url, content = self.get_page(self.url_base, self.parameters)
 
         with codecs.open(os.path.join(self.googletest, str(self.query_id)
-                         + '_google_test.html'), 'wb', 'utf-8') as out:
+                                      + '_google_test.html'), 'wb', 'utf-8') as out:
             out.write(content)
 
         print('crawling Google data...')
@@ -191,6 +187,7 @@ class GoogleSnippets(object):
         with codecs.open(os.path.join(self.output_root, str(self.query_id) +
                                       '_google.json'), 'wb', 'utf-8') as f:
             json.dump(self.results, f, indent=4)
+        print("snippets have been saved as {}".format(self.output_root))
         return self.results
 
     def start_crawl(self):

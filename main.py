@@ -67,13 +67,14 @@ def main(rootpath, folderpath, query, start, end, eps):
     # print('='*100)
     # # farber
     # workFlow.getClusterRankClaims(query, float(eps))
-    # # workFlow.getClaims(query)
+    # # # workFlow.getClaims(query)
 
     # get similar news
     print("="*100)
     print('Getting News ...')
     print("="*100)
-    workFlow.getNews(folderpath)
+    # workFlow.getNews(folderpath)
+    workFlow.getSnippets(folderpath)
 
     """# get the topic model
     print('='*100)
@@ -155,7 +156,18 @@ if __name__ == '__main__':
                  "ottawashooting-all-rnr-threads": 0.5,
                  "prince-toronto-all-rnr-threads": 0.5,
                  "putinmissing-all-rnr-threads": 0.5,
-                 "sydneysiege-all-rnr-threads": 0.5}
+                 "sydneysiege-all-rnr-threads": 0.5,
+                 "alfieevans_0301_0315": 0.5,
+                 "AnthonyBourdain_0610_0630": 0.5,
+                 "CanadianDoctors_0201_0331": 0.5,
+                 "dogjealousy_0101_0708": 0.5,
+                 "Irma_0830_0910": 0.5,
+                 "JoeJackson_0623_0626": 0.5,
+                 "pavingforpizza_0612_0706": 0.5,
+                 "RobertDeNiro_0611_0613": 0.5,
+                 "TrumpKimSummit_0612_0630": 0.5,
+                 "TrumpRally_0705_0707": 0.5,
+                 "TrumpSalary_0301_0531": 0.5}
 
     for folder in folders:
         # exclude some events
@@ -163,12 +175,12 @@ if __name__ == '__main__':
         #     continue
 
         # specify an event
-        # if folder != "WhereAreTheChildren_0418_0527":
+        # if folder != "germanwings-crash-all-rnr-threads":
         #     continue
 
         # run total events
-        if folder[0] == ".":
-            continue
+        # if folder[0] == ".":
+        #     continue
 
         print("Running code for {}".format(folder))
         args = ['python', 'main.py', '-r', rootpath,

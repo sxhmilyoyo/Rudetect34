@@ -57,7 +57,7 @@ class WorkFlow(object):
         """Generate tweets objects from pheme dataset.
         """
         self.helper.buildDict4Tweets(self.folderpath)
-    
+
     def getWord2Vec(self):
         """Get the word2vec model from all the corpus.
 
@@ -288,7 +288,18 @@ class WorkFlow(object):
             "ottawashooting-all-rnr-threads": ["2014-10-22T00:00:00Z", "2014-10-23T00:00:00Z"],
             "prince-toronto-all-rnr-threads": ["2014-11-03T00:00:00Z", "2014-11-06T00:00:00Z"],
             "putinmissing-all-rnr-threads": ["2015-03-13T00:00:00Z", "2015-03-17T00:00:00Z"],
-            "sydneysiege-all-rnr-threads": ["2014-12-14T00:00:00Z", "2014-12-16T00:00:00Z"]
+            "sydneysiege-all-rnr-threads": ["2014-12-14T00:00:00Z", "2014-12-16T00:00:00Z"],
+            "alfieevans_0301_0315": ["2018-03-01", "2018-03-15"],
+            "AnthonyBourdain_0610_0630": ["2018-06-10T00:00:00Z", "2018-07-01T00:00:00Z"],
+            "CanadianDoctors_0201_0331": ["2018-02-01T00:00:00Z", "2018-04-01T00:00:00Z"],
+            "dogjealousy_0101_0708": ["2015-01-01T00:00:00Z", "2015-07-09T00:00:00Z"],
+            "Irma_0830_0910": ["2017-08-30T00:00:00Z", "2017-09-11T00:00:00Z"],
+            "JoeJackson_0623_0626": ["2018-06-23T00:00:00Z", "2018-06-27T00:00:00Z"],
+            "pavingforpizza_0612_0706": ["2018-06-12T00:00:00Z", "2018-07-07T00:00:00Z"],
+            "RobertDeNiro_0611_0613": ["2018-06-11T00:00:00Z", "2018-06-14T00:00:00Z"],
+            "TrumpKimSummit_0612_0630": ["2018-06-12T00:00:00Z", "2018-07-01T00:00:00Z"],
+            "TrumpRally_0705_0707": ["2018-07-05T00:00:00Z", "2018-07-08T00:00:00Z"],
+            "TrumpSalary_0301_0531": ["2017-03–01T00:00:00Z", "2018-06–01T00:00:00Z"]
         }
         if not self.getSimilarity:
             skipthoughts_model = {"name": "skipthoughts",
@@ -332,7 +343,7 @@ class WorkFlow(object):
             self.helper.dumpJson(folderPath+"/news",
                                  str(index)+"_news.json", finalNewsDict)
             print("{}th claim: news has been saved.".format(index))
-            
+
             # sentiment = alylienNewsAPI.getSentiment(finalNews)
             # sentiments[index] = sentiment
         # self.helper.dumpJson(
@@ -386,7 +397,7 @@ class WorkFlow(object):
         print("Getting query for {}".format(folderpath))
         queryGenerator.generateQuery(folderpath)
 
-    def getSnippets(self, folderpath):
+    def getSnippets(self, folderpath, top=5):
         """Get the google search snippets.
 
         Parameters
@@ -402,18 +413,26 @@ class WorkFlow(object):
         print("Getting snippets for {}".format(folderpath))
         # s2q = self.helper.loadJson(os.path.join(folderpath, 'final',
         #                                         'subject2svoqueries.json'))
-        queries = self.helper.loadCsv(
-            folderpath+"/final", "candidate_queries.csv")
-        fullPath = os.path.join(self.rootpath, folderpath)
+        # queries = self.helper.loadCsv(
+        #     folderpath+"/final", "candidate_queries.csv")
+        folderPath = os.path.join(self.folderpath, "final")
+        fullPath = os.path.join(self.rootpath, folderPath)
+        rankedClusterClaims = self.helper.loadJson(
+            folderPath+"/ranked_cluster_claims.json")
+        count = 0
+        for index, info in enumerate(rankedClusterClaims):
+            if count >= top:
+                continue
+            count += 1
+            query = info[0]
+            print("Crawling query {} ...".format(query))
+            googleSnippets = Information.GoogleSnippets(
+                fullPath, index, query)
+            googleSnippets.start_crawl()
+            # outputPath = os.path.join(folderpath, 'final', "snippets")
+            # self.helper.dumpJson(outputPath, str(index)+"_snippets.json", snippet)
 
-        relevant = []
-        for idx, query in enumerate(queries):
-            print("Crawling query {} ...".format(query[1]))
-            googleSnippets = Information.GoogleSnippets(fullPath, query[0],
-                                                        idx, query[1])
-            res = googleSnippets.start_crawl()
-            relevant.append(res)
-            time.sleep(random.randint(1, 11))
+            time.sleep(random.randint(1, 121))
         # for topic in s2q:
         #     relevant = []
         #     for idx, t in enumerate(s2q[topic]):
@@ -424,8 +443,7 @@ class WorkFlow(object):
         #         res = googleSnippets.start_crawl()
         #         relevant.append(res)
         #         time.sleep(random.randint(1, 11))
-        output_root = os.path.join(folderpath, 'final')
-        self.helper.dumpJson(output_root, "snippets.json", relevant)
+
         # output_root = os.path.join(folderpath, 'final', 'snippets')
         # if not os.path.exists(output_root):
         # os.makedirs(output_root)
