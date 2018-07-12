@@ -53,8 +53,8 @@ def main(rootpath, folderpath, query, start, end, eps=0.5):
     # print('='*100)
     # print('Getting tweets ...')
     # print('='*100)
-    # workFlow.getTweetsFromPheme()
-    # # workFlow.getTweets(query, start, end)
+    # # workFlow.getTweetsFromPheme()
+    # workFlow.getTweets(query, start, end)
 
     # # get word2vec
     # print('='*100)
