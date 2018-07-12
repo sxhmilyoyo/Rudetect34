@@ -61,18 +61,19 @@ def main(rootpath, folderpath, query, start, end, eps):
     # print('='*100)
     # workFlow.getWord2Vec()
 
-    # get Claims
-    print('='*100)
-    print('Getting subject ...')
-    print('='*100)
+    # # get Claims
+    # print('='*100)
+    # print('Getting subject ...')
+    # print('='*100)
+    # # farber
     # workFlow.getClusterRankClaims(query, float(eps))
-    workFlow.getClaims(query)
+    # # workFlow.getClaims(query)
 
-    # # get similar news
-    # print("="*100)
-    # print('Getting News ...')
-    # print("="*100)
-    # workFlow.getNews(folderpath)
+    # get similar news
+    print("="*100)
+    print('Getting News ...')
+    print("="*100)
+    workFlow.getNews(folderpath)
 
     """# get the topic model
     print('='*100)
@@ -127,7 +128,7 @@ def main(rootpath, folderpath, query, start, end, eps):
 
 
 if __name__ == '__main__':
-    rootpath = "/home/1877/Data/Rudetect34_fullClaims"
+    rootpath = "/home/1877/Data/pheme_dataset"
 
     folders = [folder for folder in os.listdir(
         rootpath) if os.path.isdir(rootpath+"/"+folder)]
@@ -145,7 +146,16 @@ if __name__ == '__main__':
                  "JetLi_0519_0523": 0.6,
                  "SanctuaryCities_0516_0523": 0.3,
                  "SouthwestKey_0620_0624": 0.45,
-                 "WhereAreTheChildren_0418_0527": 0.35}
+                 "WhereAreTheChildren_0418_0527": 0.35,
+                 "charliehebdo-all-rnr-threads": 0.5,
+                 "ebola-essien-all-rnr-threads": 0.5,
+                 "ferguson-all-rnr-threads": 0.5,
+                 "germanwings-crash-all-rnr-threads": 0.45,
+                 "gurlitt-all-rnr-threads": 0.5,
+                 "ottawashooting-all-rnr-threads": 0.5,
+                 "prince-toronto-all-rnr-threads": 0.5,
+                 "putinmissing-all-rnr-threads": 0.5,
+                 "sydneysiege-all-rnr-threads": 0.5}
 
     for folder in folders:
         # exclude some events

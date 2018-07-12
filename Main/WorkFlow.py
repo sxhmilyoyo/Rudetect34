@@ -213,16 +213,17 @@ class WorkFlow(object):
         #     candidateClaims)
 
     def getClusterClaims(self, query, eps):
-        claims, fullClaims = self.getClaims(query)
-        # filePath = os.path.join(self.folderpath, "final",
-        #                         "candidateClaimsMergedClause.json")
-        # print("filePath ", filePath)
-        # claims = self.helper.loadJson(filePath)
+        # claims, fullClaims = self.getClaims(query)
+        # farber
+        filePath = os.path.join(self.folderpath, "final",
+                                "candidateClaimsMergedClause.json")
+        print("filePath ", filePath)
+        claims = self.helper.loadJson(filePath)
 
-        # filePath = os.path.join(self.folderpath, "final",
-        #                         "candidateFullClaimsMergedClause.json")
-        # print("filePath ", filePath)
-        # fullClaims = self.helper.loadJson(filePath)
+        filePath = os.path.join(self.folderpath, "final",
+                                "candidateFullClaimsMergedClause.json")
+        print("filePath ", filePath)
+        fullClaims = self.helper.loadJson(filePath)
 
         skipthoughts_model = {"name": "skipthoughts",
                               "modelPath": self.rootpath + "/.." +
@@ -234,7 +235,7 @@ class WorkFlow(object):
         self.getSimilarity = Claim.GetSimilarity(
             self.rootpath,
             self.folderpath,
-            skipthoughts_model)
+            sent2vec_model)
         tweets_list = list(self.helper.getTweet(self.folderpath))
         cluster2claimsIndexes, cluster2coreSampleIndices = self.getSimilarity.getClusteredClaims(
             claims, tweets_list, eps)
@@ -278,7 +279,16 @@ class WorkFlow(object):
             "BandyLee_0110_0115": ["2018-01-10T00:00:00Z", "2018-01-15T00:00:00Z"],
             "JackBreuer_1228_0115": ["2017-12-28T00:00:00Z", "2018-01-15T00:00:00Z"],
             "SouthwestKey_0620_0624": ["2018-06-20T00:00:00Z", "2018-06-24T00:00:00Z"],
-            "Capriccio_0516_0523_new": ["2018-05-16T00:00:00Z", "2018-05-23T00:00:00Z"]
+            "Capriccio_0516_0523_new": ["2018-05-16T00:00:00Z", "2018-05-23T00:00:00Z"],
+            "charliehebdo-all-rnr-threads": ["2015-01-07T00:00:00Z", "2015-01-10T00:00:00Z"],
+            "ebola-essien-all-rnr-threads": ["2014-10-12T00:00:00Z", "2014-10-16T00:00:00Z"],
+            "ferguson-all-rnr-threads": ["2014-08-09T00:00:00Z", "2014-08-16T00:00:00Z"],
+            "germanwings-crash-all-rnr-threads": ["2015-03-24T00:00:00Z", "2015-03-28T00:00:00Z"],
+            "gurlitt-all-rnr-threads": ["2014-11-20T00:00:00Z", "2014-11-25T00:00:00Z"],
+            "ottawashooting-all-rnr-threads": ["2014-10-22T00:00:00Z", "2014-10-23T00:00:00Z"],
+            "prince-toronto-all-rnr-threads": ["2014-11-03T00:00:00Z", "2014-11-06T00:00:00Z"],
+            "putinmissing-all-rnr-threads": ["2015-03-13T00:00:00Z", "2015-03-17T00:00:00Z"],
+            "sydneysiege-all-rnr-threads": ["2014-12-14T00:00:00Z", "2014-12-16T00:00:00Z"]
         }
         if not self.getSimilarity:
             skipthoughts_model = {"name": "skipthoughts",
@@ -290,7 +300,7 @@ class WorkFlow(object):
             self.getSimilarity = Claim.GetSimilarity(
                 self.rootpath,
                 self.folderpath,
-                skipthoughts_model)
+                sent2vec_model)
 
         folderPath = os.path.join(self.folderpath, "final")
         rankedClusterClaims = self.helper.loadJson(

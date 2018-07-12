@@ -1,0 +1,19 @@
+
+[CGROUPS] UD Grid Engine cgroup setup commencing
+[CGROUPS] Setting 34359738368 bytes (vmem none bytes) on n027 (master)
+[CGROUPS]   with 1 core = 
+[CGROUPS] done.
+
+Adding package `anaconda/5.0.1:python3` to your environment
+Traceback (most recent call last):
+  File "main.py", line 12, in <module>
+    import Main
+  File "/home/1877/Code/Rudetect34/Main/__init__.py", line 1, in <module>
+    from .WorkFlow import WorkFlow
+  File "/home/1877/Code/Rudetect34/Main/WorkFlow.py", line 10, in <module>
+    import Information
+  File "/home/1877/Code/Rudetect34/Information/__init__.py", line 3, in <module>
+    from .AylienNewsAPI import AylienNewsAPI
+  File "/home/1877/Code/Rudetect34/Information/AylienNewsAPI.py", line 1, in <module>
+    import aylien_news_api
+ModuleNotFoundError: No module named 'aylien_news_api'
