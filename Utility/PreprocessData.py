@@ -351,7 +351,7 @@ class PreprocessData(object):
                             'Subject', 'Statement'], data)
         return total
 
-    def getCorpus4csvFromSnippets(self, folderpath):
+    def getCorpus4csvFromSnippets(self, folderPath, index, subject, snippets):
         """Get corpus from snippets that divided by tab.
 
         Parameters
@@ -365,34 +365,49 @@ class PreprocessData(object):
             save the corpus into .csv file
 
         """
-        snippets = self.helper.loadJson(folderpath+"/snippets.json")
         if snippets is None or len(snippets) == 0:
             return
 
-        title = ['ID', 'Target', 'Tweet', 'Stance',
-                 'Origin', 'Total', 'Origin_ID']
+        title = ['ID', 'Target', 'Tweet', 'Stance']
         s = ['NONE', 'AGAINST', 'FAVOR']
         data = []
-
-        k = 1
         for i in range(len(snippets)):
             if snippets[i]:
-                for j in range(len(snippets[i])):
-                    if snippets[i][j]:
-                        origin = snippets[i][j]['snippets']
-                        c_origin = self.cleanSnippet4Classification(
-                            snippets[i][j]['snippets'])
-                        c1 = self.cleanTweet4Word2Vec(origin)
-                        c2 = self.cleanSnippet4Classification(c1)
-                        content = c2
-                        idx = k
-                        r = random.randint(0, 2)
-                        target = snippets[i][j]['topic']
-                        total = len(snippets[i])
-                        data.append([idx, target, content, s[r],
-                                     c_origin, total, snippets[i][j]['id']])
-                        k += 1
-        self.helper.dumpCsv(folderpath, "corpus_snippets.csv", title, data)
+                content = snippets[i]["snippets"]
+                idx = i + 1
+                r = random.randint(0, 2)
+                target = subject
+                data.append([idx, target, content, s[r]])
+        self.helper.dumpCsv(
+            folderPath, "corpus_snippets.csv", title, data)
+        # snippets = self.helper.loadJson(folderpath+"/snippets.json")
+        # if snippets is None or len(snippets) == 0:
+        #     return
+
+        # title = ['ID', 'Target', 'Tweet', 'Stance',
+        #          'Origin', 'Total', 'Origin_ID']
+        # s = ['NONE', 'AGAINST', 'FAVOR']
+        # data = []
+
+        # k = 1
+        # for i in range(len(snippets)):
+        #     if snippets[i]:
+        #         for j in range(len(snippets[i])):
+        #             if snippets[i][j]:
+        #                 origin = snippets[i][j]['snippets']
+        #                 c_origin = self.cleanSnippet4Classification(
+        #                     snippets[i][j]['snippets'])
+        #                 c1 = self.cleanTweet4Word2Vec(origin)
+        #                 c2 = self.cleanSnippet4Classification(c1)
+        #                 content = c2
+        #                 idx = k
+        #                 r = random.randint(0, 2)
+        #                 target = snippets[i][j]['topic']
+        #                 total = len(snippets[i])
+        #                 data.append([idx, target, content, s[r],
+        #                              c_origin, total, snippets[i][j]['id']])
+        #                 k += 1
+        # self.helper.dumpCsv(folderpath, "corpus_snippets.csv", title, data)
 
     @classmethod
     def sortDict(cls, d, reverse=True):

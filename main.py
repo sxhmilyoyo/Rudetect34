@@ -69,12 +69,12 @@ def main(rootpath, folderpath, query, start, end, eps):
     # workFlow.getClusterRankClaims(query, float(eps))
     # # # workFlow.getClaims(query)
 
-    # get similar news
-    print("="*100)
-    print('Getting News ...')
-    print("="*100)
-    # workFlow.getNews(folderpath)
-    workFlow.getSnippets(folderpath)
+    # # get similar news
+    # print("="*100)
+    # print('Getting News ...')
+    # print("="*100)
+    # # workFlow.getNews(folderpath)
+    # workFlow.getSnippets(folderpath)
 
     """# get the topic model
     print('='*100)
@@ -102,12 +102,12 @@ def main(rootpath, folderpath, query, start, end, eps):
     print('='*100)
     """
 
-    # # get corpus for classification of the event
-    # print('='*100)
-    # print('Getting corpus for classification of the event ...')
-    # print('-'*100)
-    # workFlow.getCorpus4Classification(folderpath)
-    # print('='*100)
+    # get corpus for classification of the event
+    print('='*100)
+    print('Getting corpus for classification of the event ...')
+    print('-'*100)
+    workFlow.getCorpus4Classification(folderpath)
+    print('='*100)
 
     """
     # get similarity between statements of the event
@@ -148,34 +148,35 @@ if __name__ == '__main__':
                  "SanctuaryCities_0516_0523": 0.3,
                  "SouthwestKey_0620_0624": 0.45,
                  "WhereAreTheChildren_0418_0527": 0.35,
-                 "charliehebdo-all-rnr-threads": 0.5,
-                 "ebola-essien-all-rnr-threads": 0.5,
-                 "ferguson-all-rnr-threads": 0.5,
-                 "germanwings-crash-all-rnr-threads": 0.45,
-                 "gurlitt-all-rnr-threads": 0.5,
-                 "ottawashooting-all-rnr-threads": 0.5,
-                 "prince-toronto-all-rnr-threads": 0.5,
-                 "putinmissing-all-rnr-threads": 0.5,
-                 "sydneysiege-all-rnr-threads": 0.5,
-                 "alfieevans_0301_0315": 0.5,
-                 "AnthonyBourdain_0610_0630": 0.5,
-                 "CanadianDoctors_0201_0331": 0.5,
-                 "dogjealousy_0101_0708": 0.5,
-                 "Irma_0830_0910": 0.5,
-                 "JoeJackson_0623_0626": 0.5,
-                 "pavingforpizza_0612_0706": 0.5,
-                 "RobertDeNiro_0611_0613": 0.5,
-                 "TrumpKimSummit_0612_0630": 0.5,
-                 "TrumpRally_0705_0707": 0.5,
-                 "TrumpSalary_0301_0531": 0.5}
+                 "charliehebdo": 0.5,
+                 "germanwings-crash": 0.25,
+                 "ebola-essien": 0.3,
+                 "ferguson": 0.3,
+                 "germanwings-crash": 0.4,
+                 "gurlitt": 0.3,
+                 "ottawashooting": 0.3,
+                 "prince-toronto": 0.3,
+                 "putinmissing": 0.3,
+                 "sydneysiege": 0.35,
+                 "alfieevans_0301_0315": 0.3,
+                 "AnthonyBourdain_0610_0630": 0.3,
+                 "CanadianDoctors_0201_0331": 0.3,
+                 "dogjealousy_0101_0708": 0.3,
+                 "Irma_0830_0910": 0.3,
+                 "JoeJackson_0623_0626": 0.3,
+                 "pavingforpizza_0612_0706": 0.3,
+                 "RobertDeNiro_0611_0613": 0.3,
+                 "TrumpKimSummit_0612_0630": 0.3,
+                 "TrumpRally_0705_0707": 0.3,
+                 "TrumpSalary_0301_0531": 0.3}
 
     for folder in folders:
         # exclude some events
-        # if folder not in ["SouthwestKey_0620_0624", "WhereAreTheChildren_0418_0527"]:
-        #     continue
+        if folder not in ["ferguson", "germanwings-crash", "sydneysiege"]:
+            continue
 
         # specify an event
-        # if folder != "germanwings-crash-all-rnr-threads":
+        # if folder != "sydneysiege":
         #     continue
 
         # run total events
@@ -184,7 +185,7 @@ if __name__ == '__main__':
 
         print("Running code for {}".format(folder))
         args = ['python', 'main.py', '-r', rootpath,
-                '-f', folder, '-q', "#"+folder.split("_")[0], '-s', 'test', '-e', 'test', "-p", str(event2eps[folder])]
+                '-f', folder, '-q', "#"+folder.split("_")[0], '-s', 'test', '-e', 'test', "-p", str(event2eps.get(folder, 0.45))]
         # args = ['python', 'main.py']
         print("Command line is {}".format(" ".join(args)))
         # subprocess.call(args)

@@ -90,7 +90,7 @@ class Helper(object):
         """
         if not os.path.exists(os.path.join(self.rootPath, folderPath)):
             os.makedirs(os.path.join(self.rootPath, folderPath))
-        with open(os.path.join(self.rootPath, folderPath, filename), "w") as fp:
+        with open(os.path.join(self.rootPath, folderPath, filename), "w", encoding='utf-8') as fp:
             filewriter = csv.writer(fp, delimiter='\t')
             filewriter.writerow(title)
             for d in data:

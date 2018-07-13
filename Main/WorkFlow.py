@@ -280,15 +280,15 @@ class WorkFlow(object):
             "JackBreuer_1228_0115": ["2017-12-28T00:00:00Z", "2018-01-15T00:00:00Z"],
             "SouthwestKey_0620_0624": ["2018-06-20T00:00:00Z", "2018-06-24T00:00:00Z"],
             "Capriccio_0516_0523_new": ["2018-05-16T00:00:00Z", "2018-05-23T00:00:00Z"],
-            "charliehebdo-all-rnr-threads": ["2015-01-07T00:00:00Z", "2015-01-10T00:00:00Z"],
-            "ebola-essien-all-rnr-threads": ["2014-10-12T00:00:00Z", "2014-10-16T00:00:00Z"],
-            "ferguson-all-rnr-threads": ["2014-08-09T00:00:00Z", "2014-08-16T00:00:00Z"],
-            "germanwings-crash-all-rnr-threads": ["2015-03-24T00:00:00Z", "2015-03-28T00:00:00Z"],
-            "gurlitt-all-rnr-threads": ["2014-11-20T00:00:00Z", "2014-11-25T00:00:00Z"],
-            "ottawashooting-all-rnr-threads": ["2014-10-22T00:00:00Z", "2014-10-23T00:00:00Z"],
-            "prince-toronto-all-rnr-threads": ["2014-11-03T00:00:00Z", "2014-11-06T00:00:00Z"],
-            "putinmissing-all-rnr-threads": ["2015-03-13T00:00:00Z", "2015-03-17T00:00:00Z"],
-            "sydneysiege-all-rnr-threads": ["2014-12-14T00:00:00Z", "2014-12-16T00:00:00Z"],
+            "charliehebdo": ["2015-01-07T00:00:00Z", "2015-01-10T00:00:00Z"],
+            "ebola-essien": ["2014-10-12T00:00:00Z", "2014-10-16T00:00:00Z"],
+            "ferguson": ["2014-08-09T00:00:00Z", "2014-08-16T00:00:00Z"],
+            "germanwings-crash": ["2015-03-24T00:00:00Z", "2015-03-28T00:00:00Z"],
+            "gurlitt": ["2014-11-20T00:00:00Z", "2014-11-25T00:00:00Z"],
+            "ottawashooting": ["2014-10-22T00:00:00Z", "2014-10-23T00:00:00Z"],
+            "prince-toronto": ["2014-11-03T00:00:00Z", "2014-11-06T00:00:00Z"],
+            "putinmissing": ["2015-03-13T00:00:00Z", "2015-03-17T00:00:00Z"],
+            "sydneysiege": ["2014-12-14T00:00:00Z", "2014-12-16T00:00:00Z"],
             "alfieevans_0301_0315": ["2018-03-01", "2018-03-15"],
             "AnthonyBourdain_0610_0630": ["2018-06-10T00:00:00Z", "2018-07-01T00:00:00Z"],
             "CanadianDoctors_0201_0331": ["2018-02-01T00:00:00Z", "2018-04-01T00:00:00Z"],
@@ -528,6 +528,10 @@ class WorkFlow(object):
                 folderPath+"/corpus/"+str(index), index, subject, claim)
             self.preprocessData.getCorpus4CsvFromClusterClaims(
                 folderPath+"/corpus/"+str(index), index, subject, clusterClaims)
+            snippets = self.helper.loadJson(
+                folderPath+"/snippets/"+str(index)+"_google.json")
+            self.preprocessData.getCorpus4csvFromSnippets(
+                folderPath+"/corpus/"+str(index), index, subject, snippets)
             count += 1
             # self.preprocessData.getCorpus4csvFromSnippets(folderPath)
 
