@@ -374,10 +374,11 @@ class PreprocessData(object):
         for i in range(len(snippets)):
             if snippets[i]:
                 content = snippets[i]["snippets"]
+                cleanedContent = self.cleanSnippet4Classification(content)
                 idx = i + 1
                 r = random.randint(0, 2)
                 target = subject
-                data.append([idx, target, content, s[r]])
+                data.append([idx, target, cleanedContent, s[r]])
         self.helper.dumpCsv(
             folderPath, "corpus_snippets.csv", title, data)
         # snippets = self.helper.loadJson(folderpath+"/snippets.json")
