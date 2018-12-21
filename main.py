@@ -53,21 +53,16 @@ def main(rootpath, folderpath, query, start, end, eps=0.5):
     # print('='*100)
     # print('Getting tweets ...')
     # print('='*100)
-    # workFlow.getTweetsFromPheme()
     # # workFlow.getTweets(query, start, end)
-
-    # # get word2vec
-    # print('='*100)
-    # print('Getting word2vec ...')
-    # print('='*100)
-    # workFlow.getWord2Vec()
 
     # get Claims
     print('='*100)
     print('Getting subject ...')
     print('='*100)
-    # workFlow.getClusterRankClaims(query, float(eps))
+    # local
     workFlow.getClaims(query)
+    # farber
+    # workFlow.getClusterRankClaims(query, float(eps))
 
     # # get similar news
     # print("="*100)
@@ -75,57 +70,12 @@ def main(rootpath, folderpath, query, start, end, eps=0.5):
     # print("="*100)
     # workFlow.getNews(folderpath)
 
-    """# get the topic model
-    print('='*100)
-    print('Getting topic model ...')
-    print('-'*100)
-    numTopic = 10
-    # preNumTopic = 0
-    # while numTopic != preNumTopic:
-    dist = workFlow.getTopicPmi(folderpath, numTopic)
-    numTopic = helper.getTopicNum(dist)
-    """
-
-    """# # get cluster
-    # print('='*100)
-    # print('Getting clusters ...')
-    # print('-'*100)
-    # workFlow.getSimilarTweets4Claim()"""
-
-    """
-    # get topic model and SVO for each cluster
-    print('='*100)
-    print('Running for clusters: getting topic model and SVO and corpus for classification...')
-    print('-'*100)
-    workFlow.run4cluster()
-    print('='*100)
-    """
-
     # # get corpus for classification of the event
     # print('='*100)
     # print('Getting corpus for classification of the event ...')
     # print('-'*100)
-    # workFlow.getCorpus4Classification(folderpath)
+    workFlow.getCorpus4Classification(folderpath)
     # print('='*100)
-
-    """
-    # get similarity between statements of the event
-    print('='*100)
-    print('Getting similarity between statements ...')
-    print('-'*100)
-    workFlow.getSimilarity4Statements(folderpath)
-    print('='*100)"""
-    # events = [d for d in os.listdir(rootpath) if os.path.isdir(rootpath+"/"+d)]
-    # topics = []
-    # for event in events:
-    #     print(event)
-    #     tmp = []
-    #     for i in event.split('_'):
-    #         if not i.isdigit():
-    #             tmp.append(i)
-    #     topics.append(' '.join(tmp))
-    # workFlow.run4events(events, topics)
-
 
 if __name__ == '__main__':
     main()
