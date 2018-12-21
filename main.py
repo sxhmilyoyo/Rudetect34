@@ -61,20 +61,20 @@ def main(rootpath, folderpath, query, start, end, eps):
     # print('='*100)
     # workFlow.getWord2Vec()
 
-    # # get Claims
-    # print('='*100)
-    # print('Getting subject ...')
-    # print('='*100)
-    # # farber
-    # workFlow.getClusterRankClaims(query, float(eps))
-    # # # workFlow.getClaims(query)
+    # get Claims
+    print('='*100)
+    print('Getting subject ...')
+    print('='*100)
+    # farber
+    workFlow.getClusterRankClaims(query, float(eps))
+    # # workFlow.getClaims(query)
 
-    # # get similar news
-    # print("="*100)
-    # print('Getting News ...')
-    # print("="*100)
-    # # workFlow.getNews(folderpath)
-    # workFlow.getSnippets(folderpath)
+    # get similar news
+    print("="*100)
+    print('Getting News ...')
+    print("="*100)
+    # workFlow.getNews(folderpath)
+    workFlow.getSnippets(folderpath)
 
     """# get the topic model
     print('='*100)
@@ -129,7 +129,7 @@ def main(rootpath, folderpath, query, start, end, eps):
 
 
 if __name__ == '__main__':
-    rootpath = "/home/1877/Data/pheme_dataset"
+    rootpath = "/home/1877/Data/Rudetect34_181109"
 
     folders = [folder for folder in os.listdir(
         rootpath) if os.path.isdir(rootpath+"/"+folder)]
@@ -152,7 +152,6 @@ if __name__ == '__main__':
                  "germanwings-crash": 0.25,
                  "ebola-essien": 0.3,
                  "ferguson": 0.3,
-                 "germanwings-crash": 0.4,
                  "gurlitt": 0.3,
                  "ottawashooting": 0.3,
                  "prince-toronto": 0.3,
@@ -168,20 +167,24 @@ if __name__ == '__main__':
                  "RobertDeNiro_0611_0613": 0.3,
                  "TrumpKimSummit_0612_0630": 0.3,
                  "TrumpRally_0705_0707": 0.3,
-                 "TrumpSalary_0301_0531": 0.3}
+                 "TrumpSalary_0301_0531": 0.3,
+                 "FriendRequest_1001_1007": 0.4,
+                 "FriendRequest_test_1001_1007": 0.3,
+                 "TexasVotes_1001_1027": 0.4,
+                 "TexasVotes_test_1001_1027": 0.4}
 
     for folder in folders:
         # exclude some events
-        if folder not in ["ferguson", "germanwings-crash", "sydneysiege"]:
-            continue
+        # if folder not in ["charliehebdo", "ferguson"]:
+        #     continue
 
         # specify an event
-        # if folder != "sydneysiege":
-        #     continue
+        # if folder != "FriendRequest_test_1001_1007":
+            # continue
 
         # run total events
-        # if folder[0] == ".":
-        #     continue
+        if folder[0] == ".":
+            continue
 
         print("Running code for {}".format(folder))
         args = ['python', 'main.py', '-r', rootpath,

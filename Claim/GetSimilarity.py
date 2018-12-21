@@ -380,8 +380,10 @@ class GetSimilarity(object):
         for claimIndex in claimIndexes:
             tweetID = claims[claimIndex][0]
             text = claims[claimIndex][4]
-            features = tweets[tweetID].reply + \
-                tweets[tweetID].retweets + \
+            # features = tweets[tweetID].reply + \
+            #     tweets[tweetID].retweets + \
+            #     tweets[tweetID].favorites + 1
+            features = tweets[tweetID].retweets + \
                 tweets[tweetID].favorites + 1
             tweet2features[text] += features
             tweet2date[text] = tweets[tweetID].date.strftime(

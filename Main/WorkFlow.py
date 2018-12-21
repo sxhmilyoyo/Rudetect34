@@ -425,7 +425,7 @@ class WorkFlow(object):
                 continue
             count += 1
             query = info[0]
-            print("Crawling query {} ...".format(query))
+            print("Crawling query {} ...".format(query.encode('utf-8')))
             googleSnippets = Information.GoogleSnippets(
                 fullPath, index, query)
             googleSnippets.start_crawl()
